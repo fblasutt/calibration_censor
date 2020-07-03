@@ -1,0 +1,20 @@
+\begin{table}[H]
+  \centering % used for centering table
+  \begin{tabular}{@{} l c c c @{}}  
+  \hline\hline %inserts double horizontal lines
+  \ External Parameters &  & Value & Target  \\ [0.05ex] % inserts table
+    %heading
+  \hline % inserts single horizontal line
+  \rule{0pt}{2.5ex}
+  Productivity of books  & $\theta$   & 0.18 & Variance of $q^R_1$  \\[0.15ex]
+  Mean quality in 1  & $\overline{q}_1$   & 5.36 & First period quality  \\[0.15ex]
+  Mean rev. quality in 1  & $\overline{q}^R_1$   & 7.67 & First period quality \\[0.15ex]
+  \hline \hline
+  \ Estimated Parameters &  & Value &  \\ [0.05ex] % inserts table
+  \hline
+  \ \%censored revolutionary books  & $\overline{\beta}$   & 0.15 & MSM  \\[0.15ex]
+  TFP  & $(1+\nu)\mu$   & 1.66 & MSM  \\[0.15ex]
+  Price of compliant books   & $p$   & 178.37 & MSM  \\[0.15ex]
+  \hline
+  \end{tabular}
+  \end{table}

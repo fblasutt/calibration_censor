@@ -1,0 +1,15 @@
+set terminal wxt title  "Gnuplot"
+set grid
+set xlabel "Initial m"font ",12"
+set ylabel "Vc-VrF"font ",12"
+set title "Value function and Initial Conditions" font ",16"
+set key center below
+plot "testdata_d.dat" using 1:2 with lines lc rgb "blue" lw     2.00 title "Vc-VrF",\
+     "testdata_d.dat" using    3:   4 with lines lc    1 lw     2.00 title "crucial threshold",\
+     "testdata_d.dat" using    5:   6 with lines lc    2 lw     2.00 title "crucial threshold 2"
+pause -1 "Press RETURN to continue..."
+
+set terminal eps
+set output "study.eps"
+replot
+q
