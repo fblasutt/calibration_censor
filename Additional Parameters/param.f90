@@ -17,15 +17,15 @@ module globals
 
     
     ! model parameters    
-    real*8, parameter :: delta = 0.5d0   !The discount factor  (0.99**30)  
-    real*8, parameter :: Bbeta = 0.15d0     !Max Censorship
-    real*8, parameter :: theta   = 0.1357d0   !Productivity of ideas
-    real*8, parameter :: mu   = 1.9d0       !TFP growth
-    real*8, parameter :: p   = 0.4299d0       !relative price of revolutionary books
-    real*8, parameter :: Q1   = 5.33d0       !initial condition
-    real*8, parameter :: Qr1   = 7.17d0       !initial condition
-    real*8, parameter :: m1   = 0.5056186d0       !initial condition
-    real*8, parameter :: m2   = 0.5112359d0       !initial condition
+    real*8, parameter :: delta = 0.06d0   !The discount factor  (0.99**30)  
+    real*8, parameter :: Bbeta = 0.18d0     !Max Censorship
+    real*8, parameter :: theta   = 0.13d0   !Productivity of ideas
+    real*8, parameter :: mu   = 2.47d0       !TFP growth
+    real*8, parameter :: p   = 0.41d0       !relative price of revolutionary books
+    real*8, parameter :: Q1   = 4.851495d0       !initial condition
+    real*8, parameter :: Qr1   = 6.883995d0       !initial condition
+    real*8, parameter :: m1   = 0.501d0!0.5056186d0       !initial condition
+    real*8, parameter :: m2   = 0.52d0!0.5112359d0       !initial condition
     
     real*8:: chi  
     real*8 :: alpha
