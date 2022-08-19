@@ -41,6 +41,9 @@
   #For list sving
   library(rlist)
   
+  #Parallel Computing
+  require(doParallel)
+  
   #Set seed
   set.seed(2)
   ###PART 0: WHICH SAMPLE/MODEL DO YOU WANT?#############################################
@@ -59,13 +62,15 @@
   weak<-FALSE     #do not consider weak links
   unio<-FALSE     #Only univresity, no academies
   identif<-FALSE  #this serves for understanding how the model is identified
+  fivpmod<-FALSE   #5 periods model?
   robc<-FALSE
   wiki<-FALSE
   longe<-FALSE
   
+  
   if(impbeta>1){imperfect<-TRUE}else{imperfect<-FALSE}
   if(maxper<5){maxt<-TRUE}else{maxt<-FALSE}
-  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe>0){normal<-FALSE}else{normal<-TRUE}
+  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe+fivpmod>0){normal<-FALSE}else{normal<-TRUE}
   
   #Get name to print results
   names<-c("ita","itan","itas","notonlyby","maxt","imperfect","weak","normal","robc","unio","wiki","longe")
@@ -73,13 +78,29 @@
   namet<-which.max(valll)
   nome<-names[namet]
   
+  #Part below if for timing
+  if(fivpmod){leng=5;pcens=2}else{leng=10;pcens=4;maxper=10}
+  
   
   ###PART 1: GET THE DATA#############################################
   
   if (cmom){
     
-    #Moments for 5 periods model
-    source("C:\\Users\\Fabio\\Dropbox\\Roman_Church_censorship_growth\\calibration_censor\\moments_5periods.R") 
+    if(fivpmod)
+      
+    {
+      #Moments for 5 periods model
+      source("C:\\Users\\Fabio\\Dropbox\\Roman_Church_censorship_growth\\calibration_censor\\moments_5periods.R") 
+      
+    }
+    
+    else
+      
+      {
+        #Moments for 10 periods model
+        source("C:\\Users\\Fabio\\Dropbox\\Roman_Church_censorship_growth\\calibration_censor\\moments_10periods.R") 
+      
+      }
     
     
   }else{
@@ -128,18 +149,19 @@
   
   
   ###PART 2: ESTIMATION#################################################
-  
+    
+    
 
   t<-numeric()
   v<-numeric()
   pe<-numeric()
   z0<-numeric()
   up<-numeric()
-  Sqc<-numeric(length=5)
-  Sqr<-numeric(length=5)
-  SNC<-numeric(length=5)
-  SNC75<-numeric(length=5)
-  Sq<-numeric(length=5)
+  Sqc<-numeric(length=leng)
+  Sqr<-numeric(length=leng)
+  SNC<-numeric(length=leng)
+  SNC75<-numeric(length=leng)
+  Sq<-numeric(length=leng)
   pre<-numeric()
   pre1<-numeric()
   pre2<-numeric()
@@ -150,7 +172,8 @@
   eqrtt<-numeric()
   eqct<-numeric()
   # match initial conditions
-  
+  #Embeta=c(0.0984931+(0.0984931-0.0917645),0.0984931,(0.0984931+0.0917645)/2,0.0917645,(0.0917645+0.08468171)/2,0.0846817,
+   #        (0.0846817+0.07079675)/2,0.07079675,(0.07079675+0.046189)/2,0.046189)
   
   # some functions to get the simulated variables
   
@@ -176,41 +199,49 @@
     
 
     z0=(eqrtt/eqct)^(1/thet)
-    if(t>2){
-      z0=pe/(1)*(z0*(1)/pe)^(2)
-      pe/(1-beta)*(z0*(1-beta)/pe)^(2^(t-2))}else if(t==2){pe/(1)*(z0*(1)/pe)^(2^(t-1))}else{z0}}
+    if(t>pcens){
+      z0=pe/(1)*(z0*(1)/pe)^(2^(pcens-1))#pe/(1)*(z0*(1)/pe)^(2)
+      min(pe/(1-beta)*(z0*(1-beta)/pe)^(2^(t-pcens)),1000000000000000000000)}else if(t<=pcens & t>1){pe/(1)*(z0*(1)/pe)^(2^(t-1))}else{z0}}
   
+    
+    
   
   mt<-function(beta,pr,t,up,thet,eqct,eqrtt) zt(beta,pr,t,up,thet,eqct,eqrtt)/(pr+zt(beta,pr,t,up,thet,eqct,eqrtt))
   
   mbetat<-function(beta,pr,t,up,thet,eqct,eqrtt) beta*impbeta*mt(beta,pr,t,up,thet,eqct,eqrtt)
   
+  #Below Macro shocks
+  if(leng==5)
+     {
+        if (longe) {mu<-function(t) ifelse(t==1,68.26-18,ifelse(t==2,64.03-18,ifelse(t==3,65.17-18,ifelse(t==4,64.83-18,ifelse(t==5,69.86-18,0)))))/(68.18-18)}
+        if (!longe){mu<-function(t)ifelse(t==1,200,ifelse(t==2,87.8,ifelse(t==3,78.7,ifelse(t==4,82.8,ifelse(t==5,85.1,0)))))/100}
+  }else{
   
-  if (longe) {mu<-function(t) ifelse(t==1,68.26-18,ifelse(t==2,64.03-18,ifelse(t==3,65.17-18,ifelse(t==4,64.83-18,ifelse(t==5,69.86-18,0)))))/(68.18-18)}
-  if (!longe){mu<-function(t)ifelse(t==1,200,ifelse(t==2,87.8,ifelse(t==3,78.7,ifelse(t==4,82.8,ifelse(t==5,85.1,0)))))/100}
+        mu<-function(t) ifelse(t==1,100,ifelse(t==2,101.1,ifelse(t==3,88.4,ifelse(t==4,88.2,ifelse(t==5,81.5,ifelse(t==6,76.8,ifelse(t==7,83.1,ifelse(t==8,83.5,ifelse(t==9,81.5,ifelse(t==10,92.2,0))))))))))/100}
+    
+  
+
   
   
-                          
   
-  
-  qrs<-function(beta,pe,t,up,pre,nu,thet,eqct,eqrtt) if(t<=2){gamma(1-thet)*((1+nu)*mu(t)*((1)*(pre/gamma(1-thet))^(1/thet)*
+  qrs<-function(beta,pe,t,up,pre,nu,thet,eqct,eqrtt) if(t<=pcens){gamma(1-thet)*((1+nu)*mu(t)*((1)*(pre/gamma(1-thet))^(1/thet)*
                                                                                    (mt(0,pe,t-1,up,thet,eqct,eqrtt))))^thet}else
                                                                                    {gamma(1-thet)*((1+nu)*mu(t)*((1-beta)*(pre/gamma(1-thet))^(1/thet)*
                                                                                                          (mt(beta,pe,t-1,up,thet,eqct,eqrtt))))^thet} 
   
   
-  qcs<-function(beta,pe,t,up,pre,nu,thet,eqct,eqrtt) if(t<=2){gamma(1-thet)*(((1+nu)*mu(t)*((pre/gamma(1-thet))^(1/thet)*
+  qcs<-function(beta,pe,t,up,pre,nu,thet,eqct,eqrtt) if(t<=pcens){gamma(1-thet)*(((1+nu)*mu(t)*((pre/gamma(1-thet))^(1/thet)*
                                                                                     (1-mt(0,pe,t-1,up,thet,eqct,eqrtt)))))^thet}else
                                                                                     {gamma(1-thet)*(((1+nu)*mu(t)*((pre/gamma(1-thet))^(1/thet)*
                                                                                                            (1-mt(beta,pe,t-1,up,thet,eqct,eqrtt)))))^thet}             
   
   
-  qs<-function(beta,pe,t,up,pre1,pre2,nu,thet,eqct,eqrtt) if(t<=2){qrs(0,pe,t,up,pre1,nu,thet,eqct,eqrtt)*mt(0,pe,t,up,thet,eqct,eqrtt)+
+  qs<-function(beta,pe,t,up,pre1,pre2,nu,thet,eqct,eqrtt) if(t<=pcens){qrs(0,pe,t,up,pre1,nu,thet,eqct,eqrtt)*mt(0,pe,t,up,thet,eqct,eqrtt)+
       (1-mt(0,pe,t,up,thet,eqct,eqrtt))*qcs(0,pe,t,up,pre2,nu,thet,eqct,eqrtt)}else
       {qrs(beta,pe,t,up,pre1,nu,thet,eqct,eqrtt)*mt(beta,pe,t,up,thet,eqct,eqrtt)+
           (1-mt(beta,pe,t,up,thet,eqct,eqrtt))*qcs(beta,pe,t,up,pre2,nu,thet,eqct,eqrtt)}
   
-  nc<-function(beta,pe,t,up,pre1,pre2,nu,thet,eqct,eqrtt) if(t<=2){qrs(0,pe,t,up,pre1,nu,thet,eqct,eqrtt)*
+  nc<-function(beta,pe,t,up,pre1,pre2,nu,thet,eqct,eqrtt) if(t<=pcens){qrs(0,pe,t,up,pre1,nu,thet,eqct,eqrtt)*
       (((1)*mt(0,pe,t,up,thet,eqct,eqrtt))/(1))+
       ((1-mt(0,pe,t,up,thet,eqct,eqrtt))/(1))*
       qcs(0,pe,t,up,pre2,nu,thet,eqct,eqrtt)}else
@@ -220,7 +251,7 @@
           qcs(beta,pe,t,up,pre2,nu,thet,eqct,eqrtt)}
   
   
-  
+
   #GUARDA A INITIAL CONDITION CIU C
   
   # define the function that we want to minimize taking beta
@@ -282,7 +313,9 @@
       
       if(i>=2){
         
-        sum=sum+((mcur*betaa*impbeta-Embeta[i])/Embeta[i])^2
+        #Share censored is target only from period before censorship pcens
+        if(i>=pcens){sum=sum+((mcur*betaa*impbeta-Embeta[i])/Embeta[i])^2}
+        if(i==4 & mcur>=0.507){sum=sum+10000}
         #Moments with median
         
         MR[i]<-(((qrs(betaa,pe,i,maxx,Sqr[i-1],nuu,thet,Sqc[1],Sqr[1])/(gamma(1-thet)))^(1/1))/
@@ -359,13 +392,16 @@
   # call the genetic alogorithm for the estimation
   GA <- ga(type = "real-valued", 
            fitness = ff, 
-           lower = c(0.12,1.7,0.0,0.05,3.5-0.35,Eqr[1]-0.68),
-           upper = c(0.25,2.5,3  ,0.45,3.5+0.4 ,Eqr[1]-0.2),
-           popSize = 100, maxiter = 180, run = 50,
-           elitism = max(1, round(200*0.15)),
+           #lower = c(0.12,1.7,0.0,0.05,3.5-0.35,Eqr[1]-0.68),
+           #upper = c(0.25,2.5,3  ,0.45,3.5+0.4 ,Eqr[1]-0.2),
+           lower = c(0.05,1.5,0.0,0.15,3.5-0.65,Eqr[1]-1.78),
+           upper = c(0.20,2.8,2.3  ,0.45,3.5+0.6 ,Eqr[1]-0.8),
+           popSize = 1000, maxiter = 200, run = 50,
+           #elitism = max(1, round(20*0.15)),
            optim=FALSE,
            seed=1,
-           optimArgs = list(method = "L-BFGS-B",poptim = 0.2,pressel = 0.5,
+           parallel=TRUE,
+           optimArgs = list(method = "L-BFGS-B",poptim = 0.1,pressel = 0.1,
                             control = list(fnscale = -1, maxit = 20)))
   
   # visualize the solution 
@@ -390,23 +426,23 @@
   
   
   
-  Smbeta=numeric(length=5)
-  Sz=numeric(length=5)
-  Sm=numeric(length=5)
-  Ez=numeric(length=5)
-  Em=numeric(length=5)
-  SqrM<-numeric(length=5)
-  SNCM<-numeric(length=5)
-  SqM<-numeric(length=5)
-  SqrQ75<-numeric(length=5)
-  SNCQ75<-numeric(length=5)
-  SqQ75<-numeric(length=5)
+  Smbeta=numeric(length=leng)
+  Sz=numeric(length=leng)
+  Sm=numeric(length=leng)
+  Ez=numeric(length=leng)
+  Em=numeric(length=leng)
+  SqrM<-numeric(length=leng)
+  SNCM<-numeric(length=leng)
+  SqM<-numeric(length=leng)
+  SqrQ75<-numeric(length=leng)
+  SNCQ75<-numeric(length=leng)
+  SqQ75<-numeric(length=leng)
   max<-1
   betat<-beta
   
   
   
-  for(i in 1:5){
+  for(i in 1:leng){
     
     
     Sm[i]=mt(betat,p,i,max,theta,Sqc[1],Sqr[1])
@@ -428,7 +464,7 @@
       SNC[i]=nc(betat,p,i,max,Sqr[i-1],Sqc[i-1],nu,theta,Sqc[1],Sqr[1])
       
       #Below ONLY IF WE CONSIDER SHORT ESTIMATION PERIOD#
-      if(maxper<5 & i==5){
+      if(maxper<leng & i==leng){
         Smbeta[5]=betat*mt(betat,p,i,max,theta,Sqc[4],Sqr[4])
         betat<-0
         Sm[i]=mt(betat,p,2,max,theta,Sqc[4],Sqr[4])
@@ -525,7 +561,7 @@
     ###############################
     #Graph Q50+Q75
     ################################
-    time=seq(1,5,1) 
+    time=seq(1,leng,1) 
     q.df<- data.frame(time, EqM,SqM,EqQ75,SqQ75,CIq[1,],CIq[2,],CIq75[1,],CIq75[2,])
     
     tikz(file = "q.tex", width = 5, height = 5)
@@ -690,13 +726,13 @@
   ###PART 4: counterfactual experiments##################
   
   #No censorship
-  SzC=numeric(length=5)
-  SmC=numeric(length=5)
-  SmbetaC=numeric(length=5)
-  SqcC=numeric(length=5)
-  SqrC=numeric(length=5)
-  SqC=numeric(length=5)
-  for(i in 1:5){
+  SzC=numeric(length=leng)
+  SmC=numeric(length=leng)
+  SmbetaC=numeric(length=leng)
+  SqcC=numeric(length=leng)
+  SqrC=numeric(length=leng)
+  SqC=numeric(length=leng)
+  for(i in 1:leng){
     
     SmC[i]=mt(0,p,i,max,theta,Sqc[1],Sqr[1])
     SzC[i]=zt(0,p,i,max,theta,Sqc[1],Sqr[1])
@@ -716,16 +752,16 @@
   
   
   #No Economic decline
-  SzCd=numeric(length=5)
-  SmCd=numeric(length=5)
-  SmbetaCd=numeric(length=5)
-  SqcCd=numeric(length=5)
-  SqrCd=numeric(length=5)
-  SqCd=numeric(length=5)
+  SzCd=numeric(length=leng)
+  SmCd=numeric(length=leng)
+  SmbetaCd=numeric(length=leng)
+  SqcCd=numeric(length=leng)
+  SqrCd=numeric(length=leng)
+  SqCd=numeric(length=leng)
   
   #Update: NO decline of Italy
   mu<-function(t) 1
-  for(i in 1:5){
+  for(i in 1:leng){
     
     SmCd[i]=mt(betat,p,i,max,theta,Sqc[1],Sqr[1])
     SzCd[i]=zt(betat,p,i,max,theta,Sqc[1],Sqr[1])
@@ -744,13 +780,13 @@
       SqrCd[1]=Sqr[1]}}
   
   #No censorship, no macro shocks
-  SzCdp=numeric(length=5)
-  SmCdp=numeric(length=5)
-  SmbetaCdp=numeric(length=5)
-  SqcCdp=numeric(length=5)
-  SqrCdp=numeric(length=5)
-  SqCdp=numeric(length=5)
-  for(i in 1:5){
+  SzCdp=numeric(length=leng)
+  SmCdp=numeric(length=leng)
+  SmbetaCdp=numeric(length=leng)
+  SqcCdp=numeric(length=leng)
+  SqrCdp=numeric(length=leng)
+  SqCdp=numeric(length=leng)
+  for(i in 1:leng){
     
     SmCdp[i]=mt(0,p,i,max,theta,Sqc[1],Sqr[1])
     SzCdp[i]=zt(0,p,i,max,theta,Sqc[1],Sqr[1])
@@ -918,17 +954,17 @@
   #overall drop
   
   print("The overall % drop is:")
-  print((Sq[5]-SqC[5])/Sq[5])
+  print((Sq[leng]-SqC[leng])/Sq[leng])
   
   ####
   #decomposition of the drop
   ###
-  delta=Sq[5]-SqC[5]
-  deltas=Sqr[5]-Sqc[5]
-  deltasC=SqrC[5]-SqcC[5]
-  ch_within<-((SmC[5]/100)*(Sqr[5]-SqrC[5])+(1-SmC[5]/100)*(Sqc[5]-SqcC[5]))#change within
-  ch_int<-((Sm[5]-SmC[5])/100*(deltas-deltasC))#interaction
-  ch_across<-((Sm[5]-SmC[5])/100*(SqrC[5])+(SmC[5]-Sm[5])/100*(SqcC[5]))#change in prevalence revol.
+  delta=Sq[leng]-SqC[leng]
+  deltas=Sqr[leng]-Sqc[leng]
+  deltasC=SqrC[leng]-SqcC[leng]
+  ch_within<-((SmC[leng]/100)*(Sqr[leng]-SqrC[leng])+(1-SmC[leng]/100)*(Sqc[leng]-SqcC[leng]))#change within
+  ch_int<-((Sm[leng]-SmC[leng])/100*(deltas-deltasC))#interaction
+  ch_across<-((Sm[leng]-SmC[leng])/100*(SqrC[leng])+(SmC[leng]-Sm[leng])/100*(SqcC[leng]))#change in prevalence revol.
   
   
   cat("The overall absolute drop is: ",delta)
@@ -941,13 +977,13 @@
   
   
   #How much of the drop?
-  (SqC[5]-Sq[5])/(Sq[2]-Sq[5])
+  (SqC[leng]-Sq[leng])/(Sq[pcens]-Sq[leng])
   
   
-  print(c((Sq[5]-SqC[5])/SqC[5],
-          (Sm[5]-SmC[5])/SmC[5],
+  print(c((Sq[leng]-SqC[leng])/SqC[leng],
+          (Sm[leng]-SmC[leng])/SmC[leng],
           beta,
-          Sm[5]))
+          Sm[leng]))
   
   
   ###PART 6: Get value functions#########
@@ -1040,7 +1076,7 @@
       print(j)
       
       #Get bootstraped moments  
-      for(i in 1:5){
+      for(i in 1:leng){
         Embeta[i]=Bmbeta[i,j]
         Eqr[i]=Bqr[i,j]
         Eq[i]=Bq[i,j]
@@ -1167,8 +1203,8 @@
   #LINE REGARDING WITH THE RESULTS
   
   name <- paste(nome,".Rnw", sep = "")
-  if(normal){results<-c((Sq[5]-SqC[5])/Sq[5]*100,(Sm[5]-SmC[5])/Sm[5]*100,beta*100*impbeta,Sm[5])}
-  if(!normal){results<-c((Sq[5]-SqC[5])/Sq[5]*100,(Sm[5]-SmC[5])/Sm[5]*100,beta*100*impbeta,Sm[5]*100)}
+  if(normal){results<-c((Sq[leng]-SqC[leng])/Sq[leng]*100,(Sm[leng]-SmC[leng])/Sm[leng]*100,beta*100*impbeta,Sm[leng])}
+  if(!normal){results<-c((Sq[leng]-SqC[leng])/Sq[leng]*100,(Sm[leng]-SmC[leng])/Sm[leng]*100,beta*100*impbeta,Sm[leng]*100)}
   
   
   sink(name)
