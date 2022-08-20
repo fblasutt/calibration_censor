@@ -54,7 +54,7 @@
   
   impbeta <<-1    #imperfect application of censorship-max (5./6.)
   maxper<<-5      #max number of periods to consider
-  phi<<-0.05     #Lag parameter for dynamics of knowledge acquisition
+  phi<<-0.5#0.05#0.05     #Lag parameter for dynamics of knowledge acquisition
   
   ita<-FALSE      #only italian scholars
   itan<-FALSE     #only northern italian scholars
@@ -72,7 +72,7 @@
   
   if(impbeta>1){imperfect<-TRUE}else{imperfect<-FALSE}
   if(maxper<5){maxt<-TRUE}else{maxt<-FALSE}
-  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe+tenpmod>0){normal<-FALSE}else{normal<-TRUE}
+  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe>0){normal<-FALSE}else{normal<-TRUE}
   
   #Get name to print results
   names<-c("ita","itan","itas","notonlyby","maxt","imperfect","weak","normal","robc","unio","wiki","longe","tenpmod")
@@ -179,6 +179,16 @@
   
   # some functions to get the simulated variables
   
+  #Below Macro shocks
+  if(leng==5)
+  {
+    if (longe) {mu<-function(t) ifelse(t==1,68.26-18,ifelse(t==2,64.03-18,ifelse(t==3,65.17-18,ifelse(t==4,64.83-18,ifelse(t==5,69.86-18,0)))))/(68.18-18)}
+    if (!longe){mu<-function(t)ifelse(t==1,200,ifelse(t==2,87.8,ifelse(t==3,78.7,ifelse(t==4,82.8,ifelse(t==5,85.1,0)))))/100}
+  }else{
+    
+    mu<-function(t) ifelse(t==1,100,ifelse(t==2,101.1,ifelse(t==3,88.4,ifelse(t==4,88.2,ifelse(t==5,81.5,ifelse(t==6,76.8,ifelse(t==7,83.1,ifelse(t==8,83.5,ifelse(t==9,81.5,ifelse(t==10,92.2,0))))))))))/100}
+  
+  
   f<-function(x,the,k,pr,eqt,eqrt) {
     
     -eqt+(((eqrt/x)^(1/the))/((eqrt/x)^(1/the)+pr))*eqrt+
@@ -197,13 +207,22 @@
     (emma)*eqrt+(1-emma)*eqct}
   
   
-
+ 
   zt<-function(beta,pe,t,up,thet,eqct,eqrtt) {
     
 
-    z0=(eqrtt/eqct)^(1/thet)
+    kro<-(eqrtt/(gamma(1-thet)))^(1/thet)
+    kco<-(eqct /(gamma(1-thet)))^(1/thet)
+    z0=kro/kco
     mo=z0/(pe+z0)
-    result<-0
+    
+    moo=mo
+    kroo=kro
+    kcoo=kco
+    
+    kroov=kro
+    kcoov=kco
+    
     
     for (i in 1:t) {
      
@@ -215,18 +234,39 @@
      #Before censorship  
      else if(i>1 & i<=pcens){
        
-       m=phi*(result/(pe+result))+(1-phi)*mo
-       result<-(1)*result*m/(1-m)
-       mo=m}
+       kr=phi*(kro*mo)    +(1-phi)*(kroo*(  moo))
+       kc=phi*(kco*(1-mo))+(1-phi)*(kcoo*(1-moo))
+       
+       result<-min(kr/kc,1000000000000000000000) 
+       m=(result/(pe+result))
+       moo=mo
+       kroo=kro
+       kcoo=kco
+       
+       
+       mo=m
+       kro=kr
+       kco=kc}
        
      
       
      #After Censorship
      else{
        
-       m=phi*(result/(pe+result))+(1-phi)*mo
-       result<-min((1-beta)*result*m/(1-m),1000000000000000000000)
-       mo=m}
+       kr=phi*(kro*mo)    +(1-phi)*(kroo*(  moo))
+       kc=phi*(kco*(1-mo))+(1-phi)*(kcoo*(1-moo))
+       kr=kr*(1-beta)
+
+       result<-min(kr/kc,1000000000000000000000) 
+       m=(result/(pe+result))
+       
+       moo=mo
+       kroo=kro
+       kcoo=kco
+       
+       mo=m
+       kro=kr
+       kco=kc}
       
      }
     
@@ -242,16 +282,6 @@
  
   
   mbetat<-function(beta,pr,t,up,thet,eqct,eqrtt) beta*impbeta*mt(beta,pr,t,up,thet,eqct,eqrtt)
-  
-  #Below Macro shocks
-  if(leng==5)
-     {
-        if (longe) {mu<-function(t) ifelse(t==1,68.26-18,ifelse(t==2,64.03-18,ifelse(t==3,65.17-18,ifelse(t==4,64.83-18,ifelse(t==5,69.86-18,0)))))/(68.18-18)}
-        if (!longe){mu<-function(t)ifelse(t==1,200,ifelse(t==2,87.8,ifelse(t==3,78.7,ifelse(t==4,82.8,ifelse(t==5,85.1,0)))))/100}
-  }else{
-  
-        mu<-function(t) ifelse(t==1,100,ifelse(t==2,101.1,ifelse(t==3,88.4,ifelse(t==4,88.2,ifelse(t==5,81.5,ifelse(t==6,76.8,ifelse(t==7,83.1,ifelse(t==8,83.5,ifelse(t==9,81.5,ifelse(t==10,92.2,0))))))))))/100}
-    
   
 
   
@@ -453,13 +483,13 @@
   Sq[1]<-fq(theta,p,GA@solution[1,5],Sqr[1])
   Sqc[1]<-GA@solution[1,5]
   
-  #beta<-0.1813921
-  #p<-exp(2.100781)
-  #nu<-1.408559
-  #theta<-0.3255855 
-  #Sqr[1]<-6.906695
-  #Sq[1]<-fq(theta,p,3.464338,Sqr[1])
-  #Sqc[1]<-3.464338
+  beta<-0.1813921
+  p<-exp(2.100781)
+  nu<-1.408559
+  theta<-0.3255855 
+  Sqr[1]<-6.906695
+  Sq[1]<-fq(theta,p,3.464338,Sqr[1])
+  Sqc[1]<-3.464338
   
   ###PART 3: Simulation + graphs########################################################
   
