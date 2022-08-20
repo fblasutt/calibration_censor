@@ -47,14 +47,14 @@
   #Set seed
   set.seed(2)
   ###PART 0: WHICH SAMPLE/MODEL DO YOU WANT?#############################################
-  cmom<-FALSE    #want to redo-data part? 
+  cmom<-TRUE    #want to redo-data part? 
   serrors<-FALSE  #want to compute se for parameters?
   nboots<-500    #Bootstrapping nummber
   
   
   impbeta <<-1    #imperfect application of censorship-max (5./6.)
   maxper<<-5      #max number of periods to consider
-  phi<<-0.5#0.05#0.05     #Lag parameter for dynamics of knowledge acquisition
+  phi<<-1.0#0.09  #Lag parameter for dynamics of knowledge acquisition
   
   ita<-FALSE      #only italian scholars
   itan<-FALSE     #only northern italian scholars
@@ -63,7 +63,7 @@
   weak<-FALSE     #do not consider weak links
   unio<-FALSE     #Only univresity, no academies
   identif<-FALSE  #this serves for understanding how the model is identified
-  fivpmod<-FALSE   #5 periods model if TRUE, otherwise 10 periods model
+  fivpmod<-TRUE   #5 periods model if TRUE, otherwise 10 periods model
   robc<-FALSE
   wiki<-FALSE
   longe<-FALSE
@@ -72,7 +72,7 @@
   
   if(impbeta>1){imperfect<-TRUE}else{imperfect<-FALSE}
   if(maxper<5){maxt<-TRUE}else{maxt<-FALSE}
-  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe>0){normal<-FALSE}else{normal<-TRUE}
+  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe+tenpmod){normal<-FALSE}else{normal<-TRUE}
   
   #Get name to print results
   names<-c("ita","itan","itas","notonlyby","maxt","imperfect","weak","normal","robc","unio","wiki","longe","tenpmod")
@@ -220,8 +220,7 @@
     kroo=kro
     kcoo=kco
     
-    kroov=kro
-    kcoov=kco
+
     
     
     for (i in 1:t) {
@@ -234,27 +233,43 @@
      #Before censorship  
      else if(i>1 & i<=pcens){
        
-       kr=phi*(kro*mo)    +(1-phi)*(kroo*(  moo))
-       kc=phi*(kco*(1-mo))+(1-phi)*(kcoo*(1-moo))
+       a=phi*(kro*mo)
+       b=(1-phi)*(kroo*(  moo))
+       kr=a+b  
        
+
+                  
+       a=phi*(kco*(1-mo))
+       b=(1-phi)*(kcoo*(1-moo))
+       kc=a+b
+                                    
+       #print(kr)
+       #print(kc)
        result<-min(kr/kc,1000000000000000000000) 
        m=(result/(pe+result))
+                                    
        moo=mo
        kroo=kro
        kcoo=kco
-       
-       
+                                    
        mo=m
        kro=kr
        kco=kc}
        
-     
-      
      #After Censorship
      else{
        
-       kr=phi*(kro*mo)    +(1-phi)*(kroo*(  moo))
-       kc=phi*(kco*(1-mo))+(1-phi)*(kcoo*(1-moo))
+       a=phi*(kro*mo)
+       b=(1-phi)*(kroo*(  moo))
+       kr=a+b  
+       
+       
+       
+       a=phi*(kco*(1-mo))
+       b=(1-phi)*(kcoo*(1-moo))
+       kc=a+b 
+       
+
        kr=kr*(1-beta)
 
        result<-min(kr/kc,1000000000000000000000) 
@@ -268,8 +283,8 @@
        kro=kr
        kco=kc}
       
-     }
-    
+     
+    }
     #Return result 
     return(result)
     
@@ -483,13 +498,13 @@
   Sq[1]<-fq(theta,p,GA@solution[1,5],Sqr[1])
   Sqc[1]<-GA@solution[1,5]
   
-  beta<-0.1813921
-  p<-exp(2.100781)
-  nu<-1.408559
-  theta<-0.3255855 
-  Sqr[1]<-6.906695
-  Sq[1]<-fq(theta,p,3.464338,Sqr[1])
-  Sqc[1]<-3.464338
+  #beta<-0.1813921
+  #p<-exp(2.100781)
+  #nu<-1.408559
+  #theta<-0.3255855 
+  #Sqr[1]<-6.906695
+  #Sq[1]<-fq(theta,p,3.464338,Sqr[1])
+  #Sqc[1]<-3.464338
   
   ###PART 3: Simulation + graphs########################################################
   
