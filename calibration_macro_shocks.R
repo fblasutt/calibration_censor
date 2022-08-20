@@ -47,13 +47,14 @@
   #Set seed
   set.seed(2)
   ###PART 0: WHICH SAMPLE/MODEL DO YOU WANT?#############################################
-  cmom<-TRUE    #want to redo-data part? 
+  cmom<-FALSE    #want to redo-data part? 
   serrors<-FALSE  #want to compute se for parameters?
   nboots<-500    #Bootstrapping nummber
   
   
-  impbeta <<-1    #imperfectSqzr application of censorship-max (5./6.)
+  impbeta <<-1    #imperfect application of censorship-max (5./6.)
   maxper<<-5      #max number of periods to consider
+  phi<<-0.05     #Lag parameter for dynamics of knowledge acquisition
   
   ita<-FALSE      #only italian scholars
   itan<-FALSE     #only northern italian scholars
@@ -62,19 +63,20 @@
   weak<-FALSE     #do not consider weak links
   unio<-FALSE     #Only univresity, no academies
   identif<-FALSE  #this serves for understanding how the model is identified
-  fivpmod<-FALSE   #5 periods model?
+  fivpmod<-FALSE   #5 periods model if TRUE, otherwise 10 periods model
   robc<-FALSE
   wiki<-FALSE
   longe<-FALSE
+  tenpmod<-!fivpmod
   
   
   if(impbeta>1){imperfect<-TRUE}else{imperfect<-FALSE}
   if(maxper<5){maxt<-TRUE}else{maxt<-FALSE}
-  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe+fivpmod>0){normal<-FALSE}else{normal<-TRUE}
+  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe+tenpmod>0){normal<-FALSE}else{normal<-TRUE}
   
   #Get name to print results
-  names<-c("ita","itan","itas","notonlyby","maxt","imperfect","weak","normal","robc","unio","wiki","longe")
-  valll<-c(ita,itan,itas,notonlyby,maxt,imperfect,weak,normal,robc,unio,wiki,longe)
+  names<-c("ita","itan","itas","notonlyby","maxt","imperfect","weak","normal","robc","unio","wiki","longe","tenpmod")
+  valll<-c(ita,itan,itas,notonlyby,maxt,imperfect,weak,normal,robc,unio,wiki,longe,tenpmod)
   namet<-which.max(valll)
   nome<-names[namet]
   
@@ -195,18 +197,49 @@
     (emma)*eqrt+(1-emma)*eqct}
   
   
+
   zt<-function(beta,pe,t,up,thet,eqct,eqrtt) {
     
 
     z0=(eqrtt/eqct)^(1/thet)
-    if(t>pcens){
-      z0=pe/(1)*(z0*(1)/pe)^(2^(pcens-1))#pe/(1)*(z0*(1)/pe)^(2)
-      min(pe/(1-beta)*(z0*(1-beta)/pe)^(2^(t-pcens)),1000000000000000000000)}else if(t<=pcens & t>1){pe/(1)*(z0*(1)/pe)^(2^(t-1))}else{z0}}
-  
+    mo=z0/(pe+z0)
+    result<-0
     
-    
+    for (i in 1:t) {
+     
   
-  mt<-function(beta,pr,t,up,thet,eqct,eqrtt) zt(beta,pr,t,up,thet,eqct,eqrtt)/(pr+zt(beta,pr,t,up,thet,eqct,eqrtt))
+     #print(result)
+     #Initial period  
+     if(i==1){result<-z0}
+      
+     #Before censorship  
+     else if(i>1 & i<=pcens){
+       
+       m=phi*(result/(pe+result))+(1-phi)*mo
+       result<-(1)*result*m/(1-m)
+       mo=m}
+       
+     
+      
+     #After Censorship
+     else{
+       
+       m=phi*(result/(pe+result))+(1-phi)*mo
+       result<-min((1-beta)*result*m/(1-m),1000000000000000000000)
+       mo=m}
+      
+     }
+    
+    #Return result 
+    return(result)
+    
+  }
+  
+ 
+
+  mt<-function(beta,pr,t,up,thet,eqct,eqrtt) zt(beta,pr,t,up,thet,eqct,eqrtt)/(pr+zt(beta,pr,t,up,thet,eqct,eqrtt)) 
+  
+ 
   
   mbetat<-function(beta,pr,t,up,thet,eqct,eqrtt) beta*impbeta*mt(beta,pr,t,up,thet,eqct,eqrtt)
   
@@ -314,8 +347,8 @@
       if(i>=2){
         
         #Share censored is target only from period before censorship pcens
-        if(i>=pcens){sum=sum+((mcur*betaa*impbeta-Embeta[i])/Embeta[i])^2}
-        if(i==4 & mcur>=0.507){sum=sum+10000}
+        if(i>=pcens){sum=sum+((mcur*betaa*impbeta -Embeta[i])/Embeta[i])^2}
+
         #Moments with median
         
         MR[i]<-(((qrs(betaa,pe,i,maxx,Sqr[i-1],nuu,thet,Sqc[1],Sqr[1])/(gamma(1-thet)))^(1/1))/
@@ -390,24 +423,28 @@
   
   
   # call the genetic alogorithm for the estimation
-  GA <- ga(type = "real-valued", 
-           fitness = ff, 
-           #lower = c(0.12,1.7,0.0,0.05,3.5-0.35,Eqr[1]-0.68),
-           #upper = c(0.25,2.5,3  ,0.45,3.5+0.4 ,Eqr[1]-0.2),
-           lower = c(0.05,1.5,0.0,0.15,3.5-0.65,Eqr[1]-1.78),
-           upper = c(0.20,2.8,2.3  ,0.45,3.5+0.6 ,Eqr[1]-0.8),
-           popSize = 1000, maxiter = 200, run = 50,
-           #elitism = max(1, round(20*0.15)),
-           optim=FALSE,
-           seed=1,
-           parallel=TRUE,
-           optimArgs = list(method = "L-BFGS-B",poptim = 0.1,pressel = 0.1,
-                            control = list(fnscale = -1, maxit = 20)))
+  GA <- ga(type = "real-valued",  
+           fitness = ff,  
+           lower = c(0.12,1.7,0.0,0.05,3.5-0.35,Eqr[1]-0.68), 
+           upper = c(0.25,2.5,3  ,0.45,3.5+0.4 ,Eqr[1]-0.2), 
+           #lower = c(0.05,1.5,0.0,0.15,3.5-0.65,Eqr[1]-1.78), 
+           #upper = c(0.25,2.8,2.3  ,0.45,3.5+0.6 ,Eqr[1]-0.8), 
+           #lower = c(0.14,1.7,0.5,0.2,3.5-0.65,Eqr[1]-1.268), 
+           #upper = c(0.25,2.6,2  ,0.36,3.5+0.6 ,Eqr[1]+0.7), 
+           popSize = 100, maxiter = 200, run = 50, 
+           #elitism = max(1, round(20*0.15)), 
+           optim=FALSE, 
+           seed=1, 
+           parallel=TRUE, 
+           optimArgs = list(method = "L-BFGS-B",poptim = 0.2,pressel = 0.1, 
+                            control = list(fnscale = -1, maxit = 20))) 
+  
+  
   
   # visualize the solution 
   summary(GA)
   plot(GA)
-  
+      
   beta<-GA@solution[1,1]
   p<-exp(GA@solution[1,2])
   nu<-GA@solution[1,3]
@@ -416,7 +453,13 @@
   Sq[1]<-fq(theta,p,GA@solution[1,5],Sqr[1])
   Sqc[1]<-GA@solution[1,5]
   
-  
+  #beta<-0.1813921
+  #p<-exp(2.100781)
+  #nu<-1.408559
+  #theta<-0.3255855 
+  #Sqr[1]<-6.906695
+  #Sq[1]<-fq(theta,p,3.464338,Sqr[1])
+  #Sqc[1]<-3.464338
   
   ###PART 3: Simulation + graphs########################################################
   
@@ -450,8 +493,8 @@
     Eqc[1]=Sqc[1]
     Sqc[1]=Eqc[1]
     Ez[i]=(Eqr[i]/Eqc[i])^(1/theta)
-    Em[i]=Ez[i]/(p+Ez[i])
-    Smbeta[i]=betat*mt(betat,p,i,max,theta,Sqc[1],Sqr[1])
+    Em[i]=mt(betat,p,i,max,theta,Sqc[1],Sqr[1])#Ez[i]/(p+Ez[i])
+    Smbeta[i]=mbetat(betat,p,i,max,theta,Sqc[1],Sqr[1])
     
     
     
@@ -1201,10 +1244,15 @@
   
   
   #LINE REGARDING WITH THE RESULTS
-  
   name <- paste(nome,".Rnw", sep = "")
   if(normal){results<-c((Sq[leng]-SqC[leng])/Sq[leng]*100,(Sm[leng]-SmC[leng])/Sm[leng]*100,beta*100*impbeta,Sm[leng])}
   if(!normal){results<-c((Sq[leng]-SqC[leng])/Sq[leng]*100,(Sm[leng]-SmC[leng])/Sm[leng]*100,beta*100*impbeta,Sm[leng]*100)}
+  if(tenpmod){ Sq_t<-(Sq[leng]+Sq[leng-1])/2
+               SqC_t<-(SqC[leng]+SqC[leng-1])/2
+               Sm_t<-(Sm[leng]+Sm[leng-1])/2
+               SmC_t<-(SmC[leng]+SmC[leng-1])/2
+    
+    results<-c((Sq_t-SqC_t)/Sq_t*100,(Sm_t-SmC_t)/Sm_t*100,beta*100*impbeta,Sm_t*100)}
   
   
   sink(name)
