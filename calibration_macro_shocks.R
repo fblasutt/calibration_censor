@@ -47,7 +47,7 @@
   #Set seed
   set.seed(2)
   ###PART 0: WHICH SAMPLE/MODEL DO YOU WANT?#############################################
-  cmom<-TRUE    #want to redo-data part? 
+  cmom<-FALSE    #want to redo-data part? 
   serrors<-FALSE  #want to compute se for parameters?
   nboots<-500    #Bootstrapping nummber
   
@@ -505,6 +505,15 @@
   #Sqr[1]<-6.906695
   #Sq[1]<-fq(theta,p,3.464338,Sqr[1])
   #Sqc[1]<-3.464338
+  
+  #Sweden
+  #beta<-0.0
+  #p<-exp(2.100781)
+  #nu<-1.408559
+  #theta<-0.3255855 
+  #Sqr[1]<-3.118876
+  #Sq[1]<-fq(theta,p,3.118876,Sqr[1])
+  #Sqc[1]<-3.118876
   
   ###PART 3: Simulation + graphs########################################################
   
