@@ -331,7 +331,7 @@
   
 
   #GUARDA A INITIAL CONDITION CIU C
-  
+
   # define the function that we want to minimize taking beta
   maxg<-100
   max<-numeric()
@@ -470,15 +470,15 @@
   # call the genetic alogorithm for the estimation
   GA <- ga(type = "real-valued",  
            fitness = ff,  
-           lower = c(0.12,1.7,0.0,0.05,3.5-0.35,Eqr[1]-0.68), 
-           upper = c(0.25,2.5,3  ,0.45,3.5+0.4 ,Eqr[1]-0.2), 
+           lower = c(0.12,1.5,0.506,0.05,3.5-0.85,Eqr[1]-0.98), 
+           upper = c(0.25,2.9,0.507  ,0.49,3.5+1.99 ,Eqr[1]+0.7), 
            #lower = c(0.05,1.5,0.0,0.15,3.5-0.65,Eqr[1]-1.78), 
            #upper = c(0.25,2.8,2.3  ,0.45,3.5+0.6 ,Eqr[1]-0.8), 
            #lower = c(0.14,1.7,0.5,0.2,3.5-0.65,Eqr[1]-1.268), 
            #upper = c(0.25,2.6,2  ,0.36,3.5+0.6 ,Eqr[1]+0.7), 
-           popSize = 100, maxiter = 200, run = 50, 
+           popSize = 100, maxiter = 20, run = 50, 
            #elitism = max(1, round(20*0.15)), 
-           optim=FALSE, 
+           optim=TRUE, 
            seed=1, 
            parallel=TRUE, 
            optimArgs = list(method = "L-BFGS-B",poptim = 0.2,pressel = 0.1, 
@@ -498,22 +498,15 @@
   Sq[1]<-fq(theta,p,GA@solution[1,5],Sqr[1])
   Sqc[1]<-GA@solution[1,5]
   
-  #beta<-0.1813921
-  #p<-exp(2.100781)
-  #nu<-1.408559
-  #theta<-0.3255855 
-  #Sqr[1]<-6.906695
-  #Sq[1]<-fq(theta,p,3.464338,Sqr[1])
-  #Sqc[1]<-3.464338
+  beta<-0.1813921
+  p<-exp(2.100781)
+  nu<-1.408559
+  theta<-0.3255855 
+  Sqr[1]<-6.906695
+  Sq[1]<-fq(theta,p,3.464338,Sqr[1])
+  Sqc[1]<-3.464338
   
-  #Sweden
-  #beta<-0.0
-  #p<-exp(2.100781)
-  #nu<-1.408559
-  #theta<-0.3255855 
-  #Sqr[1]<-3.118876
-  #Sq[1]<-fq(theta,p,3.118876,Sqr[1])
-  #Sqc[1]<-3.118876
+
   
   ###PART 3: Simulation + graphs########################################################
   
