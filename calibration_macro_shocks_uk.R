@@ -179,15 +179,14 @@ eqct<-numeric()
 
 # some functions to get the simulated variables
 
-#Below Macro shocks
-if(leng==5)
-{
-  if (longe) {mu<-function(t) ifelse(t==1,68.26-18,ifelse(t==2,64.03-18,ifelse(t==3,65.17-18,ifelse(t==4,64.83-18,ifelse(t==5,69.86-18,0)))))/(68.18-18)}
-  if (!longe){mu<-function(t)ifelse(t==1,100,ifelse(t==2,87.8,ifelse(t==3,78.7,ifelse(t==4,82.8,ifelse(t==5,85.1,0)))))/100}
-}else{
-  
- }#ifelse(t==1,100,ifelse(t==2,101.1,ifelse(t==3,88.4,ifelse(t==4,88.2,ifelse(t==5,81.5,ifelse(t==6,76.8,ifelse(t==7,83.1,ifelse(t==8,83.5,ifelse(t==9,81.5,ifelse(t==10,92.2,0))))))))))/100}
-mu<-function(t) 1
+#Below Macro shocks100.0
+
+
+
+
+
+ mu<-function(t) ifelse(t==1,100,ifelse(t==2,101.9,ifelse(t==3,101.4,ifelse(t==4,103.5,ifelse(t==5,147.3,0)))))/100
+ 
 
 f<-function(x,the,k,pr,eqt,eqrt) {
   
@@ -383,8 +382,8 @@ EqM<-c(1.61, 3.15, 3.89, 3.64, 3.95)
 
 
 #UK
-#EqQ75<-c(4.01, 6.15, 6.12, 6.48, 6.1)
-#EqM<-c(2.47, 3.89, 4.82, 5.27, 4.99)
+EqQ75<-c(4.01, 6.15, 6.12, 6.48, 6.1)
+EqM<-c(2.47, 3.89, 4.82, 5.27, 4.99)
 
 mini<-function(qu,qur,nuu){
   
@@ -530,18 +529,18 @@ beta<-0.0#0.1813921
 p<-exp(2.100781)
 nu<-1.408559
 theta<-0.3255855 
-Sqr[1]<-(6.906695+0.00)/1.12
-Sqc[1]<-(3.464338-0.00)/1.12
+Sqr[1]<-(6.906695+0.00)/1.4#1.145
+Sqc[1]<-(3.464338-0.00)/1.4#1.145
 Sq[1]<-fq(theta,p,Sqc[1],Sqr[1])
 
 #Sweden GooD
-beta<-0.0#0.1813921
-p<-exp(2.100781)
-nu<-1.408559
-theta<-0.3255855 
-Sqr[1]<-(6.906695+0.00)/1.4
-Sqc[1]<-(3.464338-0.00)/1.4
-Sq[1]<-fq(theta,p,Sqc[1],Sqr[1])
+#beta<-0.0#0.1813921
+#p<-exp(2.100781)
+#nu<-1.408559
+#theta<-0.3255855 
+#Sqr[1]<-(6.906695+0.00)/1.4
+#Sqc[1]<-(3.464338-0.00)/1.4
+#Sq[1]<-fq(theta,p,Sqc[1],Sqr[1])
 
 
 

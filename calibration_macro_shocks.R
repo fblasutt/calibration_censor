@@ -44,6 +44,9 @@
   #Parallel Computing
   require(doParallel)
   
+  #For xticks labels in ggplot
+  library(gridExtra)
+  
   #Set seed
   set.seed(2)
   ###PART 0: WHICH SAMPLE/MODEL DO YOU WANT?#############################################
@@ -52,7 +55,7 @@
   nboots<-500    #Bootstrapping nummber
   
   
-  impbeta <<-1    #imperfect application of censorship-max (5./6.)
+  impbeta <<-1    #imperfect application of censorship-max #(5./6.)
   maxper<<-5      #max number of periods to consider
   phi<<-1.0#0.09  #Lag parameter for dynamics of knowledge acquisition
   
@@ -64,6 +67,7 @@
   unio<-FALSE     #Only univresity, no academies
   identif<-FALSE  #this serves for understanding how the model is identified
   fivpmod<-TRUE   #5 periods model if TRUE, otherwise 10 periods model
+  totp<-FALSE     #Shocks are total population, experiment=European Population
   robc<-FALSE
   wiki<-FALSE
   longe<-FALSE
@@ -72,11 +76,11 @@
   
   if(impbeta>1){imperfect<-TRUE}else{imperfect<-FALSE}
   if(maxper<5){maxt<-TRUE}else{maxt<-FALSE}
-  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe+tenpmod){normal<-FALSE}else{normal<-TRUE}
+  if(ita+itan+itas+notonlyby+maxt+imperfect+weak+robc+unio+wiki+longe+tenpmod+totp){normal<-FALSE}else{normal<-TRUE}
   
   #Get name to print results
-  names<-c("ita","itan","itas","notonlyby","maxt","imperfect","weak","normal","robc","unio","wiki","longe","tenpmod")
-  valll<-c(ita,itan,itas,notonlyby,maxt,imperfect,weak,normal,robc,unio,wiki,longe,tenpmod)
+  names<-c("ita","itan","itas","notonlyby","maxt","imperfect","weak","normal","robc","unio","wiki","longe","tenpmod","totp")
+  valll<-c(ita,itan,itas,notonlyby,maxt,imperfect,weak,normal,robc,unio,wiki,longe,tenpmod,totp)
   namet<-which.max(valll)
   nome<-names[namet]
   
@@ -182,12 +186,19 @@
   #Below Macro shocks
   if(leng==5)
   {
+
+    #Longevity 
     if (longe) {mu<-function(t) ifelse(t==1,68.26-18,ifelse(t==2,64.03-18,ifelse(t==3,65.17-18,ifelse(t==4,64.83-18,ifelse(t==5,69.86-18,0)))))/(68.18-18)}
-    if (!longe){mu<-function(t)ifelse(t==1,200,ifelse(t==2,87.8,ifelse(t==3,78.7,ifelse(t==4,82.8,ifelse(t==5,85.1,0)))))/100}
+    
+    #GDP shocks
+    if (!longe){mu<-function(t)ifelse(t==1,100,ifelse(t==2,87.8,ifelse(t==3,78.7,ifelse(t==4,82.8,ifelse(t==5,85.1,0)))))/100}
+    
+    #Population shocks
+    if (totp){mu<-function(t)ifelse(t==1,7.65,ifelse(t==2,9.25,ifelse(t==3,12.4,ifelse(t==4,11.68,ifelse(t==5,14.1,0)))))/7.65}
   }else{
     
     mu<-function(t) ifelse(t==1,100,ifelse(t==2,101.1,ifelse(t==3,88.4,ifelse(t==4,88.2,ifelse(t==5,81.5,ifelse(t==6,76.8,ifelse(t==7,83.1,ifelse(t==8,83.5,ifelse(t==9,81.5,ifelse(t==10,92.2,0))))))))))/100}
-  
+   
   
   f<-function(x,the,k,pr,eqt,eqrt) {
     
@@ -358,10 +369,10 @@
   
   
   
-  #parameters for the simulation
-  
+  #Objective function below
   mini<-function(betaa,pee,nuu,thet,qu,qur){
     
+   
     sum=0     
     pe<-exp(pee)
     Sqr[1]=qur
@@ -369,98 +380,40 @@
     Sq[1]=fq(thet,pe,Sqc[1],Sqr[1])
     
     
+    #Initial period Quality below
+    MT[1]<-(((Sq[1]/(gamma(1-thet)))^(1/1))/((log(2))^thet))
+    MT75[1]<-(((Sq[1]/(gamma(1-thet)))^(1/1))/((log(4/3))^thet))
     
-    for(i in 1:maxper){
-      if(i>=2){
-        
-        Sqc[i]<-qcs(betaa,pe,i,maxx,Sqc[i-1],nuu,thet,Sqc[1],Sqr[1])
-        Sqr[i]<-qrs(betaa,pe,i,maxx,Sqr[i-1],nuu,thet,Sqc[1],Sqr[1])
-        #Sq[i] <-qs(betaa,pe,i,maxx,Sqr[i-1],Sqc[i-1],nuu,thet,Sqc[1],Sqr[1])          
-        
-      }}
+    #Objective Function Below
+    sum=sum+((MT[1]-EqM[1])/EqM[1])^2
+    sum=sum+((MT75[1]-EqQ75[1])/EqQ75[1])^2
     
     
+    for(i in 2:maxper){
+    
+      #Compute Quality Below
+      Sqc[i]<-qcs(betaa,pe,i,maxx,Sqc[i-1],nuu,thet,Sqc[1],Sqr[1])
+      Sqr[i]<-qrs(betaa,pe,i,maxx,Sqr[i-1],nuu,thet,Sqc[1],Sqr[1])
+      Sq[i]<-  qs(betaa,pe,i,maxx,Sqr[i-1],Sqc[i-1],nuu,thet,Sqc[1],Sqr[1])
+        
+        
+      #Median and 75th percentile
+      MT[i]<-(((Sq[i]/(gamma(1-thet)))^(1/1))/((log(2))^thet))
+      MT75[i]<-(((Sq[i]/(gamma(1-thet)))^(1/1))/((log(4/3))^thet))
+       
+        
+      #Objective Function Below
+      sum=sum+((MT[i]-EqM[i])/EqM[i])^2
+      sum=sum+((MT75[i]-EqQ75[i])/EqQ75[i])^2
+      if(i>=pcens){sum=sum+((mt(betaa,pe,i,maxx,thet,Sqc[1],Sqr[1])*betaa*impbeta -Embeta[i])/Embeta[i])^2}
+        
+    }
+    
+    return(sum)
+    
+    }
     
     
-    
-    for (i in 1:maxper){
-      mcur<-mt(betaa,pe,i,maxx,thet,Sqc[1],Sqr[1])        
-      
-      
-      
-      
-      if(i>=2){
-        
-        #Share censored is target only from period before censorship pcens
-        if(i>=pcens){sum=sum+((mcur*betaa*impbeta -Embeta[i])/Embeta[i])^2}
-
-        #Moments with median
-        
-        MR[i]<-(((qrs(betaa,pe,i,maxx,Sqr[i-1],nuu,thet,Sqc[1],Sqr[1])/(gamma(1-thet)))^(1/1))/
-                  ((log(2))^thet))
-        
-        #Model with 75p
-        
-        MR75[i]<-(((qrs(betaa,pe,i,maxx,Sqr[i-1],nuu,thet,Sqc[1],Sqr[1])/(gamma(1-thet)))^(1/1))/
-                    ((log(4/3))^thet))
-        
-        # draw random realization from the two frechet distibutions
-        set.seed(2)
-        Br=rfrechet(n, loc=0, scale=Sqr[i]/(gamma(1-thet)),shape=1/thet)
-        set.seed(2)
-        Bc=rfrechet(n, loc=0, scale=Sqc[i]/(gamma(1-thet)),shape=1/thet)
-        pr<-mcur#*(1-betaa)/(1-betaa*mcur)
-        for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}}
-        MT[i]=median(B)
-        MT75[i]=quantile(B,0.75)
-        
-        #Moments with average
-        #MT[i]<-qs(betaa,pe,i,maxx,nuu,Sqr[i-1],Sqc[i-1],thet,Sq[1],Sqr[1])
-        #MR[i]<-qrs(betaa,pe,i,maxx,nuu,Sqr[i-1],thet,Sq[1],Sqr[1])
-        
-        
-        sum=sum+((MT[i]-EqM[i])/EqM[i])^2
-        sum=sum+((MT75[i]-EqQ75[i])/EqQ75[i])^2
-        #=sum+((MR[i]-EqrM[i])/EqrM[i])^2
-        #sum=sum+((MR75[i]-EqrQ75[i])/EqrQ75[i])^2
-        
-        
-        
-      }else{
-        
-        #Median 
-        
-        MR[1]<-(((Sqr[1]/(gamma(1-thet)))^(1/1))/
-                  ((log(2))^thet))
-        
-        #75 percentile
-        
-        MR75[1]<-(((Sqr[1]/(gamma(1-thet)))^(1/1))/
-                    ((log(4/3))^thet))
-        
-        # draw random realization from the two frechet distibutions
-        set.seed(2)
-        Br=rfrechet(n, loc=0, scale=Sqr[i]/(gamma(1-thet)),shape=1/thet)
-        set.seed(2)
-        Bc=rfrechet(n, loc=0, scale=Sqc[i]/(gamma(1-thet)),shape=1/thet)
-        pr<-mcur#*(1-betaa)/(1-betaa*mcur)
-        for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}}
-        MT[i]=median(B)
-        MT75[i]=quantile(B,0.75)
-        
-        #Average
-        #MT[1]<-Sq[1]
-        #MR[1]<-Sqr[1]
-        
-        sum=sum+((MT[1]-EqM[1])/EqM[1])^2
-        sum=sum+((MT75[1]-EqQ75[1])/EqQ75[1])^2
-        #sum=sum+((MR[1]-EqrM[1])/EqrM[1])^2
-        #sum=sum+((MR75[1]-EqrQ75[1])/EqrQ75[1])^2
-      }}
-    
-    # if(mt(betaa,pe,1,maxx,thet)<0.5){sum=10000}      
-    
-    return(sum)}
   
   
   ff<-function(x) -mini(x[1],x[2],x[3],x[4],x[5],x[6])
@@ -470,18 +423,13 @@
   # call the genetic alogorithm for the estimation
   GA <- ga(type = "real-valued",  
            fitness = ff,  
-           lower = c(0.12,1.5,0.506,0.05,3.5-0.85,Eqr[1]-0.98), 
-           upper = c(0.25,2.9,0.507  ,0.49,3.5+1.99 ,Eqr[1]+0.7), 
-           #lower = c(0.05,1.5,0.0,0.15,3.5-0.65,Eqr[1]-1.78), 
-           #upper = c(0.25,2.8,2.3  ,0.45,3.5+0.6 ,Eqr[1]-0.8), 
-           #lower = c(0.14,1.7,0.5,0.2,3.5-0.65,Eqr[1]-1.268), 
-           #upper = c(0.25,2.6,2  ,0.36,3.5+0.6 ,Eqr[1]+0.7), 
-           popSize = 100, maxiter = 20, run = 50, 
-           #elitism = max(1, round(20*0.15)), 
-           optim=TRUE, 
+           lower = c(0.12,1.7,0.0,0.05,3.5-0.35,Eqr[1]-0.68), 
+           upper = c(0.25,2.5,3  ,0.45,3.5+0.4 ,Eqr[1]-0.2), 
+           popSize = 100, maxiter = 120, run = 50, 
+           elitism = max(1, round(200*0.15)), 
+           optim=FALSE, 
            seed=1, 
-           parallel=TRUE, 
-           optimArgs = list(method = "L-BFGS-B",poptim = 0.2,pressel = 0.1, 
+           optimArgs = list(method = "L-BFGS-B",poptim = 0.2,pressel = 0.5, 
                             control = list(fnscale = -1, maxit = 20))) 
   
   
@@ -498,13 +446,13 @@
   Sq[1]<-fq(theta,p,GA@solution[1,5],Sqr[1])
   Sqc[1]<-GA@solution[1,5]
   
-  beta<-0.1813921
-  p<-exp(2.100781)
-  nu<-1.408559
-  theta<-0.3255855 
-  Sqr[1]<-6.906695
-  Sq[1]<-fq(theta,p,3.464338,Sqr[1])
-  Sqc[1]<-3.464338
+  #beta<-0.1813921
+  #p<-exp(2.100781)
+  #nu<-1.408559
+  #theta<-0.3255855 
+  #Sqr[1]<-6.906695
+  #Sq[1]<-fq(theta,p,3.464338,Sqr[1])
+  #Sqc[1]<-3.464338
   
 
   
@@ -591,31 +539,25 @@
       SNCM[i]=median(B)
       SNCQ75[i]=quantile(B,0.75)
       
-      pr<-Sm[i]#*(1-betat)/(1-betat*Sm[i])
-      for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}}
-      SqM[i]=median(B)
-      SqQ75[i]=quantile(B,0.75)
+   
       
       
       
     }else{
       
-      
-      
-      
-      
-      #SqQ75[1]=(((Sq[1]/(gamma(1-theta)))^(1/1))/
-      #           ((log(4/3))^theta))
+
+
       SqrQ75[1]=(((Sqr[1]/(gamma(1-theta)))^(1/1))/
                    ((log(4/3))^theta))
-      #SqM[1]=(((Sq[1]/(gamma(1-theta)))^(1/1))/
-      #         ((log(2))^theta))
       SqrM[1]=(((Sqr[1]/(gamma(1-theta)))^(1/1))/
                  ((log(2))^theta))
-      SNC[1]=Sqr[1]*
-        (((1)*mt(betat,p,i,max,theta,Sqc[1],Sqr[1]))/(1))+
-        ((1-mt(betat,p,i,max,theta,Sqc[1],Sqr[1]))/(1))*
-        Sqc[1]
+      
+      
+      SqQ75[1]=(((Sq[1]/(gamma(1-theta)))^(1/1))/
+                   ((log(4/3))^theta))
+      SqM[1]=(((Sq[1]/(gamma(1-theta)))^(1/1))/
+                 ((log(2))^theta))
+
       
       # draw random realization from the two frechet distibutions
       Br=rfrechet(n, loc=0, 
@@ -631,8 +573,7 @@
       
       SNCM[1]=median(B)
       SNCQ75[1]=quantile(B,0.75)
-      SqM[1]=median(B)
-      SqQ75[1]=quantile(B,0.75)
+
       
     }
     
@@ -652,6 +593,7 @@
     #Graph Q50+Q75
     ################################
     time=seq(1,leng,1) 
+    time2<-c("1400-69","1470-1539","1540-1609","1610-79","1680-1749")
     q.df<- data.frame(time, EqM,SqM,EqQ75,SqQ75,CIq[1,],CIq[2,],CIq75[1,],CIq75[2,])
     
     tikz(file = "q.tex", width = 5, height = 5)
@@ -666,7 +608,9 @@
       geom_line(aes(y = SqQ75), color="blue", linetype="dashed",size=2) +
       #Space does not appear after Latex 
       
-      labs( x = "Time", y = "Knowledge Quality") +
+      labs( x = "Period", y = "Knowledge Quality") +
+      
+      scale_x_discrete(limits = time2)+
       
       ylim(2.9, 9)+
       
@@ -678,8 +622,8 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     
     #Necessary to close or the tikxDevice .tex file will not be written
@@ -707,7 +651,9 @@
                     ymax = Inf), fill = 'white') +
       #Space does not appear after Latex 
       
-      labs( x = "Time", y = "Knowledge Quality") +
+      labs( x = "Period", y = "Knowledge Quality") +
+      
+      scale_x_discrete(limits = time2)+
       
       ylim(2.9, 9)+
       
@@ -719,8 +665,8 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     
     #Necessary to close or the tikxDevice .tex file will not be written
@@ -749,7 +695,9 @@
                     ymax = Inf), fill = 'white') +
       #Space does not appear after Latex 
       
-      labs( x = "Time", y = "Knowledge Quality") +
+      labs( x = "Period", y = "Knowledge Quality") +
+      
+      scale_x_discrete(limits = time2)+
       
       ylim(2.9, 9)+
       
@@ -761,8 +709,8 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     
     #Necessary to close or the tikxDevice .tex file will not be written
@@ -777,6 +725,7 @@
     CImbeta<-CImbeta*100
     b.df<- data.frame(time, Embeta,Smbeta,CImbeta[1,],CImbeta[2,])
     
+    
     tikz(file = "b.tex", width = 5, height = 5)
     
     #Simple plot of the dummy data using LaTeX elements
@@ -790,7 +739,9 @@
                     ymax = Inf), fill = 'white') +
       #Space does not appear after Latex 
       
-      labs( x = "Time", y = "\\% censored authors") +
+      labs( x = "Period", y = "\\% censored authors") +
+      
+      scale_x_discrete(limits = time2)+
       
       
       theme_classic(
@@ -801,8 +752,8 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     
     #Necessary to close or the tikxDevice .tex file will not be written
@@ -812,7 +763,7 @@
   }
   
   
-  
+
   ###PART 4: counterfactual experiments##################
   
   #No censorship
@@ -822,6 +773,7 @@
   SqcC=numeric(length=leng)
   SqrC=numeric(length=leng)
   SqC=numeric(length=leng)
+  SqMC=numeric(length=leng)
   for(i in 1:leng){
     
     SmC[i]=mt(0,p,i,max,theta,Sqc[1],Sqr[1])
@@ -834,11 +786,15 @@
       SqcC[i]=qcs(0,p,i,max,SqcC[i-1],nu,theta,Sqc[1],Sqr[1])
       SqrC[i]=qrs(0,p,i,max,SqrC[i-1],nu,theta,Sqc[1],Sqr[1])
       SqC[i]=qs(0,p,i,max,SqrC[i-1],SqcC[i-1],nu,theta,Sqc[1],Sqr[1])
+      SqMC[i]=(((SqC[i]/(gamma(1-theta)))^(1/1))/((log(2))^theta))
     }else{
       
       SqcC[1]=Sqc[1]
       SqC[1]=Sq[1]
-      SqrC[1]=Sqr[1]}}
+      SqrC[1]=Sqr[1]
+      SqMC[1]=(((SqC[1]/(gamma(1-theta)))^(1/1))/((log(2))^theta))
+      
+      }}
   
   
   #No Economic decline
@@ -851,6 +807,11 @@
   
   #Update: NO decline of Italy
   mu<-function(t) 1
+  
+  
+  #Total polulation of Europe below
+  if (totp){mu<-function(t)ifelse(t==1,47.66,ifelse(t==2,53.21,ifelse(t==3,61.7,ifelse(t==4,63.26,ifelse(t==5,71.14,0)))))/47.66}
+  if (totp){mu<-function(t)ifelse(t==1,7.65,ifelse(t==2,9.25,ifelse(t==3,12.4,ifelse(t==4,12.4*63.26/61.7,ifelse(t==5,12.4*63.26/61.7*14.1/11.68,0)))))/7.65}
   for(i in 1:leng){
     
     SmCd[i]=mt(betat,p,i,max,theta,Sqc[1],Sqr[1])
@@ -903,7 +864,7 @@
     Smbeta<-Smbeta*0
     bmc.df<- data.frame(time, Smbeta,SmbetaC)
     
-    tikz(file = "bmc.tex", width = 5, height = 5)
+    tikz(file = "bmc.tex", width = 5, height = 4)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(b.df, aes(x = time)) + 
@@ -915,8 +876,8 @@
                     ymax = Inf), fill = 'white') +
       #Space does not appear after Latex 
       
-      labs( x = "Time") +
-      
+      labs( x = "Period") +
+      scale_x_discrete(limits = time2)+
       
       theme_classic(
         base_family = "",
@@ -926,8 +887,8 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     
     #Necessary to close or the tikxDevice .tex file will not be written
@@ -942,7 +903,7 @@
     Sm<-Sm*100
     bc.df<- data.frame(time, Sm,SmC)
     
-    tikz(file = "bc.tex", width = 5, height = 5)
+    tikz(file = "bc.tex", width = 5, height = 4)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(bc.df, aes(x = time)) + 
@@ -950,8 +911,8 @@
       geom_line(aes(y = SmC), color="darkgrey", linetype="dashed",size=2) +
       #Space does not appear after Latex 
       
-      labs( x = "Time") +
-      
+      labs( x = "Period") +
+      scale_x_discrete(limits = time2)+
       
       theme_classic(
         base_family = "",
@@ -961,8 +922,8 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     
     #Necessary to close or the tikxDevice .tex file will not be written
@@ -974,7 +935,7 @@
     ################################
     sq.df<- data.frame(time, Sq,SqC,Sqr,SqrC,Sqc,SqcC)
     
-    tikz(file = "sq.tex", width = 5, height = 5)
+    tikz(file = "sq.tex", width = 5, height = 4)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(b.df, aes(x = time)) + 
@@ -986,8 +947,8 @@
       geom_line(aes(y = SqcC), color="orange", linetype="dashed",size=2) +
       #Space does not appear after Latex 
       
-      labs( x = "Time") +
-      
+      labs( x = "Period") +
+      scale_x_discrete(limits = time2)+
       
       theme_classic(
         base_family = "",
@@ -997,8 +958,8 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     
     #Necessary to close or the tikxDevice .tex file will not be written
@@ -1014,13 +975,15 @@
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(b.df, aes(x = time)) + 
-      geom_line(aes(y = (SqC-Sq)/Sq), color ="blue",size=2) + 
-      geom_line(aes(y = (SqCd-Sq)/Sq), color ="red",size=2) + 
+      geom_line(aes(y = ((SqC-Sq)/Sq)*100), color ="blue",size=2) + 
+      geom_line(aes(y = ((SqCd-Sq)/Sq)*100), color ="red",size=2) + 
       #Space does not appear after Latex 
       
-      labs( x = "Time") +
+      labs( x = "Period") +
       
       ylab("Gains in average quality (in %)") +
+      
+      scale_x_discrete(limits = time2)+
       
       
       theme_classic(
@@ -1031,13 +994,51 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     #Necessary to close or the tikxDevice .tex file will not be written
     print(plot)
     dev.off()
+    
+  
+  #Table with same results
+    
+    #Build the tables for the paper
+    sink("rel_qual.Rnw")
+
+    
+    
+    cat(paste('\\begin{table}[htbp]
+	\\centering
+\\begin{tabularx}{\\textwidth}{ ll *{5}{Y}}
+\\hline
+\\hline
+& &\\multicolumn{5}{c}{Period}\\\\
+&   & 1400-1469 &1470-1539 & 1540-1609 & 1610-1679 & 1680-1749 \\\\
+\\hline
+Baseline & Average quality &  ',round(Sq[1], digits=1),'     & ',round(Sq[2], digits=1),'& ',round(Sq[3], digits=1),'& ',round(Sq[4], digits=1),'& ',round(Sq[5], digits=1),'\\\\ \\\\
+
+No censorship & Average quality &  ',round(SqC[1], digits=1),'     & ',round(SqC[2], digits=1),'& ',round(SqC[3], digits=1),'& ',round(SqC[4], digits=1),'& ',round(SqC[5], digits=1),'  \\\\
+($\\overline{\\beta}=0$)& Gains w.r.t. baseline (\\%) & 0.0  & 0.0 & ',round(((SqC[3]-Sq[3])/Sq[3])*100, digits=1),'& ',round(((SqC[4]-Sq[4])/Sq[4])*100, digits=1),'& ',round(((SqC[5]-Sq[5])/Sq[5])*100, digits=1),'\\\\ \\\\
+
+No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(SqCd[2], digits=1),'& ',round(SqCd[3], digits=1),'& ',round(SqCd[4], digits=1),'& ',round(SqCd[5], digits=1),'\\\\
+($\\mu_t=1 \\hspace{0.1cm} \\forall t$)& Gains w.r.t. baseline (\\%) &  0.0    & ',round(((SqCd[2]-Sq[2])/Sq[2])*100, digits=1),'& ',round(((SqCd[3]-Sq[3])/Sq[3])*100, digits=1),'& ',round(((SqCd[4]-Sq[4])/Sq[4])*100, digits=1),'& ',round(((SqCd[5]-Sq[5])/Sq[5])*100, digits=1),'\\\\
+\\hline
+\\hline
+\\end{tabularx}
+\\caption{Authors quality at baseline, without censorship and without macroeconomic shocks}\\label{table:exp2}
+\\end{table}'))
+    
+    
+    sink()
+    Sweave("rel_qual.Rnw")
+    
+ 
   }
+  
+
+  
   ###PART 5: A final computation of the Impact on knowledge#########
   
   
@@ -1076,7 +1077,86 @@
           Sm[leng]))
   
   
-  ###PART 6: Get value functions#########
+  ###PART 6: Comparison with the UK###############
+  
+  
+  #UK Case: rescale initial conditions+no ceonsorship
+  Sqc_uk=numeric(length=leng)
+  Sqr_uk=numeric(length=leng)
+  Sq_uk =numeric(length=leng)
+  SqM_uk=numeric(length=leng)
+  
+  #UK macro shocks
+  mu<-function(t) ifelse(t==1,100,ifelse(t==2,101.9,ifelse(t==3,101.4,ifelse(t==4,103.5,ifelse(t==5,147.3,0)))))/100
+  
+  #Rescale Initial Condtions
+  mult=(1-0.45)^theta
+  Sqc_uk[1]=Sqc[1]*mult
+  Sqr_uk[1]=Sqr[1]*mult
+  Sq_uk[1]<-fq(theta,p,Sqc_uk[1],Sqr_uk[1])
+  SqM_uk[1]=(((Sq_uk[1]/(gamma(1-theta)))^(1/1))/((log(2))^theta))
+  
+  #Compute the rest
+  for(i in 2:leng){
+    
+
+    Sqc_uk[i]=qcs(0,p,i,max,Sqc_uk[i-1],nu,theta,Sqc_uk[1],Sqr_uk[1])
+    Sqr_uk[i]=qrs(0,p,i,max,Sqr_uk[i-1],nu,theta,Sqc_uk[1],Sqr_uk[1])
+    Sq_uk[i]=qs(0,p,i,max,Sqr_uk[i-1],Sqc_uk[i-1],nu,theta,Sqc_uk[1],Sqr_uk[1])
+    SqM_uk[i]=(((Sq_uk[i]/(gamma(1-theta)))^(1/1))/((log(2))^theta))
+    
+    
+    }
+  
+  
+  if(normal){
+    
+    ###########################################################
+    #Graph Sqm for Italy and Uk. For uk data/sim see ..._uk.R
+    ###########################################################
+    EqM_uk<-c(2.47, 3.89, 4.82, 5.27, 4.99)
+    #SqM_UK<-c(3.112195, 3.240546, 3.647295, 3.850356, 4.928132)
+    
+  
+    sq_uk.df<- data.frame(time2, SqM,EqM_uk,SqM_uk,SqMC)
+    
+    tikz(file = "sq_uk.tex", width = 10, height = 5)
+    
+    #Simple plot of the dummy data using LaTeX elements
+    plot <- ggplot(b.df, aes(x = time)) + 
+      geom_line(aes(y = EqM_uk), color ="blue",size=2) + 
+      geom_line(aes(y = SqM_uk), color ="blue", linetype="dashed",size=2) + 
+      geom_line(aes(y = EqM), color ="red",size=2) + 
+      geom_line(aes(y = SqM), color ="red", linetype="dashed",size=2) + 
+      #geom_line(aes(y = SqMC), color ="black", linetype="dashed",size=2) + 
+      #Space does not appear after Latex 
+      
+      labs( x = "Period") +
+      
+      ylab("Median quality") +
+      
+      scale_x_discrete(limits = time2)+
+                                
+      
+      
+      theme_classic(
+        base_family = "",
+        base_line_size = 1/22,
+        base_rect_size = 1/22)+
+      theme(
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(size=22,margin = margin(t = 10, r =  0, b = 0, l = 0)),
+        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
+      )
+    #Necessary to close or the tikxDevice .tex file will not be written
+    print(plot)
+    dev.off()
+    
+  }
+
+  ###PART 7: Get value functions#########
   betax<-beta
   source("C:\\Users\\Fabio\\Dropbox\\Roman_Church_censorship_growth\\calibration_censor\\vf.R") 
   
@@ -1119,7 +1199,7 @@
       #geom_line(aes(y = gmm), color = "black",size=2) + 
       #Space does not appear after Latex 
       
-      labs( x = "Time", y = "Knowledge Quality") +
+      labs( x = "Period", y = "Knowledge Quality") +
       
       ylim(min(gpsi1,gpsi2), max(gpsi1,gpsi2))+
       
@@ -1131,8 +1211,8 @@
         axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
         #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
-        axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0))
+        axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
+        axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
     
     #Necessary to close or the tikxDevice .tex file will not be written
@@ -1142,7 +1222,7 @@
     
     
   }
-  ###PART 7: Bootrstrapped standard errors#########
+  ###PART 8: Bootrstrapped standard errors#########
   betaB<-numeric(length=nboots)
   pB<-numeric(length=nboots)
   nuB<-numeric(length=nboots)
@@ -1247,22 +1327,16 @@
     print(c(Sqc[1],sd(SqcB)))
     print(c(Sqr[1],sd(SqrB)))
     
+    
+
     #Build the tables for the paper
     sink("tempp.Rnw")
     
     cat(paste('\\begin{table}[htpb]
-      \\caption{Identification of Parameters}
       \\centering % used for centering table
       \\begin{tabular}{@{\\extracolsep{5pt}}l c c c c} 
       \\hline\\hline%inserts double horizontal lines
       \\rule{-4pt}{2.5ex}
-       Calibrated Parameters &  & Value & Standard Errors & Target \\\\ [0.05ex] % inserts table
-       \\hline
-      \\rule{-4pt}{2.5ex}
-       Discount Factor  & $\\delta$   &0.06& -  &RBC literature\\\\[0.15ex]
-       Fixed Cost of Censorship  & $\\hat{\\psi}$   &(\\hspace{-0.1cm}',round(psi1s, digits=3),'-',round(psi2s, digits=3),'\\hspace{-0.1cm})& - &Index set-up \\\\[0.15ex]
-       \\hline % inserts single horizontal line
-       \\rule{-4pt}{2.5ex}
        Estimated Parameters &  & Value & Standard Errors & Target  \\\\ [0.05ex] % inserts table
         %heading
       \\hline % inserts single horizontal line
@@ -1275,6 +1349,7 @@
       Price of rev. books   & $p$   &',round(p^(-theta), digits=2),'& ',round(pS, digits=3),' & $\\Omega(\\vartheta)$\\\\[0.15ex]
       \\hline\\hline
       \\end{tabular}
+       \\caption{Identification of Parameters}
       \\label{table:param}
       \\end{table}'))
     
@@ -1284,7 +1359,7 @@
   }
   
   
-  ###PART 8: Final Tables#########
+  ###PART 9: Final Tables#########
   #Embeta<-Embeta*100
   
   
