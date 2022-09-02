@@ -841,6 +841,6 @@ results<-c((Sq[5]-SqC[5])/Sq[5]*100,(Sm[5]-SmC[5])/Sm[5]*100,betaa*100,Sm[5])
 
 sink(name)
 cat(paste('&  ',round(results[1], digits=0),'\\hspace{-0.1cm}\\% & ',round(results[2], digits=0),'\\hspace{-0.1cm}\\% 
-           &  ',round(results[3], digits=0),'\\hspace{-0.1cm}\\%$^*$ &' ,round(results[4], digits=0),'\\hspace{-0.1cm}\\%\\\\'))
+           &  ',round(results[3], digits=0),'\\hspace{-0.1cm}\\%$^{**}$ &' ,round(results[4], digits=0),'\\hspace{-0.1cm}\\%\\\\'))
 sink()
 Sweave(name)

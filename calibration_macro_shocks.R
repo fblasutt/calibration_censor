@@ -50,14 +50,14 @@
   #Set seed
   set.seed(2)
   ###PART 0: WHICH SAMPLE/MODEL DO YOU WANT?#############################################
-  cmom<-FALSE    #want to redo-data part? 
+  cmom<-FALSE   #want to redo-data part? 
   serrors<-FALSE  #want to compute se for parameters?
   nboots<-500    #Bootstrapping nummber
   
   
-  impbeta <<-1    #imperfect application of censorship-max #(5./6.)
+  impbeta <<-1    #imperfect application of censorship-max #(5./6.). use inverse of this number
   maxper<<-5      #max number of periods to consider
-  phi<<-1.0#0.09  #Lag parameter for dynamics of knowledge acquisition
+  phi<<-1    #Lag parameter for dynamics of knowledge acquisition  0.0769
   
   ita<-FALSE      #only italian scholars
   itan<-FALSE     #only northern italian scholars
@@ -418,14 +418,19 @@
   
   ff<-function(x) -mini(x[1],x[2],x[3],x[4],x[5],x[6])
   
+  #Bounds
+  pmin<-c(0.12,1.7,0.0,0.05,3.5-0.35,Eqr[1]-0.68)
+  pmax<-c(0.25,2.5,3  ,0.45,3.5+0.4 ,Eqr[1]-0.2)
+  
+
   
   
   # call the genetic alogorithm for the estimation
   GA <- ga(type = "real-valued",  
            fitness = ff,  
-           lower = c(0.12,1.7,0.0,0.05,3.5-0.35,Eqr[1]-0.68), 
-           upper = c(0.25,2.5,3  ,0.45,3.5+0.4 ,Eqr[1]-0.2), 
-           popSize = 100, maxiter = 120, run = 50, 
+           lower = pmin, 
+           upper = pmax, 
+           popSize = 100, maxiter = 40, run = 50, 
            elitism = max(1, round(200*0.15)), 
            optim=FALSE, 
            seed=1, 
@@ -1090,7 +1095,7 @@ No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(
   mu<-function(t) ifelse(t==1,100,ifelse(t==2,101.9,ifelse(t==3,101.4,ifelse(t==4,103.5,ifelse(t==5,147.3,0)))))/100
   
   #Rescale Initial Condtions
-  mult=(1-0.45)^theta
+  mult=(1-0.43)^theta
   Sqc_uk[1]=Sqc[1]*mult
   Sqr_uk[1]=Sqr[1]*mult
   Sq_uk[1]<-fq(theta,p,Sqc_uk[1],Sqr_uk[1])
@@ -1400,4 +1405,7 @@ No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(
     
     list.save(momentss, 'data.Rdata') 
   }
+  
+  
+  
   
