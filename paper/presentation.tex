@@ -1,0 +1,751 @@
+\documentclass[aspectratio=169,red,12pt]{beamer} 
+\usepackage{etex}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{parskip}
+\usepackage{lipsum}
+\setlength{\parskip}{\smallskipamount} 
+\usepackage{graphicx} % ort the \includegraphics command and options
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{pgfplots}
+\usepackage{pdfpages}
+\pgfplotsset{compat=1.13}
+\usepackage{booktabs,caption,fixltx2e}
+\usepackage[flushleft]{threeparttable}
+\usepackage{multirow}
+\usepackage{xcolor}  
+\usepackage{wrapfig}
+\usepackage { combelow }
+\newtheorem{proposition}{Proposition}
+
+
+%%% PACKAGES
+\usepackage{placeins}
+\usepackage{booktabs} % for much better looking tables
+\usepackage{amsthm}
+%\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+%\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{cases}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{pgfplots}
+\usepackage{amsfonts}
+\usepackage{tabularx}
+\usepackage[flushleft]{threeparttable}
+\usepackage{microtype} 
+\usepackage{epstopdf}
+\usepackage{cases}
+\usepackage{relsize}
+\makeatother
+\usepackage{amsfonts}
+\usepackage{kpfonts}    % for nice fonts
+\usepackage{microtype} 
+\usepackage{epstopdf}
+\usepackage{cases}
+\usepackage{hyperref}
+\usepackage{relsize}
+\newcommand\wideDownarrow{\mathrel{\scalebox{3.8}[1]{$\Downarrow$}}}
+\usetheme{Frankfurt}
+\usecolortheme{beaver}
+\usepackage{tikz}
+
+%For subtables
+\usepackage{subcaption}
+\usepackage[justification=centering]{caption}
+
+\usepackage{chronosys}
+
+
+\newcommand{\mychronovdatestyle}[1]{%
+	\pgfmathparse{equal(sign(#1),-1)? int(abs(#1)):#1 }%
+	\edef\tmp{\pgfmathresult}%
+	\pgfmathparse{equal(sign(#1),-1)? "BC":}%
+	\kern-1.5pt\rotatebox[origin=left]{90}{--- \tmp~\pgfmathresult}%
+}
+\usetikzlibrary{shapes}
+\usepgflibrary{arrows} % LATEX and plain TEX and pure pgf
+\usepgflibrary[arrows] % ConTEXt and pure pgf
+\usetikzlibrary{arrows} % LATEX and plain TEX when using Tik Z
+\usetikzlibrary[arrows] % ConTEXt when using Tik Z
+\beamertemplatenavigationsymbolsempty
+\newcommand{\tabitem}{%
+	\usebeamertemplate{itemize item}\hspace*{\labelsep}}
+%\setbeamertemplate{frametitle}{\bfseries\insertframetitle\par\vskip-2pt\hrulefill}
+\setbeamertemplate{frametitle}[default][center]
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamerfont{title}{series=\bfseries}
+
+\title{Catholic Censorship and the Demise of Knowledge
+	Production in Early Modern Italy}
+\author{Fabio Blasutto \textsuperscript{1,3} \and David de la Croix \textsuperscript{1,2}}
+\institute[A]{\textsuperscript{1}IRES, UCLouvain\\ \vspace{0.2cm}  %
+	\textsuperscript{2}CEPR \\ \vspace{0.2cm} %
+	\textsuperscript{3}FNRS}
+
+\begin{document}	
+\date{\today}
+
+
+	
+	\tikzstyle{block} = [draw, fill=white, rectangle, 
+	minimum height=3em, minimum width=6em]
+	\tikzstyle{sum} = [draw, fill=white, circle, node distance=1cm]
+	\tikzstyle{input} = [coordinate]
+	\tikzstyle{output} = [coordinate]
+	\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+	%Here I put the title, first slide	
+	\setbeamertemplate{itemize items}[circle]
+	\setbeamertemplate{enumerate items}[circle]
+
+	\begin{frame}		
+		\maketitle
+	\end{frame}
+	
+	%The roadmap%  
+	
+	
+	%Here starts the section "Introduction"  
+	
+	\section{Introduction}
+
+
+
+\begin{frame}[label=motivation]
+		\frametitle{Motivation}
+Italy’s primacy in knowledge creation is undisputed in the 15th and 16th century\\\vspace{0.4cm}
+Overtaken by North and Western Europe in the following two centuries\\\vspace{0.4cm}
+
+The average number of publications per scholar in Italy dropped from\\\vspace{0.3cm} 
+\begin{itemize}
+\item	307 in 1470-1540 (297 in Europe)
+\item  114 in 1680-1750 (244 in Europe)
+\end{itemize}
+
+\vspace{1cm} 
+
+\hyperlink{graph}{\beamerbutton{graph}}
+
+\end{frame}
+\begin{frame}
+\frametitle{Research question}
+		
+The question we ask is: \vspace{0.3cm}
+
+\[\text{Was the Roman Church censorship key in altering}\] 
+\[\text{the growth path of new ideas in Italy?}\]
+
+Our answer: \vspace{0.2cm}
+
+\begin{itemize}
+    \item Censorship reduced by 27\% the average log publication per scholar in Italy.
+\end{itemize}
+
+
+\end{frame}
+
+	\begin{frame}
+	\frametitle{Related Literature }
+	
+	\begin{enumerate}
+		\item \textbf{Catholic Censorship and Economics}: Becker, Pino and Vidal-Robert (in progress), Eckelund , Hebert and Tollison (2004) \\ \vspace{0.3cm}
+				
+		\item \textbf{Ideas and Knowledge diffusion:} De la Croix,
+		Doepke, and Mokyr (2017), Mokyr (2016), Lucas (2008), Dittmar (2011), Dittmar and Seabold(2019) \\ \vspace{0.3cm}  
+		
+		\item \textbf{Religion and Economics}: Becker and Woessman (2009), Benabou, Ticchi and Vindigni (2015), Squicciarini (2017) \\ \vspace{0.3cm}
+		
+		\item \textbf{Decline of Italy:} Landes(1999), Cipolla (2004)
+		
+		
+	\end{enumerate}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{What we do}
+	\begin{enumerate}
+		\item Build a database of scholars' quality over the period 1400-1750 \vspace{0.4cm}
+		\item Document two features of authors censorship over the period \vspace{0.4cm}
+		\item Build a parsimonious model of knowledge diffusion and censorship that rationalizes data
+		\vspace{0.4cm}
+		\item Estimate the model using the Method of Simulated Moments.\\	
+		\vspace{0.4cm}
+		\item Run counterfactual experiment to asses the role of Church's censorship on the decline of knowledge production in early moder Italy
+	\end{enumerate}
+	\vspace{0.6cm}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Historical background}
+	\vspace{-2cm}
+	\startchronology[startyear=1500,stopyear=1580,startdate=false, color=gray, stopdate=false, arrow=true, height=8pt]
+	\chronoevent[textwidth=4cm]{1517}{Martin Luther theses}
+	\chronoevent[textwidth=4cm,markdepth=-35pt]{1559}{First Roman Index}
+	\chronoevent[textwidth=4cm,markdepth=35pt]{1546}{Louvain Index}   
+	\chronoevent[textwidth=6cm,markdepth=-70pt]{1571}{Congregation of the Index}
+	\chronoperiode[color=structure,year=false]
+	{1545}{1563}{Council of Trent}
+	\stopchronology
+	
+\end{frame}
+
+\begin{frame}
+\frametitle{Catholic censorship: \textit{Index Librorum Prohibitorum}}
+
+
+\begin{columns}
+	
+	\hspace{-0.8cm} 
+	
+	\begin{column}[t]{0.3\textwidth}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.85\linewidth]{"D:/blasutto/PhD/Italy Growth Human Capital/Presentations/doctoral workshop/ILP"}
+\end{figure}
+	\end{column}
+
+\hspace{-0.8cm}
+
+	\begin{column}[t]{0.77\textwidth}
+	\vspace{-0.3cm}
+	
+	Type of censorship:\vspace{0.1cm}
+	
+	\begin{itemize}
+		\item[-]\textit{Opera omnia}: all works
+		\item[-] Individual works indexed\vspace{0.3cm}
+	\end{itemize}
+     Enforcement:\vspace{0.1cm}    
+    \begin{itemize}
+    	\item[-] Inquisition
+    	\item[-] Bishops in the center-south 
+    	\item[-] Papal state threatening printers Grendler (1975)\vspace{0.2cm}
+    	
+    \end{itemize}
+
+    Creation:\vspace{0.05cm}    
+ \begin{itemize}
+ 	\item[-] Congregation of the Index
+ 	\item[-] Censoring iter often started by an external denounce
+ \end{itemize}
+
+\end{column}
+
+\end{columns}
+
+
+\end{frame}
+
+
+\section{Data}
+ \begin{frame}{}
+	\centering \Huge
+	{\color{structure}\textbf{Data}}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{The Sample}
+	Database of scholars affiliated to an Italian institution over the period 1400-1750:  \textbf{1762 authors (so far)} \vspace{0.3cm}
+	\begin{columns}
+		\begin{column}[t]{0.49\textwidth}
+			\begin{enumerate}
+				\item Universities 
+				\begin{itemize}
+					\item Mazzetti (1847) + other institution specific data\vspace{0.3cm}
+				\end{itemize}
+				\item Academies: 
+				\begin{itemize}
+					\item “Italian Academies 1525-1700”, database by the British Library 
+					\item Parodi (1983) for “La Crusca”\vspace{0.1cm}
+				\end{itemize}
+			\end{enumerate}
+			
+			
+		\end{column}
+		
+		\begin{column}[t]{0.48\textwidth}
+			\vspace{-0.5cm}	
+			\begin{figure}[p]
+				\includegraphics[width=0.6\linewidth]{database1}\\	
+				\includegraphics[width=0.6\linewidth]{database2}\\
+				\includegraphics[width=0.6\linewidth]{database3}
+			\end{figure}
+		\end{column}		
+		
+		
+	\end{columns}
+	
+	
+	
+\end{frame}
+\begin{frame}
+	\frametitle{Data - Censorship}
+	Identify whether his (or her) work was subject to censorship by the church	
+	
+	\hspace{0.1cm}	
+	
+   \textbf{Source:} De Bujanda and Richter (2002)\vspace{0.15cm}
+	\begin{itemize}
+		\item Collection of Indexes of Forbidden Books
+		\item Short life description to complement our data
+		\item Censorship of Individual works or \textit{Opera Omnia}
+	\end{itemize}
+	\hspace{0.3cm}
+
+			\begin{figure}[p]
+				\includegraphics[width=0.75\linewidth]{librhorum}
+			\end{figure}
+
+
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Data - Quality of Scholars}
+	We measure the “quality” of each scholar by the quantity of
+	written output\vspace{0.2cm}
+	
+	\textbf{Source:} Worldcat search engine\vspace{0.1cm}
+		\begin{itemize}
+		\item References to the collections
+		of thousands of libraries around the world
+		\item Scholar's Quality=Log Publications by and about him
+		\item Keep if at least one publication\vspace{0.1cm}
+	\end{itemize}
+
+			\begin{figure}[p]
+				\includegraphics[width=0.62\linewidth]{worldcat}\\
+			\end{figure}
+		
+
+	
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Data in a Map - Europe}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\linewidth]{"C:/Users/Fabio/Dropbox/Roman_Church_censorship_growth/paper/map-europe"}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Data in a Map - Italy }
+\begin{figure}
+	\includegraphics[width=0.65\linewidth]{"C:/Users/Fabio/Dropbox/Roman_Church_censorship_growth/paper/map-italy"}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Two New Features of Authors Censorship - I}
+\begin{figure}[p]
+	\includegraphics[width=0.35\linewidth]{"C:/Users/Fabio/Dropbox/Roman_Church_censorship_growth/paper/histo1Q"}
+	\includegraphics[width=0.35\linewidth]{"C:/Users/Fabio/Dropbox/Roman_Church_censorship_growth/paper/histo2Q"}
+\end{figure}
+
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Two New Features of Authors Censorship - II}
+	\begin{figure}[p]
+		\includegraphics[width=0.35\linewidth]{"C:/Users/Fabio/Dropbox/Roman_Church_censorship_growth/paper/histo3Q"}
+		\includegraphics[width=0.35\linewidth]{"C:/Users/Fabio/Dropbox/Roman_Church_censorship_growth/paper/histo4Q"}
+		\includegraphics[width=0.35\linewidth]{"C:/Users/Fabio/Dropbox/Roman_Church_censorship_growth/paper/histo5Q"}
+	\end{figure}
+	
+	
+\end{frame}
+
+
+\section{Theory}
+ \begin{frame}{}
+	\centering \Huge
+	{\color{structure}\textbf{Theory}}
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Theory}
+	\begin{itemize}
+		\item Discrete time\\ \vspace{0.3cm}
+		\item one generation of $N$ authors alive at time\\ \vspace{0.3cm}
+		\item Knowledge is embodied in books, transmitted to the next generation\\ \vspace{0.3cm}
+		\item Agents learn from $\mu$ books during their life time\\ \vspace{0.3cm}
+		\item Books can be \textbf{revolutionary} (R) or \textbf{compliant} (C)\vspace{0.3cm}
+	  
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da5177605927758191] 
+\draw    (97,157) -- (561,156) ;
+
+
+%Straight Lines [id:da7766036828026136] 
+\draw    (125,145) -- (125,160) ;
+
+
+%Straight Lines [id:da30952415765214525] 
+\draw    (521,141) -- (521,156) ;
+
+
+%Straight Lines [id:da9220773281159994] 
+\draw    (126,168) -- (126,187) ;
+\draw [shift={(126,189)}, rotate = 270] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da5561040436855254] 
+\draw    (199,168) -- (199,188) ;
+\draw [shift={(199,190)}, rotate = 270] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da35307238440341004] 
+\draw    (312,168) -- (312.42,178.02) -- (312.92,190) ;
+\draw [shift={(313,192)}, rotate = 267.61] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da11455890173902927] 
+\draw    (522,165) -- (522.92,187) ;
+\draw [shift={(523,189)}, rotate = 267.61] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da21202320532813468] 
+\draw    (432,168) -- (432.92,190) ;
+\draw [shift={(433,192)}, rotate = 267.61] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+
+% Text Node
+\draw (108,146) node  [align=left] {t-1};
+% Text Node
+\draw (542,146) node  [align=left] {t+1};
+% Text Node
+\draw (332,143) node  [align=left] {t};
+% Text Node
+\draw (125,207) node  [align=left] {Born};
+% Text Node
+\draw (523,204) node  [align=left] {Die};
+% Text Node
+\draw (200,207) node  [align=left] {Read books};
+% Text Node
+\draw (314,207) node  [align=left] {Write Books};
+% Text Node
+\draw (433,210) node  [align=left] {Printers choose\\Sector and Print};
+
+
+\end{tikzpicture}
+
+	
+		
+		
+	\end{itemize}
+	
+	
+\end{frame}
+\begin{frame}
+	\frametitle{Knowledge production}
+	\begin{itemize}
+		\item Production using a book with irrelevance $h_i$ is $q_i$.
+		\[
+		q^j_i=(h^j_i)^{-\theta}, \;\;\; \theta\in(0,1),j\in\{C,R\}
+		\]
+		\item In $t$, the \textbf{irrelevance} of book $i$ of type $j$ follows an exponential distribution
+		\[
+		h^j_i \sim \exp(k^j), \quad \text{with} \ j\in \{C,R\} \ \text{and} \ i\in \{1,..,N\}.
+		\]
+		\item The distribution of book quality follows a Fr\'echet distribution with scale parameter $k^\theta$ and shape parameter $1/\theta$
+		\item Average book quality $\bar{q}^j$ by sector j:
+		\[
+		E(q^j_i)=\int_0^\infty h^{-\theta}_i (k^j e^{-k^j h_i})dh_i=(k^j)^{\theta}\Gamma(1-\theta)
+		\]
+		
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Knowledge Accumulation}
+	$m_{t-1}$ is the \textbf{share} of \textbf{revolutionary books} that people read: depends on books printed in $t-1$\vspace{0.2cm}
+	
+	Since exp() satisfies the minimum stability postulate, the best books retained are again exp()
+	\begin{align*}	
+	\hat{h}^C_i&=\text{min}\{h^C_1,..,h^C_{\lfloor(1-m_{t-1}) \mu\rfloor}\}\sim \exp(k^C_{t-1} (1-m_{t-1})\mu)=\exp(b_t^C),
+	\\ \hat{h}^R_i&=\text{min}\{h^R_1,..,h^R_{\lfloor m_{t-1} \mu \rfloor}\} \sim \exp(k^R_{t-1} m_{t-1} \mu)=\exp(b_t^R)
+	\end{align*}
+	Combine inherited knowledge with a new idea $h^j_N\sim  \exp(\nu b^j_t)$\vspace{0.2cm}
+	
+	New ideas kept if more productive: knowledge evolves as
+	\begin{align*}
+	k_{t}^C&=(1+\nu) k_{t-1}^C (1-m_{t-1}) \mu,\\
+	k_{t}^R&=(1+\nu) k_{t-1}^R m_{t-1}\mu.
+	\end{align*}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Occupational Choice and Censorship}
+	The Church kicks in, imposing a rate of censorship of $\beta$\\ \vspace{0.2cm}
+	People will just meet $(1-\beta)\mu m_{t-1} $ revolutionary ideas\\ \vspace{0.2cm}
+	Over time we have
+	\[k^R_{t}=(1+\nu)\mu m_{t-1} (1-\beta) k^R_{t-1}\]
+	\[k^C_{t}=(1+\nu)\mu (1-m_{t-1}) k^C_{t-1}\]
+	
+	Printers meet one author, pick the best type $j$ and print everyone belonging to her best book type. \vspace{0.2cm}
+	
+	Revolutionary ideas are weighted by $\alpha$, the relative attractiveness of revolutionary books
+	\[m_t=\text{Pr}\{q^C<\alpha q^R\}=\frac{b^R_t}{b^R_t+b^C_t \alpha^{-1/\theta}}\]
+\end{frame}
+
+\begin{frame}
+	\frametitle{Equilibrium path}
+\begin{definition}\label{definition:equilibrium}
+	Given $\beta$, an equilibrium path is a sequence $\{m_t\}_{t\geq0}$, describing the share of revolutionary books over time. It is such that:
+	\begin{itemize}
+		\item Each author of each generation write books whose quality and type is defined by the current state of knowledge.
+		\item Each printer of each generation chooses her sector according to the most productive book presented by the first randomly met author.
+		\item Each printer of each generation, once she chose her sector, prints all the authors she meets randomly.
+		\item The probability of being exposed to revolutionary book in $t+1$ depends on the share of revolutionary titles written in $t$.
+		\item The books printed in $t$ embody the stock of compliant and revolutionary knowledge available to generation $t+1$.
+	\end{itemize}
+\end{definition}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Dynamics with exogenous $\beta$}
+Treating $\beta$ as an exogenous parameter dynamics are described by:\\ \vspace{0.3cm}
+\begin{proposition}
+	Given the initial condition $m_0\in[0,1)$, we have
+	\begin{itemize}
+		\item[i)]$\lim_{t\to\infty}m_t=0$ if $m_0<1/(2-\beta)$ (Compliant steady state),
+		\item[ii)] $\lim_{t\to\infty}m_t=1$ if $m_0>1/(2-\beta)$ (Revolutionary steady state),
+		\item[iii)]$\lim_{t\to\infty}m_t=m_0$ if $m_0=1/(2-\beta)$ (Unstable steady state).
+	\end{itemize}
+	%More in particular, with full censorship, or with $\beta=1$, the share of revolutionary ideas converges immediately to 0, unless $m_0=1$: in this case we will have $m_t=1 \ \forall \ t\geq0$.
+	\label{proposition:dynex}
+\end{proposition}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Church's Rule of Thumb Behavior}
+What was the Church trading off? We do not know.\\ 
+ We make minimal assumptions. Lexicographic preferences over:\vspace{0.3cm}
+ 
+ \begin{enumerate}
+ 	\item Convergence to 0 of $m_t$\\ \vspace{0.1cm}
+ 	\item Minimize $\beta_t$ \\ \vspace{0.3cm}
+ \end{enumerate}
+
+\begin{proposition}
+	Given the initial condition $m_0 \in [0,1)$, the Church will choose a level of censorship $\beta_t$ such that $\beta_t=\max\{2-1/m_t+\epsilon,0\}$, with $\epsilon$ arbitrarily small. If $m_0=1$, it does not exist a rate of censorship $\beta_t \in [0,1]$ such that $\lim m_t=0$.
+	\label{proposition:rthumb}
+\end{proposition}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Church's optimizing Behavior}
+	Why did censorship kicked in so late, moving from virtually 0 to a considerable amount?\\ \vspace{0.15cm}
+
+	We assume: 
+	\begin{enumerate}
+	\item Setting up the censoring institution was a fixed cost $\psi$
+    \item The church can \textbf{censor up to $\bar{\beta}$}\vspace{0.3cm}
+	\end{enumerate}
+   $$	
+    V(m_{t-1})=\max[{\color{green}V^N(m_{t-1})},{\color{red}V^C(m_{t-1})}-\psi]
+  $$ 
+  \vspace{-1.3cm}
+    \begin{columns}	
+    	\begin{column}[t]{0.44\textwidth}
+    	 \begin{align*}
+    	{\color{green}V^{N}(m_{t-1})}&{\color{green}=u(1-m_{t})+\delta V(m_{t})}	\\
+    	{\color{green}\text{s.t.}}&{\color{green}\quad m_{t}=f(m_{t-1},0)}
+    	\end{align*}
+    	\end{column}   	
+    	\begin{column}[t]{0.52\textwidth}
+    	 \begin{align*}
+    {\color{red}V^{C}(m_{t-1})}&{\color{red}=\max_{0\leq\beta_t\leq\overline{\beta}}u(1-m_{t-1})+\delta V^C(m_{t})}	\\
+    	{\color{red}\text{s.t.}}&{\color{red}\quad m_{t}=f(m_{t-1},\beta_t)}
+    	\end{align*}
+    	\end{column} 	
+    \end{columns}
+
+$$  f(m_{t-1},\beta_t)=\frac{(1-\beta_t) m_{t-1}^2}{1-m_{t-1} ((\beta_t -2) m_{t-1}+2)}$$
+\end{frame}
+
+\begin{frame}
+	\frametitle{Church's optimizing Behavior (cont.)}
+	Trade off between censoring today paying $\psi$ and waiting\vspace{0.3cm}
+	
+	No censorship if 
+	\begin{itemize}
+		\item $m_t$ is too low: \textit{No need to censor}
+		\item $m_t$ is too high: \textit{Too late to censor} \vspace{0.3cm}
+	\end{itemize}
+
+    Windows of censorship emerge
+    	\begin{itemize}
+    	\item Censorship if it can change dramatically the dynamics
+    	\item Waiting one more period make censorship less attractive\vspace{0.3cm}
+    \end{itemize}
+
+   Still possible to have censorship and converge to $m_t=1$\vspace{0.3cm}
+   
+   
+\end{frame}
+
+
+\section{Estimation}
+
+\begin{frame}{}
+	\centering \Huge
+	{\color{structure}\textbf{Estimation}}
+\end{frame}
+\begin{frame}
+	\frametitle{Estimation}
+	 
+ Some parameters: taken from the literature + perfectly match moments\vspace{0.2cm}
+ 
+ The rest is estimated down using the \textbf{simulated method of moments}
+ \scriptsize
+  \input{temp.tex}
+\end{frame}
+
+
+\begin{frame}[label=fit]
+	\frametitle{Model Fit}
+  \begin{figure}[htp]	
+  	\begin{subfigure}{.49\textwidth}
+  		\centering
+  		% include second image
+  		\caption{Overall scholars\\quality: \textcolor{red}{median}, \textcolor{blue}{$75^{th}$ percentile}}
+  		\label{sf:cdivbil}
+  		\scalebox{0.35}{\input{q.tex} }
+  	\end{subfigure}
+  	\begin{subfigure}{.49\textwidth}
+  		\centering
+  		% include second image
+  		\caption{\% censored scholars\\\textcolor{white}{a}}
+  		\label{sf:cdivbil2}
+  		\scalebox{0.35}{\input{b.tex} }
+  	\end{subfigure}
+  \caption{Data (solid), simulations  (dashed)}
+
+  	
+  
+  \end{figure}
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Over-Identification}
+	\begin{figure}
+		\centering
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			% include first image
+			\caption{Censored scholars\\quality: \textcolor{red}{median}, \textcolor{blue}{$75^{th}$ percentile}}
+			\label{sf:cdivuni}
+			\scalebox{0.35}{\input{qr.tex} }
+		\end{subfigure}
+		\begin{subfigure}{.49\textwidth}
+			\centering
+			% include first image
+			\caption{Non-censored scholars\\quality: \textcolor{red}{median}, \textcolor{blue}{$75^{th}$ percentile}}
+			\label{sf:cdivuni2}
+			\scalebox{0.35}{\input{qnc.tex} }
+		\end{subfigure}
+	\caption{Data (solid), simulations  (dashed)}
+	\end{figure}
+	
+\end{frame}
+
+
+
+\section{Counterfactual Experiment}
+
+\begin{frame}{}
+	\centering \Huge
+	{\color{structure}\textbf{Counterfactual Experiments}}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Counterfactual Dynamics without Censorship}
+  \begin{figure}[htbp]	
+  	\centering
+  	\hspace*{-1cm}
+  	\begin{subfigure}{.32\textwidth}
+  		\centering
+  		% include second image
+  		\caption{\% censored authors\\\textcolor{white}{a}\\\textcolor{white}{a}}
+  		\label{sf:ca}
+  		\scalebox{0.35}{\input{bmc.tex} }
+  	\end{subfigure}
+  	\begin{subfigure}{.32\textwidth}
+  		\centering
+  		% include first image
+  		\caption{\% revolutionary authors\\\textcolor{white}{a}}
+  		\label{sf:ra}
+  		\scalebox{0.35}{\input{bc.tex} }
+  	\end{subfigure}
+  	\begin{subfigure}{.32\textwidth}
+  		\centering
+  		% include second image
+  		\caption{\textcolor{blue}{Overall}, \textcolor{red}{revolutionary}\\ \textcolor{green}{compliant} quality (averages)}
+  		\label{sf:dq}
+  		\scalebox{0.35}{\input{sq.tex} }
+  	\end{subfigure}
+  	\caption{Baseline simulations (solid), simulations without cenosorship (dashed)}
+  	\label{fig:exp}\vspace{0.5em}
+  	\begin{minipage}{0.99\textwidth} % choose width suitably
+  		{\footnotesize \textsc{Notes.} periods: 1:1400-70, 2:1470-1540, 3:1540-1610, 4:1610-80, 5:1680-1750. \par}
+  	\end{minipage}
+  \end{figure}
+  
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Results}
+	From the counterfactual experiment we learn that\vspace{0.1cm}
+	
+	\begin{itemize}
+	\item Censorship reduced by 27\% the average log publication per scholar in Italy in 1680-1750\vspace{0.2cm}
+	\item  Half of this drop stems from the induced reallocation of talents towards compliant activities, while the other half arises from the direct effect of censorship on book availability.\vspace{0.5cm}
+	\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conclusion}
+What we did:  \vspace{0.3cm}
+	\begin{enumerate}
+	\item Build a database of scholars' quality over the period 1400-1750 \vspace{0.3cm}
+	\item Document two features of authors censorship over the period \vspace{0.3cm}
+	\item Build a parsimonious model of knowledge diffusion and censorship and take it to the data
+	\vspace{0.3cm}
+	\item Run counterfactual experiment to asses the role of Church's censorship on the decline of knowledge production in early moder Italy
+	\vspace{0.3cm}
+	\item \textbf{Censorship reduced by 27\% the average log publication per scholar in Italy} 
+\end{enumerate}
+\vspace{0.6cm}
+\end{frame}
+
+
+
+
+
+
+\end{document}
+

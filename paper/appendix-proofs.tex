@@ -1,0 +1,164 @@
+\clearpage
+\section{Proofs of Propositions}\label{appendix:proofs}
+
+
+\subsection{The Fr\'echet Cheat Sheet}\label{app:frechet}
+
+Since the irrelevance of books of type $j$ is exponentially distributed  with scale parameter $k_{t}^j$ and given Equation~(\ref{M-eq:qi}), the distribution of book quality follows a Fr\'echet distribution with scale parameter ${k^j}^\theta$ and shape parameter $1/\theta$. This allows us to write the average book quality $q^j$ by sector as:
+\begin{equation*}
+E(q^j_i)=\int_0^\infty h^{-\theta}_i (k^j e^{-k^j h_i})\;dh_i\quad \text{with} \ j\in \{C,R\},
+\end{equation*}
+
+Now we can multiply the RHS by $(k^j)^{1+\theta}/(k^j)^{1+\theta}$ to obtain:
+\begin{equation*}
+E(q^j_i)=(k^j)^{1+\theta}\int_0^\infty (k^j h_i)^{-\theta} ( e^{-k^j h_i})\;dh_i.
+\end{equation*}
+
+Now, using a change of variable $y=k^j h_i$ we have that
+\begin{equation*}
+E(q^j_i)=(k^j)^{1+\theta} \int_0^\infty y^{-\theta} \left( e^{-y}\right)( 1/k^j)\;dy.
+\end{equation*}
+
+We can finally show that
+$$
+E(q^j_i)=\Gamma(1-\theta)\;(k^j)^{\theta}\;\;\;\; \mbox{ with } \; j\in \{C,R\},
+$$
+where $$\Gamma(x)=\int_0^\infty s^{x-1} e^{-s}ds$$ is the Euler gamma function.
+
+\subsection{The minimum stability postulate}\label{app:min}
+
+If $x$ and $y$ are mutually independent random variables, exponentially distributed with parameter $\lambda$, then $\min(x,y)$ is exponentially distributed with parameter $2\lambda$.
+
+
+\clearpage
+\subsection{Occupational Choice}\label{app:oc_ch}
+
+In general, if $X \sim \exp\left(\lambda_{X}\right)$ and $Y \sim \exp\left(\lambda_{Y}\right)$, $\alpha>0$ is a real number
+\begin{equation}\label{eq:occ}
+	\begin{aligned}
+		P(\alpha X<Y) &=\int_{0}^{\infty} P( X<\frac{Y}{\alpha} \mid Y=y) f_{Y}(y) d y \\
+		&=\int_{0}^{\infty} \int_{0}^{\frac{y}{\alpha}} f_{X}(x) f_{Y}(y) d x d y \\
+		&=\int_{0}^{\infty} \lambda_{Y} \exp \left(-\lambda_{Y} y\right)\left(1-\exp \left(-\lambda_{X} \frac{y}{\alpha}\right)\right) d y \\
+		&=\int_{0}^{\infty} \lambda_{Y} \exp \left(-\lambda_{Y} y\right) d y\\&\;\;\;\;\; -\left(\frac{\lambda_{Y}}{\frac{\lambda_{X}}{\alpha}+\lambda_{Y}}\right) \int_{0}^{\infty}\left(\frac{\lambda_{X}}{\alpha}+\lambda_{Y}\right) \exp \left(-\left(\frac{\lambda_{X}}{\alpha}+\lambda_{Y}\right) y\right) d y \\
+		&=1-\frac{\lambda_{Y}}{\frac{\lambda_{X}}{\alpha}+\lambda_{Y}} \\
+		&=\frac{\frac{\lambda_{X}}{\alpha}}{\frac{\lambda_{X}}{\alpha}+\lambda_{Y}} \\
+		&=\frac{\lambda_{X}}{\lambda_{X}+\alpha\lambda_{Y}} \\
+	\end{aligned}
+\end{equation}
+Since $\tilde{h}^C_s \sim \exp(b^C_{t+1})$, $\tilde{h}^R_s \sim \exp(b^R_{t+1})$, and $\hat{p}>0$, from Equation~(\ref{eq:occ}) it follows that
+\begin{equation*}
+	\text{Prob}\{\tilde{h}^C_s>p^{-1/\theta}\tilde{h}^R_s\}=\frac{b^R_{t+1}}{b^R_{t+1}+b^C_{t+1} p^{-1/\theta}}
+\end{equation*}
+
+\subsection{Proof of Proposition~\ref{M-proposition:dynex}}\label{app:prf1}
+
+Using the variable $z_t$, Equation~(\ref{M-eq:lawm}) can be rewritten as
+$$
+z_{t+1} = \frac{1-\beta}{\hat{p}} (z_t)^2.
+$$
+This recurrence Equation admits an explicit solution:
+\begin{equation}\label{eq:zt}
+z_t=\frac{\hat{p}}{1-\beta}{\left(\frac{z_1 (1-\beta)}{\hat{p}}\right)^2}^{t-1}.
+\end{equation}
+Equation~(\ref{M-eq:sharer2}) implies that once we know the dynamics of $z_t$, we also know the dynamics of $m_t$. Given this change of variable, we use Equation~(\ref{eq:zt}) to study the limit of $z_t$ and obtain
+\begin{itemize}
+ \item[a)] $ z_1<\hat{p}/(1-\beta) \Rightarrow \lim_{t\to\infty} z_t =0$. Note also that $m_1<1/(2-\beta) \Leftrightarrow z_1<\hat{p}/(1-\beta)$.
+ \item[b)] $z_1>\hat{p}/(1-\beta)\implies\lim_{t\to\infty}m_t=1$. Note also that $m_1<1/(2-\beta) \Leftrightarrow z_1<\hat{p}/(1-\beta)$.
+ \item[c)] $z_1=\hat{p}/(1-\beta) \implies z_t=\hat{p}/(1-\beta) \forall t$.  Note $m_t=1/(2-\beta) \forall t\Leftrightarrow z_t=\hat{p}/(1-\beta) \forall t  $
+\end{itemize}
+ From $a)$ and Equation~(\ref{M-eq:sharer2}), $i)$ follows. From $b)$ and Equation~(\ref{M-eq:sharer2}), $ii)$ follows. From $c)$ and Equation Equation~(\ref{M-eq:sharer2}), $iii)$ follows.
+
+
+Note that we excluded $m_1=1$ from the proposition. In that case, no compliant books are left in the economy and imposing $\beta=1$ would shut down the whole production of knowledge.
+
+
+
+\subsection{The Dynamics when the Church's Behavior follows a Rule of Thumb}\label{app:thumb}
+
+In Section~\ref{M-sec:exo} we described the dynamics under a constant rate of censorship $\beta_t=\beta$. Here we endogenize the introduction of censorship by assuming that the Church chooses the lowest censorship rate that allows to converge to a world with no revolutionary ideas. This is equivalent to assume that the Church has lexicographic preferences, caring firstly to have $\lim_{t\to\infty}m_t=0$, and secondly to minimize $\beta_t$. Given our assumptions, we can describe the dynamics of the share of revolutionary ideas in Proposition \ref{proposition:rthumb}.
+\begin{proposition}
+	For a given share of revolutionary ideas $m_t \in [0,1)$, the Church will choose a level of censorship $\beta_t$ such that $\beta_t=\max\{2-1/m_t+\epsilon,0\}$, where $\epsilon$ is arbitrarily small.
+	\label{proposition:rthumb}
+\end{proposition}
+\begin{proof}
+Notice that Proposition \ref{M-proposition:dynex} states that $\lim_{t\to\infty}m_t=0$ when $m_t<1/(2-\beta_t)$, from which it trivially follows that $\beta_t=\max\{2-1/m_t+\epsilon,0\}$.
+\end{proof}
+
+Note that for any initial $m_1 \in [0,1)$, we will have $\lim_{t\to\infty}m_t=0$, but the convergence will be slow due to the fact that in any period $m_t$ would be set very close to the unstable steady state $1/(2-\beta_t)$. It is worth noting that Proposition \ref{proposition:rthumb} implies that the Church will impose no censorship if $m_t<1/2$.
+
+
+
+
+
+
+
+
+\section{Optimizing Church's Behavior}\label{app:recursive}
+
+ We  define the value function of the Church recursively. In the case that the Church had not yet established a censorship structure, the value function is
+\begin{equation*}	
+	V(m_{t})=\max[V^N(m_{t}),V^C(m_{t})-\psi],
+\end{equation*}
+where $V^{N}$ is the value of not imposing censorship and equals
+\begin{align*}
+V^{N}(m_{t})&=u(1-m_{t})+\delta V(m_{t+1})	\\
+	 \text{s.t.}\quad m_{t+1}&=f(m_{t};0)=\frac{ m_{t}^2}{1-m_{t} (-2 m_{t}+2)},
+\end{align*}
+while $\delta<1$ is the discount factor and  $V^{C}$ is the value of having a censorship apparatus set up and equals
+\begin{align*}
+V^{C}(m_{t})&=\max_{0\leq\beta_t\leq\overline{\beta}}u(1-m_{t})+\delta V^C(m_{t+1}),	\\
+	 \text{s.t.}\quad m_{t+1}&=f(m_{t};\beta_t)=\frac{(1-\beta) m_{t}^2}{1-m_{t} ((\beta -2) m_{t}+2)}.
+\end{align*}
+We can write the last value function in this way since $V^N(m_{t})$ equals $V^C(m_{t})$ if $\beta=0$ is chosen. Moreover, it is straightforward to see that, once $\psi$ has been paid, the Church will always set $\beta_t$ to its maximum level.\footnote{This holds because $\partial f(m_{t};\beta_t)/\partial\beta_t\leq 0$ and $\partial u(1-m_t)/\partial m_t<0$, which implies $\partial V^C(m_t)/\partial \beta_t\geq 0$.} In this model, the Church has to choose between paying a fixed cost today for enjoying a lower share of revolutionary books in the future and postponing such payment. Postponing censorship would be less costly because of discounting, but it would also imply a higher share of revolutionary books in the future. This trade-off implies that the Church would be more prone to implement censorship immediately when the fixed cost $\psi$ is low and when the effectiveness of censorship $\overline{\beta}$ is high. Moreover, the Church is less likely to start censoring the more impatient it is. When $\delta=0$, the Church cares only about what happens in 0, and therefore it will never pay a cost $\psi$ that affects only the future share of revolutionary books.
+The Church's decision to start censoring also depends on the initial level of revolutionary books $m_{1}$. In fact, $m_{1}$ influences the dynamics with and without censorship. To understand why the initial condition matters, consider the extreme case $m_{1}=0$. Proposition \ref{M-proposition:dynex} states that in this case, $m$ stays constant over time, regardless of the value of $\overline{\beta}$, which makes censorship useless.
+Proposition \ref{proposition:tooLate} allow us to understand better when it is not optimal for the Church to censor:
+\begin{proposition}
+\label{proposition:tooLate}
+If $\psi>0$, then there exist $\tilde{m}>0$ and $1>\breve{m}>0$ such that
+\begin{itemize}
+\item[i)] If $m_1<\min(1/2,\tilde{m})$ then $\beta_t=0$ for each $t\geq1$ (No need to censor),
+\item[ii)] If $m_1>\max(1/2,\breve{m})$ then $\beta_t=0$ for each $t\geq1$ (Too late to censor).
+\end{itemize}
+\end{proposition}
+\begin{proof}  Note that imposing censorship when $m=0$ is not convenient: $$\frac{u(0)}{1-\delta}=V^N(0)>V^C(0)-\psi=\frac{u(0)}{1-\delta}-\psi.$$
+ Note also that imposing censorship when $m=1$ is not convenient. $$\frac{u(1)}{1-\delta}=V^N(1)>V^C(1)-\psi=\frac{u(1)}{1-\delta}-\psi.$$
+
+Note also that $V^M(m)$ and $V^C(m)$ are continuous functions in $m\in[0,1]$: see \citeN{norets2010} for a formal proof of continuity of discrete choice dynamic value functions under a set of assumptions that are satisfied in our case.
+
+Then, it follows that there exists $\tilde{m}$ and $\breve{m}$, respectively in a neighborhood of 0 and 1, such that for each $ m\in[0,\tilde{m}]$ and also for each $m\in[\breve{m},1]$, $V^N(m)>V^C(m)-\psi$ holds. According to proposition \ref{M-proposition:dynex}, if censorship is not imposed, $\tilde{m}$ converges to 0, while $\breve{m}$ will converge to 1. Since censorship does not happen for each $m\in[0,\tilde{m}]$ and for each $m\in[\breve{m},1]$, proposition \ref{proposition:tooLate} is proved.
+\end{proof}
+
+Proposition \ref{proposition:tooLate} makes the point that for some $m_{1}$ it can be optimal for the Church  to never impose censorship, which can be for opposite reasons. In fact, for a low enough $m_{1}$, the Church knows that revolutionary ideas would naturally disappear. Therefore, there is no need to censor. Symmetrically, when $m_{1}$ is large enough, the Church knows that even imposing censorship, the economy would converge fast to the revolutionary steady state. In this case, it is too late to censor. Proposition \ref{proposition:window} improves further our understanding of the Church's censoring behavior.
+
+\begin{proposition}
+\label{proposition:window}
+There exists $\overline{\psi}$ such that for each $\psi<\overline{\psi},\;\text{there also exists} \;\overline{m},\hat{m}$ such that for $\hat{m}>m_{1}>\overline{m}$, $\beta_1=\overline{\beta}$ holds (window of censorship).
+\end{proposition}
+\begin{proof}
+We take $\overline{\psi}$ such that for some $m^*$ we have $V^C(m^*)-\overline{\psi}>V^N(m^*)$, then for each$\;\psi<\overline{\psi}$ it holds $V^C(m^*)-\psi>V^N(m^*)$. Now define $\mathcal{D}(m)=V^C(m)-\psi-V^N(m)$: since this function is continuous, for an arbitrarily small $\epsilon$ we have that $\mathcal{D}(m^*-\epsilon)>0$ and $\mathcal{D}(m^*+\epsilon)>0$. Using again continuity we can claim that $\mathcal{D}(m)>0\;\text{for each}\;m\in[m^*-\epsilon,m^*+\epsilon]$, which implies that the Church will immediately impose censorship if $m_{1}$ belongs to this set.
+\end{proof}
+
+Proposition \ref{proposition:window} makes the point that, if it is optimal to start imposing censorship at $m_{1}$, it is also optimal to censor for $m$ close enough to $m_1$. This is because the net gains of imposing censorship at $m_1$ and $m$ are similar.
+
+Note that we could not characterize a closed form of the equilibrium time path $\{m_t\}_{t\geq1}$. The model leaves open the possibility that revolutionary ideas were growing or declining before the Church implemented censorship. In order to be  consistent with the historical fact that the Protestant Reformation started before the first issue of the Index,  one would like to find in the estimated model that revolutionary ideas were growing before censorship.
+
+
+
+
+\section{Discussion of Model Assumptions}\label{subsection:modela}
+
+Our model of censorship introduction under an optimizing Church's behavior relies on a set of assumptions to make it tractable. In this subsection, we discuss our assumptions, and we compare them with some alternative modeling choices.
+
+\textbf{One shot fixed-cost of censorship} The one-shot nature of the cost $\psi$ helps to rationalize why the Church kept updating the Index until the $20^{th}$ century. The Church would have removed censorship much sooner if it had to pay $\psi$ each period. In fact, once censorship can shift dynamics towards the compliant steady state, the gains of censorship decrease rapidly.
+
+
+\textbf{Maximal level of censorship} A point that is worth discussing is why the Church is bounded above by $\overline{\beta}$ in the level of censorship that it can impose. We assume this for three main reasons.
+
+First, the maximum rate of censorship $\overline{\beta}<1$ depends on feasibility but also on political economy considerations. Italy was not a unified state, but was divided into multiple states with their own objectives and relationships with the Church/Papal States. In the presence of a more or less unified market for books, the Church, to be effective in its censorship, had to avoid making too unhappy any of the Italian states, which could have otherwise decided to play the role of heresy-spreader by protecting local authors and publishers from persecution. This placed a constraint on the Church ability to censor.
+
+Second, the process leading to censorship was largely bottom-up and grounded on external denounce.\footnote{By external denunciations, we mean that the Congregation of the Index did not initiate the process most of the time. \citeN{wolf2006} enumerates members of the clergy, aristocracy, and bourgeoisie as the categories of people who were bringing suspicious books to Rome to denounce them.} If the arrival rate (frictions) of new books to be checked is low enough, then the Church can not have the opportunity to censor all revolutionary books. This mechanism explains why many books were censored decades after being first published. It also hints at why some books might have never been censored. Further, it justifies our assumption that the Church censor a \textit{share} and not a \textit{number} of censored authors.
+
+Third, dissimulation to avoid censorship was far from uncommon \cite{Spruit2019}. Heretic authors could cloak their dissident beliefs either by pretending to comply with the Church (\textit{simulatio}) or by hiding their heterodox views to authorities (\textit{dissimulatio}). Decartes' quote ``Like an actor wearing a mask, I come forward, masked, on the stage of the world," means that he was conscious of the risks ahead of him and found in dissimulation a valuable tool to overcome them \cite{snyder2012}. Since books' revolutionary content was seldom hidden, it is reasonable to think that the Church could identify only a share of the heretic books.
+
+
+\textbf{Censorship enforcement} We assumed that the Roman Church was able to enforce the application of the Index outside the Papal State at a constant rate over time. While \citeN{putnam1906} notes that the Church found some difficulties in enforcing censorship in Italy outside the Papal State, recent estimates by \citeN{becker2021} suggest high to very high rates of enforcement of the Pauline Index in the Italian peninsula. Appendix~\ref{app:robust} presents a sensitivity analysis where we relax our assumptions about the Church's ability to enforce censorship over time and space. The robustness checks results, summarized in Table \ref{table:robust}, indicate that our assumptions are not crucial for our baseline results.

@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsfonts,amssymb,amsmath,booktabs}
+\usepackage{setspace,achicago,graphicx,url}
+
+%for avoiding figures going anywhere
+\usepackage{placeins}
+
+%\usepackage{hyperref}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newenvironment{proof}[1][Proof]{\noindent \textbf{#1.} }{\  \rule{0.5em}{0.5em}}
+
+
+\usepackage[compact]{titlesec}  %to compact titles
+
+\usepackage{xr-hyper} % to allow links to the appendix
+\externaldocument[M-]{prohibitorum}
+
+
+\usepackage[top=.9in, bottom=.9in, left=.9in , right=.9in,letterpaper]{geometry}
+
+%for nice caption in table
+\usepackage{caption}
+\captionsetup[table]{skip=5pt}
+
+%For accepting graphs
+\usepackage{graphicx}
+
+%Timeline of events
+\usepackage{chronosys}
+
+%For subtables
+\usepackage{subcaption}
+\usepackage[justification=centering]{caption}
+
+
+%for building table 2
+\usepackage{tabularx,booktabs,arydshln}
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
+
+%New numbering of equations in appendix
+\numberwithin{equation}{section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Other Packages%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%Within Document References
+%\usepackage[colorlinks]{hyperref}
+%\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks]{hyperref}
+%\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+
+%\hypersetup{
+%	colorlinks,
+%	linkcolor={blue!50!black},
+%	citecolor={blue!50!black},
+%	urlcolor={blue!80!black}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\parskip3mm\parindent0cm
+
+
+\title{Catholic Censorship and the Demise of Knowledge Production in Early Modern Italy -- Online Appendix}
+\author{Fabio Blasutto \and David de la Croix}
+
+
+
+\begin{document}
+\maketitle
+
+\onehalfspacing
+
+
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\renewcommand\thetable{\thesection.\arabic{table}}
+
+\appendix
+\input{appendix-data.tex}
+\input{appendix-biblio.tex}
+\input{appendix-proofs.tex}
+\input{appendix-numerical.tex}
+
+\clearpage
+
+\bibliographystyle{achicago}
+\bibliography{prohibitorum}
+
+
+\end{document}
+

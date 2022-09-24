@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsfonts,amssymb,amsmath}
+\usepackage{setspace,achicago,graphicx,url}
+
+%for avoiding figures going anywhere
+\usepackage{placeins}
+
+%\usepackage{hyperref}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newenvironment{proof}[1][Proof]{\noindent \textbf{#1.} }{\  \rule{0.5em}{0.5em}}
+
+
+\usepackage{xr-hyper} % to allow links to the appendix
+\externaldocument[O-]{prohibitorum-appendix}
+\externaldocument[M-]{prohibitorum}
+
+\usepackage[compact]{titlesec}  %to compact titles
+
+%for building table 2
+\usepackage{tabularx,booktabs,arydshln}
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
+
+
+\usepackage[top=.9in, bottom=.9in, left=.9in , right=.9in,letterpaper]{geometry}
+
+%for nice caption in table
+\usepackage{caption}
+\captionsetup[table]{skip=5pt}
+
+%For accepting graphs
+\usepackage{graphicx}
+
+%Timeline of events
+\usepackage{chronosys}
+
+%For subtables
+\usepackage{subcaption}
+\usepackage[justification=centering]{caption}
+
+
+%for building table 2
+\usepackage{tabularx,booktabs,arydshln}
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Other Packages%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%Within Document References
+%\usepackage[colorlinks]{hyperref}
+%\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks]{hyperref}
+%\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+
+%\hypersetup{
+%	colorlinks,
+%	linkcolor={blue!50!black},
+%	citecolor={blue!50!black},
+%	urlcolor={blue!80!black}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\parskip3mm\parindent0cm
+
+
+\title{Catholic Censorship and the Demise of Knowledge Production in Early Modern Italy}
+\author{Fabio Blasutto$^1$ \and David de la Croix$^2$}
+
+
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+Censorship makes new ideas less available to others, but also reduces the share of people choosing to develop non-compliant ideas.
+We propose a new method to measure the effect of censorship on knowledge growth,  accounting for the agents' choice between compliant and non-compliant occupations. We apply our method to the Catholic Church's censorship of books written by members of Italian universities and academies over the period 1400-1750. We highlight two new facts: once censorship was introduced, censored authors were of better quality than the non-censored authors, but this gap shrank over time, and the intensity of censorship decreased over time. These facts are used to identify the deep parameters of a novel endogenous growth model linking censorship to knowledge diffusion and occupational choice. We conclude that censorship reduced by 34\% the average log publication per scholar in Italy, while adverse macroeoconomic processes are responsible for another 9\% reduction. Interestingly, the induced reallocation of talents towards compliant activities explains half the effect of censorship.
+
+\mbox{ }\\
+JEL Classification Numbers: J24, N33, O33, O43. \\
+Keywords: Censorship, Upper-Tail Human Capital, Publications, Scholars, Early Modern Italy, Occupational Choice
+\end{abstract}
+
+\footnotetext[1]{Department of Economics, Stockholm School of Economics. Email: fabio.blasutto@hhs.se}
+\footnotetext[2]{IRES/LIDAM, UCLouvain \& CEPR. Email: david.delacroix@uclouvain.be.\\
+\indent This project has received funding from the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme, under grant agreement No 883033 ``Did elite human capital trigger the rise of the West? Insights from a new database of European scholars.'' Blasutto acknowledges financial support from the French speaking community of Belgium (\textit{mandat d'aspirant} FC 23613). We thank Matthias Doepke, Fabio Mariani, Joel Mokyr, and Luca Pensieroso for their thoughts on an earlier version of the paper.}
+
+\thispagestyle{empty}
+\newpage
+\onehalfspacing
+
+\input{introduction.tex}
+\input{data.tex}
+\input{model.tex}
+\input{estimation.tex}
+\input{conclusion.tex}
+
+\clearpage
+
+\onehalfspacing
+
+
+
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\renewcommand\thetable{\thesection.\arabic{table}}
+
+
+\appendix
+\input{appendix-data.tex}
+\input{appendix-biblio.tex}
+\input{appendix-proofs.tex}
+
+\clearpage
+
+\bibliographystyle{achicago}
+\bibliography{prohibitorum}
+
+
+
+
+\end{document}

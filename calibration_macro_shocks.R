@@ -57,7 +57,7 @@
   
   impbeta <<-1    #imperfect application of censorship-max #(5./6.). use inverse of this number
   maxper<<-5      #max number of periods to consider
-  phi<<-1    #Lag parameter for dynamics of knowledge acquisition  0.0769
+  phi<<-1         #Lag parameter for dynamics of knowledge acquisition  0.0783
   
   ita<-FALSE      #only italian scholars
   itan<-FALSE     #only northern italian scholars
@@ -378,11 +378,21 @@
     Sqr[1]=qur
     Sqc[1]=qu
     Sq[1]=fq(thet,pe,Sqc[1],Sqr[1])
-    
+    mcur<-mt(betaa,pe,1,maxx,thet,Sqc[1],Sqr[1])
     
     #Initial period Quality below
-    MT[1]<-(((Sq[1]/(gamma(1-thet)))^(1/1))/((log(2))^thet))
-    MT75[1]<-(((Sq[1]/(gamma(1-thet)))^(1/1))/((log(4/3))^thet))
+    #MT[1]<-(((Sq[1]/(gamma(1-thet)))^(1/1))/((log(2))^thet))
+    #MT75[1]<-(((Sq[1]/(gamma(1-thet)))^(1/1))/((log(4/3))^thet))
+    
+    # draw random realization from the two frechet distibutions 
+    set.seed(2) 
+    Br=rfrechet(n, loc=0, scale=Sqr[1]/(gamma(1-thet)),shape=1/thet) 
+    set.seed(2) 
+    Bc=rfrechet(n, loc=0, scale=Sqc[1]/(gamma(1-thet)),shape=1/thet) 
+    pr<-mcur#*(1-betaa)/(1-betaa*mcur) 
+    for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}} 
+    MT[1]=median(B) 
+    MT75[1]=quantile(B,0.75) 
     
     #Objective Function Below
     sum=sum+((MT[1]-EqM[1])/EqM[1])^2
@@ -395,11 +405,26 @@
       Sqc[i]<-qcs(betaa,pe,i,maxx,Sqc[i-1],nuu,thet,Sqc[1],Sqr[1])
       Sqr[i]<-qrs(betaa,pe,i,maxx,Sqr[i-1],nuu,thet,Sqc[1],Sqr[1])
       Sq[i]<-  qs(betaa,pe,i,maxx,Sqr[i-1],Sqc[i-1],nuu,thet,Sqc[1],Sqr[1])
-        
+      mcur<-mt(betaa,pe,i,maxx,thet,Sqc[1],Sqr[1])
+      
+      # draw random realization from the two frechet distibutions 
+      set.seed(2) 
+      Br=rfrechet(n, loc=0, scale=Sqr[i]/(gamma(1-thet)),shape=1/thet) 
+      set.seed(2) 
+      Bc=rfrechet(n, loc=0, scale=Sqc[i]/(gamma(1-thet)),shape=1/thet) 
+      pr<-mcur#*(1-betaa)/(1-betaa*mcur) 
+      for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}} 
+      MT[i]=median(B) 
+      MT75[i]=quantile(B,0.75) 
+      
+      #Moments with average 
+      #MT[i]<-qs(betaa,pe,i,maxx,nuu,Sqr[i-1],Sqc[i-1],thet,Sq[1],Sqr[1]) 
+      #MR[i]<-qrs(betaa,pe,i,maxx,nuu,Sqr[i-1],thet,Sq[1],Sqr[1]) 
+      
         
       #Median and 75th percentile
-      MT[i]<-(((Sq[i]/(gamma(1-thet)))^(1/1))/((log(2))^thet))
-      MT75[i]<-(((Sq[i]/(gamma(1-thet)))^(1/1))/((log(4/3))^thet))
+       #MT[i]<-(((Sq[i]/(gamma(1-thet)))^(1/1))/((log(2))^thet))
+       #MT75[i]<-(((Sq[i]/(gamma(1-thet)))^(1/1))/((log(4/3))^thet))
        
         
       #Objective Function Below
@@ -451,13 +476,13 @@
   Sq[1]<-fq(theta,p,GA@solution[1,5],Sqr[1])
   Sqc[1]<-GA@solution[1,5]
   
-  #beta<-0.1813921
-  #p<-exp(2.100781)
-  #nu<-1.408559
-  #theta<-0.3255855 
-  #Sqr[1]<-6.906695
-  #Sq[1]<-fq(theta,p,3.464338,Sqr[1])
-  #Sqc[1]<-3.464338
+  #beta<-0.1862499
+  #p<-7.471913
+  #nu<-1.402332
+  #theta<-0.3366611  
+  #Sqr[1]<-6.913129
+  #Sq[1]<-fq(theta,p,3.493815,Sqr[1])
+  #Sqc[1]<-3.493815
   
 
   
@@ -521,12 +546,12 @@
       }
       
       #median
-      SqM[i]=(((Sq[i]/(gamma(1-theta)))^(1/1))/
-                ((log(2))^theta))
+      #SqM[i]=(((Sq[i]/(gamma(1-theta)))^(1/1))/
+      #          ((log(2))^theta))
       SqrM[i]=(((Sqr[i]/(gamma(1-theta)))^(1/1))/
                  ((log(2))^theta))
-      SqQ75[i]=(((Sq[i]/(gamma(1-theta)))^(1/1))/
-                  ((log(4/3))^theta))
+      #SqQ75[i]=(((Sq[i]/(gamma(1-theta)))^(1/1))/
+       #           ((log(4/3))^theta))
       SqrQ75[i]=(((Sqr[i]/(gamma(1-theta)))^(1/1))/
                    ((log(4/3))^theta))
       
@@ -544,7 +569,10 @@
       SNCM[i]=median(B)
       SNCQ75[i]=quantile(B,0.75)
       
-   
+      pr<-Sm[i]#*(1-betat)/(1-betat*Sm[i]) 
+      for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}} 
+      SqM[i]=median(B) 
+      SqQ75[i]=quantile(B,0.75) 
       
       
       
@@ -558,10 +586,10 @@
                  ((log(2))^theta))
       
       
-      SqQ75[1]=(((Sq[1]/(gamma(1-theta)))^(1/1))/
-                   ((log(4/3))^theta))
-      SqM[1]=(((Sq[1]/(gamma(1-theta)))^(1/1))/
-                 ((log(2))^theta))
+      #SqQ75[1]=(((Sq[1]/(gamma(1-theta)))^(1/1))/
+       #            ((log(4/3))^theta))
+      #SqM[1]=(((Sq[1]/(gamma(1-theta)))^(1/1))/
+       #          ((log(2))^theta))
 
       
       # draw random realization from the two frechet distibutions
@@ -576,8 +604,12 @@
       pr<-Sm[i]
       for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}}
       
-      SNCM[1]=median(B)
-      SNCQ75[1]=quantile(B,0.75)
+      #SNCM[1]=median(B)
+      #SNCQ75[1]=quantile(B,0.75)
+      
+      
+      SqM[1]=median(B) 
+      SqQ75[1]=quantile(B,0.75) 
 
       
     }
@@ -601,7 +633,7 @@
     time2<-c("1400-69","1470-1539","1540-1609","1610-79","1680-1749")
     q.df<- data.frame(time, EqM,SqM,EqQ75,SqQ75,CIq[1,],CIq[2,],CIq75[1,],CIq75[2,])
     
-    tikz(file = "q.tex", width = 5, height = 5)
+    tikz(file = "q.tex", width = 5.5, height = 5)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(q.df, aes(x = time)) + 
@@ -613,20 +645,22 @@
       geom_line(aes(y = SqQ75), color="blue", linetype="dashed",size=2) +
       #Space does not appear after Latex 
       
-      labs( x = "Period", y = "Knowledge Quality") +
+      labs( x = "Period (years)", y = "log publications") +
       
       scale_x_discrete(limits = time2)+
       
       ylim(2.9, 9)+
+      geom_text(x=4, y=6, label="$Q_3(q_t)$",color="blue",size=7)+
+      geom_text(x=2, y=3.8, label="$Q_2(q_t)$",color="red",size=7)+
       
       theme_classic(
         base_family = "",
         base_line_size = 1/22,
         base_rect_size = 1/22)+
       theme(
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
         axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
         axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
@@ -640,7 +674,7 @@
     ################################
     qr.df<- data.frame(time, EqrM,SqrM,EqrQ75,SqrQ75,CIqr[1,],CIqr[2,],CIqr75[1,],CIqr75[2,])
     
-    tikz(file = "qr.tex", width = 5, height = 5)
+    tikz(file = "qr.tex", width = 5.5, height = 5)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(qr.df, aes(x = time)) + 
@@ -656,7 +690,10 @@
                     ymax = Inf), fill = 'white') +
       #Space does not appear after Latex 
       
-      labs( x = "Period", y = "Knowledge Quality") +
+      labs( x = "Period (years)", y = "log publications") +
+      
+      geom_text(x=4, y=8.2, label="$Q_3(q_t^R)$",color="blue",size=7)+
+      geom_text(x=1.5, y=6.5, label="$Q_2(q_t^R)$",color="red",size=7)+
       
       scale_x_discrete(limits = time2)+
       
@@ -667,9 +704,9 @@
         base_line_size = 1/22,
         base_rect_size = 1/22)+
       theme(
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
         axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
         axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
@@ -684,7 +721,7 @@
     ################################
     qnc.df<- data.frame(time, ENCM,SNCM,ENCQ75,SNCQ75,CINC[1,],CINC[2,],CINC75[1,],CINC75[2,])
     
-    tikz(file = "qnc.tex", width = 5, height = 5)
+    tikz(file = "qnc.tex", width = 5.5, height = 5)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(qnc.df, aes(x = time)) + 
@@ -700,7 +737,10 @@
                     ymax = Inf), fill = 'white') +
       #Space does not appear after Latex 
       
-      labs( x = "Period", y = "Knowledge Quality") +
+      labs( x = "Period (years)", y = "log publications") +
+      
+      geom_text(x=4, y=6, label="$Q_3(q_t^{NC})$",color="blue",size=7)+
+      geom_text(x=1.3, y=4, label="$Q_2(q_t^{NC})$",color="red",size=7)+
       
       scale_x_discrete(limits = time2)+
       
@@ -711,9 +751,9 @@
         base_line_size = 1/22,
         base_rect_size = 1/22)+
       theme(
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
         axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
         axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
@@ -731,7 +771,7 @@
     b.df<- data.frame(time, Embeta,Smbeta,CImbeta[1,],CImbeta[2,])
     
     
-    tikz(file = "b.tex", width = 5, height = 5)
+    tikz(file = "b.tex", width = 5.5, height = 5)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(b.df, aes(x = time)) + 
@@ -744,7 +784,8 @@
                     ymax = Inf), fill = 'white') +
       #Space does not appear after Latex 
       
-      labs( x = "Period", y = "\\% censored authors") +
+      labs( x = "Period (years)", y = "$\\overline{\\beta}m_t$ (\\%)") +
+      scale_y_continuous(breaks=c(4,8, 12))+
       
       scale_x_discrete(limits = time2)+
       
@@ -754,9 +795,9 @@
         base_line_size = 1/22,
         base_rect_size = 1/22)+
       theme(
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
         axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
         axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
@@ -791,13 +832,36 @@
       SqcC[i]=qcs(0,p,i,max,SqcC[i-1],nu,theta,Sqc[1],Sqr[1])
       SqrC[i]=qrs(0,p,i,max,SqrC[i-1],nu,theta,Sqc[1],Sqr[1])
       SqC[i]=qs(0,p,i,max,SqrC[i-1],SqcC[i-1],nu,theta,Sqc[1],Sqr[1])
-      SqMC[i]=(((SqC[i]/(gamma(1-theta)))^(1/1))/((log(2))^theta))
+      
+      Br=rfrechet(n, loc=0, 
+                  scale=(qrs(betat,p,i,max,SqrC[i-1],nu,theta,SqcC[1],SqrC[1])/(gamma(1-theta))),
+                  shape=1/theta)
+      
+      Bc=rfrechet(n, loc=0, 
+                  scale=qcs(betat,p,i,max,SqcC[i-1],nu,theta,SqcC[1],SqrC[1])/(gamma(1-theta)),
+                  shape=1/theta)
+      pr<-SmC[i]#*(1-betat)/(1-betat*Sm[i]) 
+      for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}} 
+      SqMC[i]=median(B) 
+     
+      
     }else{
       
       SqcC[1]=Sqc[1]
       SqC[1]=Sq[1]
       SqrC[1]=Sqr[1]
-      SqMC[1]=(((SqC[1]/(gamma(1-theta)))^(1/1))/((log(2))^theta))
+      
+      
+      Br=rfrechet(n, loc=0, 
+                  scale=(qrs(betat,p,i,max,SqrC[1],nu,theta,SqcC[1],SqrC[1])/(gamma(1-theta))),
+                  shape=1/theta)
+      
+      Bc=rfrechet(n, loc=0, 
+                  scale=qcs(betat,p,i,max,SqcC[1],nu,theta,SqcC[1],SqrC[1])/(gamma(1-theta)),
+                  shape=1/theta)
+      pr<-SmC[1]#*(1-betat)/(1-betat*Sm[i]) 
+      for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}} 
+      SqMC[1]=median(B) 
       
       }}
   
@@ -869,7 +933,7 @@
     Smbeta<-Smbeta*0
     bmc.df<- data.frame(time, Smbeta,SmbetaC)
     
-    tikz(file = "bmc.tex", width = 5, height = 4)
+    tikz(file = "bmc.tex", width = 5.5, height = 4)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(b.df, aes(x = time)) + 
@@ -881,17 +945,18 @@
                     ymax = Inf), fill = 'white') +
       #Space does not appear after Latex 
       
-      labs( x = "Period") +
+      labs( x = "Period (years)",y="$\\overline{\\beta}m_t$ (\\%) ") +
       scale_x_discrete(limits = time2)+
-      
+      scale_y_continuous(breaks=c(4,8, 12))+
+     
       theme_classic(
         base_family = "",
         base_line_size = 1/22,
         base_rect_size = 1/22)+
       theme(
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
         axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
         axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
@@ -908,7 +973,7 @@
     Sm<-Sm*100
     bc.df<- data.frame(time, Sm,SmC)
     
-    tikz(file = "bc.tex", width = 5, height = 4)
+    tikz(file = "bc.tex", width = 5.5, height = 4)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(bc.df, aes(x = time)) + 
@@ -916,7 +981,7 @@
       geom_line(aes(y = SmC), color="darkgrey", linetype="dashed",size=2) +
       #Space does not appear after Latex 
       
-      labs( x = "Period") +
+      labs( x = "Period (years)",y="$m_t$ (\\%)") +
       scale_x_discrete(limits = time2)+
       
       theme_classic(
@@ -924,9 +989,9 @@
         base_line_size = 1/22,
         base_rect_size = 1/22)+
       theme(
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
         axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
         axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
@@ -940,7 +1005,7 @@
     ################################
     sq.df<- data.frame(time, Sq,SqC,Sqr,SqrC,Sqc,SqcC)
     
-    tikz(file = "sq.tex", width = 5, height = 4)
+    tikz(file = "sq.tex", width = 5.5, height = 4)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(b.df, aes(x = time)) + 
@@ -952,7 +1017,7 @@
       geom_line(aes(y = SqcC), color="orange", linetype="dashed",size=2) +
       #Space does not appear after Latex 
       
-      labs( x = "Period") +
+      labs( x = "Period (years)",y="average log publications") +
       scale_x_discrete(limits = time2)+
       
       theme_classic(
@@ -960,9 +1025,9 @@
         base_line_size = 1/22,
         base_rect_size = 1/22)+
       theme(
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         axis.title.x = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
         axis.text.x  = element_text(size=11,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
         axis.text.y  = element_text(size=14,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
@@ -984,7 +1049,7 @@
       geom_line(aes(y = ((SqCd-Sq)/Sq)*100), color ="red",size=2) + 
       #Space does not appear after Latex 
       
-      labs( x = "Period") +
+      labs( x = "Period (years)") +
       
       ylab("Gains in average quality (in %)") +
       
@@ -1017,11 +1082,10 @@
     cat(paste('\\begin{table}[htbp]
 	\\centering
 \\begin{tabularx}{\\textwidth}{ ll *{5}{Y}}
-\\hline
-\\hline
-& &\\multicolumn{5}{c}{Period}\\\\
+\\toprule
+& &\\multicolumn{5}{c}{Period (years)}\\\\
 &   & 1400-1469 &1470-1539 & 1540-1609 & 1610-1679 & 1680-1749 \\\\
-\\hline
+\\midrule
 Baseline & Average quality &  ',round(Sq[1], digits=1),'     & ',round(Sq[2], digits=1),'& ',round(Sq[3], digits=1),'& ',round(Sq[4], digits=1),'& ',round(Sq[5], digits=1),'\\\\ \\\\
 
 No censorship & Average quality &  ',round(SqC[1], digits=1),'     & ',round(SqC[2], digits=1),'& ',round(SqC[3], digits=1),'& ',round(SqC[4], digits=1),'& ',round(SqC[5], digits=1),'  \\\\
@@ -1029,8 +1093,7 @@ No censorship & Average quality &  ',round(SqC[1], digits=1),'     & ',round(SqC
 
 No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(SqCd[2], digits=1),'& ',round(SqCd[3], digits=1),'& ',round(SqCd[4], digits=1),'& ',round(SqCd[5], digits=1),'\\\\
 ($\\mu_t=1 \\hspace{0.1cm} \\forall t$)& Gains w.r.t. baseline (\\%) &  0.0    & ',round(((SqCd[2]-Sq[2])/Sq[2])*100, digits=1),'& ',round(((SqCd[3]-Sq[3])/Sq[3])*100, digits=1),'& ',round(((SqCd[4]-Sq[4])/Sq[4])*100, digits=1),'& ',round(((SqCd[5]-Sq[5])/Sq[5])*100, digits=1),'\\\\
-\\hline
-\\hline
+\\bottomrule
 \\end{tabularx}
 \\caption{Authors quality at baseline, without censorship and without macroeconomic shocks}\\label{table:exp2}
 \\end{table}'))
@@ -1094,12 +1157,29 @@ No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(
   #UK macro shocks
   mu<-function(t) ifelse(t==1,100,ifelse(t==2,101.9,ifelse(t==3,101.4,ifelse(t==4,103.5,ifelse(t==5,147.3,0)))))/100
   
+  
+  #n<-10000#how many draws from distribution
+  #B=numeric(length=n)
+  #B1=numeric(length=n)
+  #Bc=numeric(length=n)
+  #Br=numeric(length=n)
+  #set.seed(3)
+  #B1=runif(n, min = 0, max = 1)  # shocks for deciding later from which distribution to draw
+  
   #Rescale Initial Condtions
-  mult=(1-0.43)^theta
+  mult=(1-0.45)^theta
   Sqc_uk[1]=Sqc[1]*mult
   Sqr_uk[1]=Sqr[1]*mult
   Sq_uk[1]<-fq(theta,p,Sqc_uk[1],Sqr_uk[1])
   SqM_uk[1]=(((Sq_uk[1]/(gamma(1-theta)))^(1/1))/((log(2))^theta))
+  
+  
+  Br=rfrechet(n, loc=0, scale=Sqr_uk[1]/(gamma(1-theta)),shape=1/theta) 
+  
+  Bc=rfrechet(n, loc=0, scale=Sqc_uk[1]/(gamma(1-theta)),shape=1/theta) 
+  pr<-mt(0,p,i,max,theta,Sqc_uk[1],Sqr_uk[1])
+  for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}}
+  SqM_uk[1]=median(B)
   
   #Compute the rest
   for(i in 2:leng){
@@ -1109,6 +1189,18 @@ No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(
     Sqr_uk[i]=qrs(0,p,i,max,Sqr_uk[i-1],nu,theta,Sqc_uk[1],Sqr_uk[1])
     Sq_uk[i]=qs(0,p,i,max,Sqr_uk[i-1],Sqc_uk[i-1],nu,theta,Sqc_uk[1],Sqr_uk[1])
     SqM_uk[i]=(((Sq_uk[i]/(gamma(1-theta)))^(1/1))/((log(2))^theta))
+    
+    Br=rfrechet(n, loc=0, 
+                scale=(qrs(0,p,i,max,Sqr_uk[i-1],nu,theta,Sqc_uk[1],Sqr_uk[1])/(gamma(1-theta))),
+                shape=1/theta)
+    
+    Bc=rfrechet(n, loc=0, 
+                scale=qcs(0,p,i,max,Sqc_uk[i-1],nu,theta,Sqc_uk[1],Sqr_uk[1])/(gamma(1-theta)),
+                shape=1/theta)
+    pr<-mt(0,p,i,max,theta,Sqc_uk[1],Sqr_uk[1])
+    for (j in 1:n) {if (B1[j]>pr) {B[j]=Bc[j]} else {B[j]=Br[j]}}
+    SqM_uk[i]=median(B)
+    
     
     
     }
@@ -1123,9 +1215,9 @@ No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(
     #SqM_UK<-c(3.112195, 3.240546, 3.647295, 3.850356, 4.928132)
     
   
-    sq_uk.df<- data.frame(time2, SqM,EqM_uk,SqM_uk,SqMC)
+    sq_uk.df<- data.frame(time2, SqM,EqM_uk,SqM_uk)
     
-    tikz(file = "sq_uk.tex", width = 10, height = 5)
+    tikz(file = "sq_uk.tex", width = 12, height = 5.5)
     
     #Simple plot of the dummy data using LaTeX elements
     plot <- ggplot(b.df, aes(x = time)) + 
@@ -1136,22 +1228,22 @@ No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(
       #geom_line(aes(y = SqMC), color ="black", linetype="dashed",size=2) + 
       #Space does not appear after Latex 
       
-      labs( x = "Period") +
+      labs( x = "Period (years)",y="median log publications  $Q_2(q)$") +
       
-      ylab("Median quality") +
       
       scale_x_discrete(limits = time2)+
                                 
-      
+      geom_text(x=3.7, y=5.55, label="Great Britain",color="blue",size=9)+
+      geom_text(x=1.5, y=4.75, label="Italy",color="red",size=9)+
       
       theme_classic(
         base_family = "",
         base_line_size = 1/22,
         base_rect_size = 1/22)+
       theme(
-        axis.title.y = element_blank(),
+        #axis.title.y = element_blank(),
         axis.title.x = element_text(size=22,margin = margin(t = 10, r =  0, b = 0, l = 0)),
-        #axis.title.y = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
+        axis.title.y = element_text(size=22,margin = margin(t = 0,  r = 10, b = 0, l = 0)),
         axis.text.x  = element_text(size=18,margin = margin(t = 10, r =  0, b = 0, l = 0),color="black"),
         axis.text.y  = element_text(size=18,margin = margin(t = 0,  r = 10, b = 0, l = 0),color="black")
       )
@@ -1204,7 +1296,7 @@ No Macro Shocks & Average quality &  ',round(SqCd[1], digits=1),'     & ',round(
       #geom_line(aes(y = gmm), color = "black",size=2) + 
       #Space does not appear after Latex 
       
-      labs( x = "Period", y = "Knowledge Quality") +
+      labs( x = "Period (years)", y = "Knowledge Quality") +
       
       ylim(min(gpsi1,gpsi2), max(gpsi1,gpsi2))+
       

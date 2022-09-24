@@ -1,0 +1,11 @@
+
+=============================================================================
+                   starting date                    1400 1470  1540 1610 1680
+                     end date                       1470 1540  1610 1680 1750
+        Number of published scholars (all)          210   402  764  758  779 
+    Log publications per scholar (all), median      4.27 4.55  4.29 3.68 3.33
+  Log publications per scholar (censored), median   7.73 7.07  7.07 5.67 5.87
+  Log publications per scholar (all), 75th perc.    5.73 5.98  5.56 5.05 5.16
+Log publications per scholar (censored), 75th perc. 7.89 7.91  8.16 7.27 6.81
+                % censored scholars                 6.67 10.95 7.85 6.6  4.49
+-----------------------------------------------------------------------------

@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: response-to-R1.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: achicago.bst
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Database file #1: prohibitorum.bib
+You've used 3 entries,
+            3641 wiz_defined-function locations,
+            707 strings with 5405 characters,
+and the built_in function-call counts, 17385 in all, are:
+= -- 2749
+> -- 29
+< -- 0
++ -- 889
+- -- 16
+* -- 496
+:= -- 3752
+add.period$ -- 12
+call.type$ -- 3
+change.case$ -- 6
+chr.to.int$ -- 3
+cite$ -- 3
+duplicate$ -- 1657
+empty$ -- 463
+format.name$ -- 27
+if$ -- 3219
+int.to.chr$ -- 0
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 21
+num.names$ -- 12
+pop$ -- 148
+preamble$ -- 1
+purify$ -- 9
+quote$ -- 0
+skip$ -- 1185
+stack$ -- 0
+substring$ -- 1822
+swap$ -- 307
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 25
+warning$ -- 0
+while$ -- 471
+width$ -- 0
+write$ -- 52

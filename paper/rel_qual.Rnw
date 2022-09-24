@@ -1,0 +1,18 @@
+\begin{table}[htbp]
+	\centering
+\begin{tabularx}{\textwidth}{ ll *{5}{Y}}
+\toprule
+& &\multicolumn{5}{c}{Period (years)}\\
+&   & 1400-1469 &1470-1539 & 1540-1609 & 1610-1679 & 1680-1749 \\
+\midrule
+Baseline & Average quality &   5.2      &  5.3 &  4.9 &  4.4 &  4.1 \\ \\
+
+No censorship & Average quality &   5.2      &  5.3 &  5.3 &  5.3 &  5.5   \\
+($\overline{\beta}=0$)& Gains w.r.t. baseline (\%) & 0.0  & 0.0 &  8.1 &  20.3 &  34.5 \\ \\
+
+No Macro Shocks & Average quality &   5.2      &  5.6 &  5.4 &  5 &  4.5 \\
+($\mu_t=1 \hspace{0.1cm} \forall t$)& Gains w.r.t. baseline (\%) &  0.0    &  4.5 &  11.4 &  13.7 &  9.3 \\
+\bottomrule
+\end{tabularx}
+\caption{Authors quality at baseline, without censorship and without macroeconomic shocks}\label{table:exp2}
+\end{table}

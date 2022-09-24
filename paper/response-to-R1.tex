@@ -1,0 +1,128 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsfonts,amssymb,amsmath}
+\usepackage{setspace,achicago,graphicx,url}
+
+
+
+\usepackage[top=.9in, bottom=.9in, left=.9in , right=.9in,letterpaper]{geometry}
+
+
+%For accepting graphs
+\usepackage{graphicx}
+
+\parskip5mm
+
+\begin{document}
+
+\hfill September 2022
+
+\textbf{MS2022 – 443-1: “Catholic Censorship and the Demise of Knowledge Production in
+Early Modern Italy”, by Fabio Blasutto and David de la Croix}
+
+\textbf{Response to Referee 1}
+
+
+We are  grateful to Referee 1 for their positive evaluation of our work – and
+for providing numerous suggestions that, we believe, allowed us to improve substantially our
+paper. Below, we detail how our revision deals with each of the issues raised by the Referee.
+The referee’s comments are in italics, followed by our point-to-point replies.
+
+\textit{
+1) One thing that is missing from the article entirely, is some background information about the contrasts between the Church (the Papal State) and the other Italian states. This is relevant as, for example, it might contribute to explaining why the Church is not more severe in its censorship. A well-known example is the “War of the Interdetto” which opposed the Republic of Venice to the Church in 1606. Also the Sabaudian State had a very anti-clerical stance from the eighteenth century. To clarify this point: Italy was not a unified state, but was divided into multiple states with their own objectives and relationships with the Church/Papal States. In the presence of a more or less unified market for books (as the language was more or less common, even when the vernacular was used) the Church, to be effective in its censorship, had to avoid making too unhappy ANY of the Italian states, which could have otherwise decided to play the role of heresy-spreader by protecting local authors and publishers from persecution. This placed a constraint on the Church ability to censor. Or at least, this article made me think along these lines…. Which I believe would be helpful to the authors to clarify some pending issues, regarding maximal levels of censorship (p. 25) etc.
+}
+
+We thank the referee for this argument which helps justify further a relatively low level of maximum censorship (parameter $\overline{\beta}=19\%$). We have incorporated these elements into the text (Section 3, ``The Dynamics under an Optimizing Church's Behavior").
+
+\textit{
+Related to this: the authors treat the Church as if it were able to do whatever it wanted in early modern Italy – but this was definitely not the case…  note that this is not only a matter of enforcing the decisions taken, but ALSO of avoiding making decisions that could not be enforced, leading to loss of credibility for the Church etc. I do not think that this issue is covered by the recent literature on enforcement of censorship (on this point, the authors seem to rely mostly upon Becker, Pino and Vidal-Robert 2021), but it is potentially important for understanding some of the mechanisms explored in this article.
+}
+
+The referee is right to point out that in the baseline version of our model the Church hardly faces any constraint: its behavior is bounded only by one upper limit in the rate of censorship ($\overline{\beta}$). We partially address this shortcoming in Appendix F.3, where we perform some robustness checks where the maximal rate of censorship is allowed to differ across space and over time. The variation in the rate of censorship can be interpreted as an equilibrium that depends on feasibility but also on political economy considerations, whose relevance can differ across time and space.
+
+Note that these robustnesses are different from the one (in Appendix F.3.) where the \textit{rate of enforcement} of censorship ($\chi$) is calibrated following Becker, Pino and Vidal-Robert (2021). This robustness is different because it implies that some books were printed and read by the public, even if the Church decided to list them in the Index.
+
+
+\textit{
+2) The most substantial drop in the number of publications by authors in Italy takes place during 1610-79. To which point this could be attributed to factors different from censorship, as for example the premature death of authors due to the plague? As noted by Alfani 2013 (see full cite in the “minor comments” list), plague affected 17th C Italy much more severely than North Europe. In 1630, plague in the North of Italy killed 35\% of the population. In 1656-57, plague in the South and the centre of Italy killed up to 40\%. I have the impression that these adverse epidemiological conditions contributed to aggravate the process described by the authors (but could not have caused it entirely) – it would be nice to know which part of the publications drop in Italy might be due to this. The authors are already modeling this when looking at the market for books – but what about the production of publications? Also, the conclusion about the market for books (at p. 34) is that “We conclude that the effect of censorship on knowledge production is considerably stronger than the effect of adverse longevity conditions”. Personally, I have no quarrels with this claim, but couldn’t the authors make a more explicit discussion of the relative size of the “longevity” effect and the “GDP” effects?
+}
+
+We respond to this comment together with the next comment.
+
+\textit{
+After having re-read the discussion at p.34 and Table 5, I add this: I am surprised that the authors compute average age at death of their scholars to model the “income” effect, which itself depends upon the size of the market for books – indeed, the reported trend in the average age at death of scholars does not appear to match well the general demographic tendencies of Italy (presumably due to the fact that the sample does not properly reflect the general Italian population). It seems to me that average age at death of scholars reflects the other side of the story – per-capita production of books. To model the size of the market for books, the authors should use instead either total population, or the size of the urban population (the most recent estimates of total population by macro-area should be those in Alfani, “La popolazione dell’Italia settentrionale nel XV e XVI secolo: scenari regionali e macro-regionali”, in La popolazione italiana del Quattrocento e del Cinquecento, Forum, Udine 2016, especially p. 36 – but this scholar should also have yearly estimates of the Italian population). And given that the 17th C. plagues affected both the production of books and the demand for books, what would be the joint effect on the outcome variables used in this article?
+}
+
+We performed three different analyses to respond to these two comments.
+
+First, we consider the supply side effect of the drop in longevity. It is explained in the paper (Section 4  - The Role of Demographic Shocks in Knowledge formation) as follows:
+
+``The above simulation only considers the effects of longevity on the demand side of the market for books. Longevity can also affect the supply side, by reducing the time available to authors to write books. This aspect is absent from the model, but we can get an idea of its size by using the data. In Appendix H, we quantify this channel  in two steps. First, we calculate the marginal effect of living one additional year on the mean, median, and 75th percentile of the log-publications of European scholars. We find a highly significant effect according to which one more year of life increases the log median publication by 0.019.
+Second, we adjust the baseline distributional moments by adding the marginal effects above times the deviation of aggregate longevity from its value in Period~1.
+That is, we calculate what the scholars' publications would look like if Italy did not experience the drop in longevity. We conclude that the drop in longevity experienced by Italy over the period 1470-1680 led scholars to  publish less, reducing the median log publications by 2\% at most. Hence, the supply side effect of the drop in longevity is there, is highly significant, but quite small.''
+
+The second analysis concerns the effects of population size. We added (Section 4  - The Role of Demographic Shocks in Knowledge formation):
+
+``
+Finally, we investigate whether the loss of population generated by wars and plagues highlighted by \citeN{alfani2013calamities} might have produced a demographic shock affecting the dynamics of knowledge production. We focus on urban population as it is more directly related to knowledge formation than the total population.  We first use the new data set of \citeN{buringh2021population} on European cities. We obtain the numbers presented in Table 8. According to that source, the urban population in Italy did not fall during the period considered and stalled during the seventeenth century. This reflects that demographic shocks might have been strong for some specific places, but not that strong at the macroeconomic level. We next compare Buríngh's numbers to those proposed by \citeN{alfani2019plague} for 32 cities from their  database which includes only the cities for which complete information about city population every fifty years from 1500 to 1800 was available. Using this data, we observe a drop in urban population between 1600 and 1650. This drop of 7.7\% is close to the drop in longevity we imputed in the exercise above but is less long lasting, so one cannot expect stronger effects using urban population instead of longevity. Moreover, population recovered and even overtook its previous level by 1750.
+
+\setcounter{table}{6}
+
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{ccc}
+\hline\hline
+year  &   urban population  & urban population for selected\\
+& \cite{buringh2021population} & cities \cite{alfani2019plague}\\
+\hline
+1400	&	1560	&	                        \\
+1500	&	2358	&	  1076                  \\
+1550	&	2798	&	  1196                  \\
+1600	&	3420	&	  1486                  \\
+1650	&	3446	&	  1372                  \\
+1700	&	3631	&	  1414                   \\
+1750	&	4175     &   1604                   \\
+\hline\hline
+\end{tabular}
+\end{center}
+\caption{Urban population in Italy (thousands of inhabitants)}
+\end{table}
+''
+
+
+Third, we seek to better explain how censorship and demographic shocks could be complementary explanations for the decline of Italy. We added (Section 4  - The Role of Demographic Shocks in Knowledge formation):
+
+ ``
+To conclude on the role of demographic shocks, it is likely that they affected knowledge production during the seventeenth century, by reducing longevity and/or the size of the urban population. However, they cannot explain why the quality of authors remained so low in our last period (1680-1750), while both longevity and population had recovered. Instead, censorship removed books from libraries and depressed quality \textit{every year} over most of the period (with diminishing enforcement in the last decades), being therefore able to explain the dramatic cumulative effect on quality we observe in the data.''
+
+
+\textit{
+P.4, the authors cite Bolt and Van Zanden 2020 regarding the estimates of Italian GDP. This is the paper that should be cited when the whole of the Maddison Project database is used – however, based on the guidelines provided by the project itself, as the authors are using the data for one country only they should cite instead (or should “also” cite) the original article which introduced the Italian data to begin with (probably this is one of Malanima's articles).
+}
+
+This has been corrected in the new text. In the introduction, we have replaced the citation to Bolt and Van Zanden with one to the original article introducing the Italian data (Malamina 2011). In Section 4 (Subsection: Identification Strategy) we write the following when introducing the GDP data:  ``The process for $\mu$ is taken from the annual GDP per capita series offered by Malanima (2011) and Bolt and van Zanden (2020).''
+
+\textit{
+p. 5, “the root causes of the decline of Italy”, the current literature tends to refer to this as a “relative” decline. So I suggest amending to “the root causes of the relative decline of Italy”. I would also point out that the survey of the literature on this topic is not very updated (the most recent cited work is 1999). Maybe the authors could consider adding another possible and more recent explanation to the list, which are adverse epidemiological circumstances (for this, see Alfani, “Plague in Seventeenth Century Europe and the Decline of Italy: an Epidemiological Hypothesis”, European Review of Economic History, 2013, which the authors already cite in another part of their article)
+}
+
+We thank the referee for the suggestions: we now refer to the relative decline of Italy on page 5. We added adverse epidemiological circumstances to the list of explanations for the decline of Italy and we cited the related literature suggested by the referee.
+
+\textit{
+p. 13, “shrank from about 3.4 to 2.4”, based on Table 2 shouldn’t this be “shrank from about 3.4 to 2.65”?
+}
+
+In this revision, the database was updated marginally, and all the estimations are new. Every number in the text has been updated and checked. Thank you for pointing out this mistake.
+
+\textit{
+Additional literature: about the Italian Inquisition, the authors might wish to check the recent book by Maifreda, I denari dell'inquisitore. Affari e giustizia di fede nell'Italia moderna (2014). I presume that they can read Italian as they cite some sources in Italian…
+}
+
+We thank the referee for this suggestion. We have included a reference to this book in the text (Section 2, subsection ``Two Features of Author Censorship").
+
+\bibliographystyle{achicago}
+\bibliography{prohibitorum}
+
+
+
+\end{document}

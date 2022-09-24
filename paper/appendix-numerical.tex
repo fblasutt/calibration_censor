@@ -1,0 +1,231 @@
+\clearpage
+\section{Additional details on simulation results}\label{app:simul}
+
+\subsection{Technical details of estimation method} \label{app:dest}
+
+The objective function $\Omega(\vartheta)$ to minimize is given by
+\begin{equation}
+\Omega(\vartheta)= (\mathbf{m}-\mathbf{m}_\vartheta)'\mathbf{W}(\mathbf{m}-\mathbf{m}_\vartheta),
+\end{equation}
+where $\vartheta$ is the vector of parameters, $\mathbf{m}$ is the vector of data moments, and  $\mathbf{m}_\vartheta$ is the vector of moments obtained simulating the model with parameters $\vartheta$. $\mathbf{W}$ is a diagonal matrix with $1/\mathbf{m}^2$ as elements. The objective function is minimized using the genetic algorithm package in R developed by \citeN{scrucca2013}, which allows for global optimization.
+
+We computed bootstrapped standard errors of the parameters by drawing 500 random samples with replacement from the original data. For each bootstrap sample, we computed the 14 moments and estimated the corresponding parameters. We  then  used  these  boot-strapped estimates to compute the standard errors.
+
+The model's simulation is straightforward since there is no uncertainty, and the  dynamics are backward-looking. Note that we run simulations assuming that censorship starts in $t=3$. The timing of censorship depends on the fixed cost of censorship $\psi$, the estimation of which is discussed in Appendix \ref{app:dpsi} below.
+
+In Figure~\ref{M-fig:fit}, upper panels, the confidence intervals of moments are computed drawing 500 random samples with replacement and then using the $2.5^{th}$ and $97.5^{th}$ percentile from the distribution of the variable of interest.
+
+
+\subsection{Details on the calibration of $\psi$} \label{app:dpsi}
+
+Parameter $\psi$ is the fixed cost to set up the censorship apparatus. This parameter only influences the timing of censorship: conditional on censorship starting in a defined year, it has no impact on knowledge dynamics. We set it to such that censorship starts in $t=3$ as in the data. This parameter is \textit{set identified}: there is a range of values that can rationalize the timing of censorship. The bounds of $\psi$, namely $\psi_L$ and $\psi_R$, are set as follows. The lower bound $\psi_L$ is the limit value of $\psi$ for which starting censorship in $t=3$ gives a larger utility for the Church than starting it in $t=2$. The higher bound $\psi_R$ is the limit value of $\psi$ for which starting censorship in $t=3$ gives a larger utility for the Church than waiting and starting it in $t=4$.\footnote{Starting censorship in previous periods (2,1,0,-1..) would have given the Church a lower utility than waiting for $t=3$.}
+
+Note that we set $\psi$ assuming a linear time utility function $u(1-m)$. If we chose a different shape that respects the assumptions about $u()$, the value of $\psi$ would have changed, but the timing of censorship and the dynamics would have stayed the same. Note that in Table \ref{M-table:param} we report a scaled value of the fixed cost, defined as $\hat{\psi}=\psi/[ V^C(1/(2-\overline{\beta}))-V^N(1/(2-\overline{\beta}))]$. Using the methodology explained above, we find $\hat{\psi}\in [1.0310,1.0339]$.
+
+\subsection{Robustness}\label{app:robust}
+
+
+We now consider the robustness of the simulation results to using alternative samples and/or different theoretical assumptions. The results are reported in Table~\ref{table:robust}.
+
+\textbf{Imperfect censorship.} In the model, we assumed that no one could access the knowledge embodied in forbidden books. This sensibility check consists of assuming that the Church was able to enforce censorship only in $\chi\%$ of total cases. Hence, even if $m_t\overline{\beta}$ authors have been censored, only  $m_t\overline{\beta}\chi$ are not available to the next generation. One important question is how to set the value of $\chi$. Our strategy is to calibrate  $\chi$ such that it matches the causal estimates of censorship enforcement in \citeN{becker2021} (BPV). BPV employ a difference-in-differences strategy to study the effect of being indexed on getting printed. Table 1 of BPV reports the effect of the 1559 Roman Index on books printed in the Italian Peninsula.\footnote{They consider books printed in cities within 500km from Rome. This includes all the Italian peninsula except for the extreme northwest and the south of Sicily.} We consider the intermediate estimate of censorship enforcement in Table 1 of BPV (row six, column two), according to which the probability of getting printed goes down by 0.005 after the Index is introduced.\footnote{Their outcome is a dummy variable $p_{a,i,t}$ that takes the value 1 if any books by author $a$ are printed in city $i$ in decade $t$.} Since the probability of being printed was 0.006 before the introduction of the index, we set $\chi=0.005/0.006=83.3\%$. The results reported in Table \ref{table:robust} indicate that imperfect censorship has only an effect on the baseline results, but this is relatively small. In particular, the impact of censorship on knowledge growth stays large and negative.
+
+\textbf{Self-censorship.} History tells us that censoring books was not the only tactic the Church used to limit the spread of revolutionary books. In fact, in the second half of the $16^{\text{th}}$ century, the Catholic Church developed a system of tribunals, called the \textit{Roman Inquisition}, aimed at persecuting both authors and printers accused of heresy. This institution affected the work of scientists and thinkers. One notable example is the experience of Galileo Galilei, who was tried by the Inquisition in 1633. The Inquisition matters for our analysis because it can slow down the accumulation of revolutionary knowledge through self-censorship: even if one author writes a high-quality revolutionary book, she still might prefer not to submit it to the printer for fear of being processed by the Inquisition. Others might have migrated elsewhere in Europe, where the Church could not reach them.\footnote{\citeN{de2020academic} show that a European academic market existed in early modern times.} Similarly, even if the best books are revolutionary, printers might still prefer to be compliant for the same reason. This mechanism can be easily incorporated in our framework, assuming that the Inquisition makes publishing and writing revolutionary books less desirable. Individuals take this into account discounting $q^R$ by a factor $\gamma\in[0,1]$. We can also interpret $\gamma$ as the probability that authors decide not to write revolutionary books or that printers do not publish them for fear of being punished. Under this new mechanism, the probability that a printer chooses the revolutionary sector is:
+\begin{equation}\label{eq:censorhip2}
+	\text{Prob}\{q^C<\gamma p q^R\}=\text{Prob}\{\tilde{h}^C>(\gamma p)^{-1/\theta}\tilde{h}^R\}=m_t.
+\end{equation}
+
+We re-estimate the model enriched by this feature. Parameter $\gamma$ is mostly identify by $\overline{\beta}m_2$, which is too low in the simulations when the baseline model is used.  Note that self-censorship is introduced starting $t=3$, which allows us to separately identify $\gamma$ and $p$. Parameter $\gamma$ helps to speed the demise of revolutionary ideas, thus allowing for an initial larger level of revolutionary ideas. The estimation implies that $\gamma$=0.977 and $\overline{\beta}$=0.17, which is very close to the baseline. Then, we assess the role of direct censorship by comparing simulations with the estimated $\overline{\beta}$ and setting $\overline{\beta}=0$, where $\gamma$ is always set to its estimated value. If the baseline model was misspecified, the version with self censorship should give a different effect of direct censorship on knowledge growth. This is not the case: Table \ref{table:robust} shows that the results differ only slightly from the baseline. To understand the joint role of direct and self censorship, we perform a counterfactual simulation where $\overline{\beta}=0$ and $\gamma=1$. The joint effect implies that knowledge quality would have been $59\%$ higher than in the baseline. Since the effect of direct censorship was $37\%$, this means that self-censorship also has an effect on knowledge quality, even if including it in the model does not alter the baseline results about the effects of direct censorship.
+
+
+\textbf{Ten periods model} In the baseline model estimation, we consider five  periods that last 70 years each. In this sensitivity check, we consider ten  periods that correspond to 1400-1434, 1435-1469, 1470-1504, 1505-1539, 1540-1574, 1575-1609, 1610-1644, 1645-1679, 1680-1714, 1715-1749.  To make the 5 periods (5P) and the 10 periods (10P) models comparable, the frequency at which authors can access new knowledge should be similar. We do this by assuming that the stock of knowledge available to authors in $t$ is made both by books written in $t-1$ and $t-2$. Specifically, we assume that in $t$ a share $\phi$ of the books available to authors was written in $t-1$ and a share $1-\phi$ in $t-2$. In the baseline model, $\phi=1$. In this sensitivity check, we calibrate $\phi$ such that, using the parameter estimates of the baseline 5P model, the share of revolutionary authors in the 5P model at $t=5$ equals the average share of revolutionary authors in the last two periods of the 10P model. This makes the potential speed of reallocation across compliant and revolutionary sectors in the two models comparable. After having set $\phi=7.8\%$ following the procedure we just described, we re-estimate the model. Like in the baseline, the target moments are based on the distribution of quality and the share of censored authors, but they are computed according to the model periods of this robustness.   Table \ref{table:robust} shows that the results of this sensitivity check differ only slightly with respect to baseline results.
+
+\textbf{Time-varying rate of censorship} In the baseline estimation we consider a model where the rate of censorship $\overline{\beta}$ stays constant over time. This sensitivity check consists of estimating the model again, allowing the rate of censorship to be different in each period. The results of this alternative estimation strategy are that the rate of censorship is fairly constant over time: the rate of censorship is 20\% in $t=2$,  17\% in $t=3$, 18\% in $t=4$ and 17\% in $t=5$.  Censorship reduced log publication by $35\%$  in the time varying model and by $35\%$ in the baseline model.
+
+\textbf{Only Italian born scholars.} Some scholars might have spent only a period of their time in Italy. Living outside Italy could have allowed them to access forbidden books without consequences. To limit this problem, we estimate the model using a sample of Italian born scholars only. Table \ref{table:robust} shows that the results of this sensitivity check differ only slightly with respect to baseline results.
+
+\textbf{Only Southern/Northern Italian born scholars.} The model used for the baseline estimation assumes that the rate of censorship that the Church can enforce does not depend on scholars' location in Italy. This assumption is problematic if the actual rate of censorship differed drastically across Italian regions. To understand whether this is the case, we estimate the model separately for Italian scholars born in northern and southern Italy. A scholar is defined as northern Italian if he is born in a city whose latitude is larger than $43.8$, which corresponds to cities north of Florence. The results reported in Table \ref{table:robust} indicate that the effect of censorship on knowledge growth is  for northern and southern Italian scholars. The effect is slightly stronger for southern Italians because the rate of censorship there is slightly higher. This result is consistent with the Church having a stronger capacity in the Papal state.
+
+\textbf{Only $t\leq4$.} In the baseline model, we assume that the Church could enforce censorship until 1750, the end of period $t=5$. In this sensitivity check, we re-estimate the model assuming that the Church can enforce censorship until the end of $t=4$ only, or 1680. In the last period $t=5$, the Church keeps censoring authors, but anyone can read revolutionary books. The Church's ability to enforce censorship likely decreased over time. It is also likely that its ability to censor did not disappear completely. Hence, we think that this robustness provides a lower bound to the effect of censorship on knowledge growth. Despite the conservative assumption, the results in Table \ref{table:robust} show that the effect of censorship is still large, even though slightly lower than in the baseline case. This is because once the decline of revolutionary ideas started, its decline became unstoppable because of inertia.
+
+\textbf{No weak links.} In our baseline sample, we included scholars who have a weak link to a university or academy. These include foreign and corresponding members of academies. One example is Leonhard Euler at Accademia Ricovrati. While all of these scholars decided to do some work with the institution, they might not have been there physically. Scholars with weak links might be less constrained by the Church's censorship, for example, because they lived elsewhere in Europe. Hence, we propose a sensitivity check where we exclude them from the sample and then re-estimate the model. Table \ref{table:robust} reports the results, which differ only slightly from the baseline estimation. One reason why excluding weak links has a slight effect on the results is that they represent less than $2\%$ of the original sample.
+
+\textbf{All publications.} In the baseline sample, we measure the author's quality by the number of publications written \textit{by} them. It is possible to argue that quality is better measured if publications \textit{about} the author are also included. These capture the impact that these authors had on future generations. Table \ref{table:robust} reports the results where quality is measured by considering publication both \textit{by} and \textit{about} the author. The role of knowledge accumulation is very similar to the baseline, which indicates that results are robust to different quality measures.
+
+\textbf{Length of Wikipedia pages.} One problem with our measure of authors' quality is that it may be biased because older works have more editions. To limit this problem, we consider a different measure of author quality, based on the number of characters of the author's longest Wikipedia page. Table~\ref{table:robust} shows that our results are robust to this different measure of quality. Note that for building this measure of author quality we followed \citeN{de2020academic} by assuming that having no Wikipedia page is similar to having one page with a length of 60 characters.
+
+
+
+\textbf{Universities only} In the baseline estimation we consider both university professors and members of academies. In Appendix \ref{appendix:data2} we show that while the coverage of university professors is very good, we probably miss many members of academies. Hence, we provide a robustness check where we exclude those scholars who were not professors. Table \ref{table:robust} shows that the result of the baseline and this alternative estimation: censorship reduced log publications by $35\%$ in the first case and $24\%$ in the second case. This result reflects the larger share of censored authors among members of the academies.
+
+%UPDATED 29 AUG 2022=========================================================================================================================	
+{\begingroup
+\setlength{\tabcolsep}{5pt} % Default value: 6pt
+\renewcommand{\arraystretch}{1.1} % Default value: 1
+\begin{table}[htbp]	
+	\centering
+	
+	\begin{tabular}{l|cc|c|c}
+		\toprule
+		&  \multicolumn{2}{|c|}{The role of censorship in:} & Rate of & \% heretic\\ %
+		& scholars' quality  & \% heretic scholars & censorship & scholars  \\ % inserts table		
+		$Symbol$&$(q_5-\hat{q}_5)/q_5$ &$(m_5-\hat{m}_5)/m_5$  &  $\overline{\beta}$ & $m_5$\\
+		\midrule
+		Benchmark                       \input{normal.tex}
+		Imperfect censorship       \input{imperfect.tex}
+		Self censorship                  \input{selfc.tex}
+		Ten periods model$^{*}$           \input{tenpmod.tex}
+		Time-varying censorship rate  \input{betav.tex}
+		Only Italian born scholars      \input{ita.tex}
+		Only Southern Ital. scholars  \input{itas.tex}
+		Only Northern Ital. scholars  \input{itan.tex}
+		Only $t\leq 4$                  \input{maxt.tex}
+		No weak links to institution    \input{weak.tex}
+		All publications                \input{notonlyby.tex}
+		Length Wikipedia page           \input{wiki.tex}
+		%Censorship $\uparrow$ compliant books read                  \input{noloss.tex}
+		Universities only                \input{unio.tex}\\
+\bottomrule % inserts single horizontal line
+	\end{tabular}
+	{\raggedright\footnotesize Notes: variables denoted by the hat relate to simulations under a no-censorship scenario, while all the other variables relate to simulations with censorship. Subscript $5$ corresponds to the period 1680--1749.  Symbol * means that the variables of interest are built averaging  their value in periods 9 and 10 (not 5). Symbol ** denotes the average rate of censorship over periods 2-5. \par}
+	\caption{Robustness analysis}\label{table:robust}
+\end{table}
+\endgroup}
+
+\clearpage
+
+\section{British data}\label{app:british}
+
+Table \ref{table:momentstofitgbr} shows the equivalent of Table~\ref{M-table:momentstofit} for Great Britain.
+
+
+\begin{table}[htbp]
+	\centering
+\begin{tabularx}{\textwidth}{ l *{5}{Y}}
+\toprule
+Moment description& \multicolumn{5}{c}{Period}\\
+   & 1400-69 &1470-1539 & 1540-1609 & 1610-79 & 1680-1749 \\
+\midrule
+Number of published scholars (all)
+    & 20 &  65 & 175 & 368 & 851  \\
+Log publications per scholar (all), median (1)
+    &  1.78 & 3.89 & 4.81 & 5.3 & 4.99 \\
+Log publications per scholar (all), $75^{th}$ percentile
+    & 3.55 &6.21 &6.09 &6.49 &6.12 \\
+\bottomrule
+\end{tabularx}
+\caption{Moments per period}\label{table:momentstofitgbr}
+\end{table}
+
+Table~\ref{table:mugbr} shows the equivalent of Table~\ref{M-tab:mu} for Great Britain.  The annual GDP per capita series underlying the values of $\mu_t$ are from \citeN{broadberry2015british}.
+
+
+\begin{table}[htb]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$t$         &   years     & $\mu_t$ (GDP per capita)  \\
+\midrule
+1           & 1400-1469      & 1.000   \\
+2           & 1470-1539      &  1.019  \\
+3           & 1540-1609      & 1.014   \\
+4           & 1610-1679      & 1.035   \\
+5           & 1680-1749      & 1.473   \\
+\bottomrule
+\end{tabular}
+\caption{Different processes for $\mu_t$}\label{table:mugbr}
+\end{table}
+
+
+
+\section{The Supply side effect of Longevity} \label{app:robust-longevity}
+
+Is longevity an important factor in the number of publications of scholars? If this is the case, the drop in longevity we observe in Italy in the sixteenth century may have added another effect on knowledge accumulation, through the supply side of books.
+
+To quantify this channel we adjust the scholars' distributional moments for the variation in longevity at the macroeconomic level.
+We do this in two steps. First, we calculate the marginal effect of living one additional year on the mean, median, 75th, and 95th percentile of the log publications.
+Second, we adjust the baseline distributional moments by adding the marginal effects above times the deviation of aggregate longevity from its reference level.
+In other words, we calculate what the scholars' distributional moments would have looked like if Italy did not experience the drop in longevity described in the main text.
+
+
+Formally, we first estimate the following equation by OLS:
+\begin{equation}  \label{eq:long0}
+	y_{i,t} = \alpha + \delta(mean) \cdot L_{i,t} + e_{0 \ i,t} \ ,
+\end{equation}
+where $i$ indicates scholars; $y_{i,t}$, is the logarithm of one plus the number of publications; and $L_{i,t}$ is the scholar's longevity in years.
+Hence, $\delta(mean)$ captures the marginal effect of one additional year of life on the log publications. Estimating $\delta(mean)$ by OLS allows to
+understand this relationship for the \textit{average} scholar.
+Note that, by construction, the sample is restricted to all European scholars in academia with known birth and death years.
+
+Next, we run a quantile regression to estimate the relationship between longevity and publications at other distributional moments than the mean. Formally, we estimate:
+\begin{equation}  \label{eq:long2}
+	Q_{y_{i,t}}(q | L_{i,t}) = \alpha_i + \delta(q) \cdot L_{i,t} \ ,
+\end{equation}
+where $q$ is the quantile of interest; $\delta(Q50)$ and $\delta(Q75)$ are the marginal effect of living one additional year on the median and
+75th percentile of the sons' publication distribution. 
+
+Table~\ref{tab:longevity0} presents the corresponding estimates. Column~[1] confirms that longevity is important for publications.
+One additional year of life is associated with an increase of 0.0177 log publications on average.
+Columns [2] to [3] show that one additional year of life is associated with an increase of 0.019 log-publications both at the median and 75th percentile.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lccc}
+\toprule
+&[1] & [2] & [3]\\\vspace{0.1cm}
+ & OLS		&  \multicolumn{2}{c}{Quantile Regression} \ \ \ \  \ \  \  \     \\\vspace{0.1cm}
+ 	& \ \ $\delta(mean)$ \ \ & \ \ $\delta(Q50)$ \ \ & \ \ \ $\delta(Q75)$ \ \ \ \\
+\midrule
+Longevity (years) 	 & 0.0177$^{***}$ & 0.0190$^{***}$ & 0.0190$^{***}$ \\
+  & (0.00093) & (0.00112) & (0.00108) \\
+Observations 	&  27,192  &  27,192 &  27,192  \\
+Country fixed effects & yes & yes & yes\\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize \textit{Note:} The sample is scholars with known birth and death year;$^{***}p{<}.01$,$^{**}p{<}.05$,$^{*}p{<}.1$}
+\end{tabular}
+\caption{The effect of Longevity on son's distributional moments}\label{tab:longevity0}
+\end{table}
+
+We now correct the distributional moments based on these estimated marginal effects. Table~\ref{tab:adjust1} presents the following summary statistics broken down by period: the number of scholars in the sample, the number of scholars for whom longevity is known, the mean age at death, and the change in the mean age at death compared to the first period, which is used as a reference point.
+
+\clearpage
+\begin{table}[ht]
+\centering
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{tabular}{cccccc}
+\toprule
+                  & \multicolumn{1}{c}{Number of} & \multicolumn{1}{c}{Scholars with} & \multicolumn{1}{c}{Scholars' } & \\
+
+            Period      & \multicolumn{1}{c}{scholars} & \multicolumn{1}{c}{vital dates} & \multicolumn{1}{c}{longevity $L$} & \multicolumn{1}{c}{$\Delta$ longevity $L$} \\
+         \midrule
+1400-1469     & 210      & 163      & 68.25    &  \\
+1470-1539     & 397      & 291      & 63.85    & -4.4 \\
+1540-1609     & 760      & 572      & 65.19    & -3.06 \\
+1610-1679     & 756      & 553      & 64.80    & -3.45 \\
+1680-1749     & 778      & 612      & 69.99    & 1.74 \\
+\bottomrule
+\end{tabular}
+\caption{Scholars' mean age at death (longevity)}\label{tab:adjust1}
+\end{table}
+
+Table~\ref{tab:adjust2} presents the distributional moments. The second column shows the baseline median of log publications per period. The third column is its corrected value, which is computed by adding $0.019$ $\times$ $\Delta L$ to the respective value in the second column.
+The fourth column reports the implied percentage change in log publications. Finally, the last three columns repeat the same correction for the 75th percentile.
+We conclude that the drop in longevity experienced by Italy over the period 1470-1680 led scholars to publish less, reducing the median log publications by 2\% at most.
+
+\begin{table}[ht]
+\centering
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{tabular}{ccccccc}
+\toprule
+                   & \multicolumn{3}{c}{Median log publications} & \multicolumn{3}{c}{75th pctl log publications} \\
+               Period     & \multicolumn{1}{l}{Baseline} & \multicolumn{1}{l}{Corrected} & \multicolumn{1}{l}{Change} & \multicolumn{1}{l}{Baseline} & \multicolumn{1}{l}{Corrected} & \multicolumn{1}{l}{Change} \\
+         \midrule
+1400-1469     & 4.27     & 4.27     & 0.0\%    & 5.73     & 5.73     & 0.0\% \\
+1470-1539     & 4.56     & 4.48     & -1.8\%   & 5.98     & 5.90     & -1.4\% \\
+1540-1609     & 4.29     & 4.23     & -1.4\%   & 5.57     & 5.51     & -1.0\% \\
+1610-1679     & 3.69     & 3.62     & -1.8\%   & 5.05     & 4.98     & -1.3\% \\
+1680-1749     & 3.33     & 3.36     & 1.0\%    & 5.16     & 5.19     & 0.6\% \\
+\bottomrule
+\end{tabular}
+\caption{Adjusting publications to offset longevity changes}\label{tab:adjust2}
+\end{table}
+

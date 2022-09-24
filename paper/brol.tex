@@ -1,0 +1,245 @@
+
+\section{To do}
+\begin{itemize}
+	\item In the dataset Tito Placido shold be "Titi"+ update info using the index.
+	\item Non religious censorship. According to Amir Alexander, one of the reason why Galileo was persecuted was becuase of the use of infinitesimal in his math, which was an idea that Jesuits wanted to fight. The use of infinitesimals did not spread in Italy since Jesuits forbit it in their powerful order (kind of self censorship). After Torricelli and Cavalieri, no one in Italy could continue to use this techniques. Instead, in UK the indea of infinitesimals started spreading thanks to John Wallis. Later, Boyle and Newton built on this techniques.	
+	\item Gingerich found that about two thirds of the copies of \textit{De revolutionibus} in Italy at the time of the decree were "corrected." However, virtually none of the copies outside Italy, among which Spain and France, were touched. \citeN{gingerich2004} analyzes 277 copies of the first edition and 324 of the second of \textit{De revolutionibus}.
+	
+	\item \citeN{marcus2020} finds that nearly six thousand requests for reading licenses, approximately 10 percent of which were granted to physicians.
+	
+\end{itemize}	
+\section{Comments}
+\begin{enumerate}
+	\item Measuring quality using the number of publications about one author can be due to the fact that people wrote about him because he was censored. If this is the case, the higher quality of censored people might just reflect this fact.
+	\item Joel comments:
+	
+	\begin{itemize}
+		
+		
+		
+		\item Some academies had corresponding members. Some of the foreign members of the academy might have never visited Italy: can you check whether they actually spent some time there? Otherwise you might want to check whether your results/ empirical regularities still hold once you drop scholars born abroad.
+		\item You look at the role of written knowledge, while also tacit knowledge matters. It might be that after censorship has been in place, people shifted to tacit knowledge to avoid censorship.
+		\item Even thought the Church could control Italian printers, she could not do so for foreign ones. Some of those books might have reached Italy through smuggling. In particular, many books printed in Basel used to enter Italy in this way.
+		\item You look at scholars based in Italy only. Why? At the time a 'Republic of Letters' was in place: italian scholars could learn heretical ideas from other from northern Europe, where censorship could not be enforced. I can give you examples of that. Moreover, Italian heretical scholars could leave Italy and stay in contact from there with they former colleagues.
+		\item I am not very convinced by the fact that $ \overline{\beta}$ could be lower than 1. One way to motivate it would be to find examples of books where the heretical part was 'hidden' using metaphors.
+		\item An interesting experiment would be to set $ \overline{\beta}_{Italy}=\overline{\beta}_{northern europe}$.
+		\item Your story is about censorship in any field. For censorship in mathematics, read 'Infinitesimal: How a Dangerous Mathematical Theory Shaped the Modern World' by Amir. It is about the aversion of Jesuits on infinitesimal calculus.
+		\item Other literature related to your research: Feingold 'Jesuit Science and the Republic of Letters'+Eric Chaney on islamic science+Tabellini and Serafinelli
+	\end{itemize}
+	\item Jame Fenske comments:
+	\begin{itemize}
+		\item It would make more sense if the Church was constrained to Censor a maximum quantity of books. [In the model it is as if the number of book was constant. Maybe in the robustness we can link $ \overline{\beta}$ to the number of editions published in Italy in $t$.]
+		\item I would expect that the Church looked in particular for high quality heretical guys, rather than sampling from the whole distribution. Then in a second moment she can start censoring the average guy.
+		\item Literature: see Mark Koyama on Chinese censorship.
+		\item If you could disentangle the effect of self versus direct censorship it would be nice.
+		\item Read a lot of books about the historical context to motivate your model assumption: people could think at many ideas different than yours that match the data.
+		\item If you want to link the censorship capacity to the enforcement of the Church is a region, look at the number of catholic churches in that region or whether who was in power was close to the vatican [mah..].
+		\item Other measures of quality: whether the book has been "imitated" or cited in the future. Check how Dittamar compute the quality of books.
+	\end{itemize}
+	\item Does censorship depends on the field of publication?
+	\item Sasha Becker comments:
+	\begin{itemize}
+		\item The way I see censorship in Italy is more a "Religion versus secularism" thing rather than "revolutionary versus non revolutionary". According to Cantoni (2018) Protestant Reformation caused a reallocation of resources from religious to secular.[We can check censorship by field].
+		\item You might want to check how thing changes by region. In the Vatican state censorship could be fully enforced, in Venice it depended on the size of business of venetian printers in Rome.
+	\end{itemize}
+	
+\end{enumerate}
+
+
+
+
+
+\section{Accounting for Self-Censorship}
+In this section of the appendix we estimate a variation of our model which accounts for self-censorship. As it was described in subsection \ref{subsection:censor}, the only variation is the introduction of the parameter $\gamma$. We have some self censorship when the parameter takes a value lower than 1. The parametrization procedure is similar to the one presented in section \ref{section:identification}: the only differences the introduction of $\gamma$ among the parameters estimated with the method of simulated moments. We allow $\gamma$ to take values above from 0 to over 1: $\gamma$ being above 1 is counter intuitive and it would suggest a probable misspecification of the model.  Results are shown in Table~\ref{table:paramss}. We can notice that the estimated parameters are very close to the ones of the standard model, which are reported in Table~\ref{table:param}, but most importantly $\gamma$ is very close to unity, meaning that self censorship is a feature of secondary importance for understanding the effect of Church's censorship. Moreover, the standard errors of $\gamma$ are large, which makes the parameter not statistically different from 1 at the $90\%$ level, which further supports the idea that self-censorship was not key for the evolution of knowledge. Figures \ref{fig:fits}, \ref{fig:overs} and \ref{fig:exps} respectively show the fit, the over-identifying restrictions and the counterfactual experiment of the self-censorship model. The results are very close to the baseline model.
+
+\begin{table}[htpb]
+\caption{Identification of Parameters}
+\centering % used for centering table
+\begin{tabular}{@{} l c c c @{}}
+	\hline%inserts double horizontal lines
+	\ Calibrated Parameters &  & Value & Target  \\ [0.05ex] % inserts table
+	\hline
+	Discount Factor  & $\delta$   &0.5&   RBC literature\\[0.15ex]
+	Fixed Cost of Censorship  & $\psi$   &(0.152-0.168)& Censorship start \\[0.15ex]
+	\hline % inserts single horizontal line
+	\ Estimated Parameters &  & Mean & Standard Errors  \\ [0.05ex] % inserts table
+	%heading
+	\hline % inserts single horizontal line
+	\rule{0pt}{2.5ex}
+	Mean quality in 1  & $\overline{q}_1$   & 4.99 & 0.218  \\[0.15ex]
+	Mean R quality in 1  & $\overline{q}^R_1$   & 7.05 & 0.349  \\[0.15ex]
+	Productivity of books  & $\theta$   & 0.14 &  0.02  \\[0.15ex]
+	\ Max Censorship  & $\overline{\beta}$   & 0.15 &  0.027   \\[0.15ex]
+	Knowledge growth & $(1+\nu)\mu$   & 1.97 &  0.395   \\[0.15ex]
+	Price of revolutionary books   & $p$   & 0.39 &  0.049  \\[0.15ex]
+	Self Censorship Parameter   & $\gamma$   & 0.97 &  0.122  \\[0.15ex]
+	\hline
+\end{tabular}
+\label{table:paramss}
+\end{table}
+
+\begin{figure}[htbp]
+\includegraphics[width=.99\textwidth]{dynamicsss.pdf}
+\caption{Counterfactual Experiment: $\overline{\beta}=0$. Model with censorship}
+\label{fig:exps}
+\end{figure}
+
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=.7\textwidth]{fitss.pdf}
+\caption{Fit of the Structural Model with self-censorship}
+\label{fig:fits}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.7\textwidth]{overss.pdf}
+\caption{Overidentifying Restrictions with self-censorship}
+\label{fig:overs}
+\end{figure}
+
+\FloatBarrier
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%END SELF CENSORSHIP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+[[[OLD PIECE OF PROOF]: since $\mathcal{D}(0)<0$, $\mathcal{D}(1)<0$ and $\mathcal{D}(m^*)>0$, we can invoke twice the intermediate value theorem to prove that there exist at least one $m'\in[0,m^*]$ and at least one $m''\in[m^*,1]$ such that $\mathcal{D}(m')=\mathcal{D}(m'')=0$.
+If $\psi=0$, $\overline{m}=0$, $\hat{m}=1$ and it holds $V^C(m)-\psi>V^N(m)\;\forall\;m\in(\overline{m},\hat{m})$.]]
+\subsection{Preferences and Production}
+We consider an economy populated by $N$ agents that live one period and then die with probability one. Time is discrete and goes from $0$ to $\infty$. Individuals care about consumption only: the utility of individual $i$ is given by
+\begin{equation}
+U(c^i), \quad \text{with} \quad U'>0.
+\end{equation}
+Agents inelastically supply one unit of labor, whose effectiveness in terms of output depends on the idiosyncratic productivity of the individual, $k^i$.
+The consumption good is produced with a constant return to scale Cobb-Douglas technology, whose input are labor $L$ and land $M$
+\begin{equation}
+Y=L^\alpha M^{1-\alpha}.
+\end{equation}
+The amount of land stays constant over time and we normalize it to 1. Land is owned by the population, but the way in which land is shared between agents will not affect our results. Now we will be more precise in linking the current stock of knowledge with total production. Individual labor productivity $L_i$ is heterogeneous across agents and equals:
+\begin{equation}\label{eq:indout}
+L_i=h_i^{-\theta},
+\end{equation}
+where $h_i$ is an idiosyncratic cost parameter that measures the productivity of the individual: the lower the value of this parameter, the larger the output. The value of $h_i$ represents the idiosyncratic knowledge of each individual, acquired though diffusion of the stock of knowledge left by previous generations: this process will be explained in detail in the next subsection. $h_i$ is drawn from an exponential distribution with scale parameter $k$, which represents the quality of the current stock of knowledge:
+\begin{equation*}
+h_i\sim \exp(k).
+\end{equation*}
+Given that its distribution is exponential and given \ref{eq:indout}, the distribution of labor supply follows a Frechet distribution with scale parameter $k^\theta$ and shape parameter $1/\theta$. This allows us to write the average labor supply $\bar{L}$ as:
+\begin{equation}
+E(L_i)=\int_0^\infty h^{-\theta}_i (k e^{-k h_i})dh_i=k^{\theta}\Gamma(1-\theta),
+\end{equation}
+where $\Gamma(x)=\int_0^\infty s^{x-1} e^{-s}ds$ is the Euler gamma function. It follows that total labor supply equals
+\begin{equation}
+L=N E(L_i)=N k^{\theta} \Gamma(1-\theta).
+\end{equation}
+\subsection{Knowledge Diffusion and Occupational Choice}
+So far we have described how knowledge affects production, but not how the stock of knowledge evolves over time. Also, we did not mention the occupational choice that agents make. In our model there will be two different sectors: a \textit{compliant} one, indicated by the superscript $C$, where the type of knowledge that is used for production is acquiescent with the ideology of the Roman Church,\footnote{Note that being compliant does not necessarily mean to produce using the official Roman Church doctrine as an input: this is true just for the production of religious books or religious services in general. Instead, it just mean that the knowledge should not contradict the Roman Church doctrine.} and a \textit{revolutionary} one, indicated by the superscript $R$, which indicates that the knowledge used for production is considered to be heretical by the Roman Church.
+We define $k^R$ the amount of knowledge of the revolutionary sector and  $k^C$ the quality of knowledge in the compliant one. These variables represent a stock of knowledge in the sense that they govern the average productivity by occupational sector:
+\begin{equation}
+h^j_i \sim \exp(k^j), \quad \text{with} \ j\in \{C,R\} \ \text{and} \ i\in \{1,..,N\}.
+\end{equation}
+Note that these two variable also represent the state variables of the economy.
+During their life, individuals acquire knowledge coming from the previous generation\footnote{We can think that the knowledge of the previous generation is embodied in books, objects or other human creations that are transmitted to future generations.}. Every individual encounter $\mu$ ideas during her life, where some of them belong the compliant and other to the revolutionary type. Each individual retains the best idea coming from each one of the two distributions, and will store this knowledge, making it available to future generations. Note also that the number of revolutionary ideas that each agent will encounter in $t$ depends on the the share of individuals that produced with the revolutionary technology in the previous generation, which is denoted by  $m_{t-1}$. Therefore, a individual will meet $\lfloor \mu m_{t-1} \rfloor$ revolutionary ideas  and $\lfloor \mu (1-m_{t-1}) \rfloor$ compliant ideas, draw at random along her life and before she starts producing. Formally, the process of retaining the best ideas by sector is described as
+\begin{align*}	
+\hat{h}^C_i&=\text{min}\{h^C_1,..,h^C_{\lfloor(1-m_{t-1}) \mu\rfloor}\}\ \sim \exp(k^C (1-m_{t-1}) \mu),
+\\ \hat{h}^R_i&=\text{min}\{h^R_1,..,h^R_{\lfloor m_{t-1} \mu \rfloor}\}\ \sim \exp(k^R m_{t-1} \mu),
+\end{align*}
+where $ \hat{h}^C_i$ is the potential output if $i$ decides to produce using the compliant technology, while she would produce $ \hat{h}^R_i$ using the revolutionary one. Note the distribution of retained ideas maintains the same shape with a different scale parameter, which follows from the property of the exponential distribution. For the sake of simplicity, from now on we will approximate $\lfloor(1-m_{t-1}) \mu\rfloor$ and $\lfloor m_{t-1} \mu \rfloor$ to respectively  $(1-m_{t-1}) \mu$ and $m_{t-1} \mu $, so that we will be able to proceed our analysis treating the number of encountered ideas as a continuous variable. Since both the best revolutionary and compliant ideas are retained and transmitted to the next generation, the aggregate stock of knowledge by type evolves over time according to:
+\begin{align}
+k_{t}^C&=k_{t-1}^C (1-m_{t-1}) \mu,\label{eq:kCtime} \\
+k_{t}^R&=k_{t-1}^R m_{t-1} \label{eq:kRtime} \mu.
+\end{align}
+
+Once the individual has been through the process of retaining the best idea for each type, she will choose whether to use the compliant or the revolutionary idea to produce in the market. We assume that she will choose the one bringing her more consumption, hence the most productive one. It follows that the average productivity is
+\begin{equation}
+h_i=\text{min}\{\hat{h}^C,\hat{h}^R\} \ \sim \exp(k^C+k^R)=Exp(k),
+\end{equation}
+while the probability\footnote{For $N$ big enough we can apply the law of large numbers and say that $m$ is also the share of chosen revolutionary ideas} that the revolutionary idea is chosen is:
+\begin{equation}\label{eq:sharer}
+m=\text{Prob}\{\hat{h}^C>\hat{h}^R\}=\frac{k^R}{k^R+k^C},
+\end{equation}
+which follows from the properties of the exponential distribution.
+
+\section{Model Calibration}
+What we have both in the data and in the Model:
+\begin{itemize}
+\item \% Censored books: $m_t \beta$
+\item Average output of revolutionary to  non revolutionary ideas (given $\theta$): $z_t^\theta$. $\theta$ can be taken such that the fictional distribution of productivity resembles the one of scholar's quality (Fit a Frechet distribution to the overall distribution of output quality. I get a shape and a scale parameter which are respectively $1/\theta$ and $k^\theta$ in the model.)
+\end{itemize}
+Then, distinguishing between the two models:
+\begin{itemize}
+\item \textit{Rule of Thumb Model}. Assuming that $t=0$ happens when we first observe the data, we can have $\beta$ from \ref{proposition:rthumb} and from the fact of observing $m_0\beta$. A good test for the model would be to see that the $m_0$ that arise from this method and the other one arising from \ref{eq:sharer} coincide. Then, we can let the model work and see if the simulations resembles what happened in the data. PROBLEM: given $m_0\beta=0.1$, using \ref{proposition:rthumb} we get $\beta=0.18$, which seems inconsistent with the observed distribution of the quality of authors (there are almost no top authors that were not censored).
+\item \textit{Maximizing model}. Here, the thing that we would like to have is first to have a period with rising $m$ and no censorship, and a second period with a decreasing censorship and a decreasing $m$. PROBLEM: In order to have that, we need $m_0>0.5$ (see \ref{proposition:dynex}) and hence also $\overline{m}>0.5$. Again, given $\overline{m}\overline{\beta}=0.1$, we get $\overline{\beta}<0.2$, , which seems inconsistent with the observed distribution of the quality of authors (there are almost no top authors that were not censored).
+One possible solution to this: assuming that revolutionary comes from $\exp(\psi k^R)$ will give as a result that, without censorship, revolutionary ideas start diverging at $1/(1+\psi)$.
+\end{itemize}
+
+
+%Here old proposition, assumption and proofs
+
+From now on we restrict our attention to the region of parameters that allows for the possibility that $m_t$ is first rising and then declining over time.
+\begin{assumption}\label{assumption:half}
+$V^C(1/2)-\Psi<\frac{u(1/2)}{1-\delta}$.
+\end{assumption}
+Assumption \ref{assumption:half} tells us that it is optimal not to set up the censorship apparatus when $m_t=1/2$, which is the threshold below which $\lim_{t\to\infty} m_t=0$ even without imposing censorship. In this scenario Proposition \ref{proposition:threshold1} holds:
+
+\begin{proposition}\label{proposition:threshold1}
+Under Assumption \ref{assumption:half}, $V^C(m_t)-\Psi<V^N(m_t) \; \forall \; m_t\leq 1/2$.
+\end{proposition}
+\begin{proof}
+See appendix \ref{appendix:a}.
+\end{proof}
+
+Proposition \ref{proposition:threshold1} is important because it allow us to claim that the Church will never build a censoring apparatus as soon as the share of revolutionary books will converge naturally to 0. \ref{proposition:threshold1} also imply that, if a threshold $\overline{m}$ for setting up a censoring apparatus exists, it must be that $\overline{m}>1/2$, which allows for a region where the share of revolutionary books is increasing and the Church waits before acting. We need to impose one additional assumption for proving the existence and uniqueness of such threshold:
+\begin{assumption}\label{assumption:inf}
+Defined $\overline{m}=1/(2-\overline{\beta})$, $\forall\;m'\geq\overline{m}$ it holds that $V^C(m')=-\infty$. [I would like this to follow from preferences. From this it follows that the Church NEVER choose an equilibrium path that leads asymptotically to $m_t=1$.]
+\end{assumption}
+Assumption \ref{assumption:inf} assures that the Church, if she has the possibility, she will never take an action that will leads to a revolutionary steady state. This additional assumption turns out to be crucial for the existence and uniqueness of the threshold.
+\begin{proposition}\label{proposition:threshold}
+Under assumptions \ref{assumption:half} and \ref{assumption:inf}, $\exists! $ $\overline{m}\in(1/2,1/(2-\overline{\beta})]$ such that $V^C(\overline{m})-\Psi=V^N(\overline{m})$. Moreover, it holds:
+\begin{itemize}
+	\item Proposition \ref{proposition:conv} holds.
+	\item If a censorship apparatus has not been established yet, it will if and only if $m_t\geq\overline{m}$.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+To be done.
+\end{proof}
+
+
+%Proofs that were in the appendix
+\begin{proof} of Proposition \ref{proposition:threshold1}.\\
+First, we define $\hat{V}^N(m_t)$ the value function of the Church if she never switches to a censorship regime and note that $\hat{V}^N(m_t)\leq V^N(m_t)\;\forall\;m_t$. Now, let's define $\mathcal{D}(m_t)=\hat{V}^N(m_t)-V^C(m_t)+\psi$, which can be written as
+\[
+\mathcal{D}(m_t)=\sum_{s=t}^{\infty}\delta^s\log\bigg[\frac{-1}{-(\frac{m_t}{1-m_t})^{2^s}-1}\bigg]-\delta^s\log\bigg[\frac{-1+\overline{\beta}}{-(\frac{m_t}{1-m_t}\overline{\beta})^{2^s}-1+\overline{\beta}}\bigg]=\sum_{s=t}^{\infty}\delta^s time_s(m_t)
+\]
+Now note that $time_s(m_t)$ is decreasing in $m_t$
+\[
+\frac{\partial time_s(m_t)}{\partial m_t}=\frac{2^s \left(\frac{\overline{\beta} -1}{\beta -\left(\frac{(\overline{\beta} -1) m_t}{m_t-1}\right)^{2^s}-1}-\frac{1}{\left(\frac{m_t}{1-m_t}\right)^{2^s}+1}\right)}{(m_t-1) m_t}\leq0
+\]
+from which it follows directly that also $\frac{\mathcal{D}(m_t)}{\partial m_t}\leq0$. Now note that since 0 is a stable steady states of the dynamics of $m_t$ as Proposition \ref{proposition:dynex} states, we can write $\mathcal{D}(0)=\hat{V}^N(0)-V^C(0)+\psi=\psi$. Now, since $\mathcal{D}(m_t)$ is non increasing, $\mathcal{D}(0)>0$ and $\mathcal{D}(1/2)>0$ from Assumption \ref{assumption:half}, we can conclude that for $m_t\in[0,1/2]$ we have $\hat{V}^N(m_t)>V^C(m_t)-\psi$. Since $\hat{V}^N(m_t)\leq V^N(m_t)\;\forall m_t$, then it also holds $V^N(m_t)>V^C(m_t)-\psi$ for $m_t\in[0,1/2]$.
+\end{proof}
+
+\begin{proof} of Proposition \ref{proposition:threshold}.\\
+Before we start the proof, we will refer to $m_t^+$ and $m_t^-$ to the $m_t$ that is obtained applying \ref{eq:lawm} forward and backward when $\beta=\overline{\beta}$. Similarly, we will refer to $f^{+1}(m_t)$ and $f^{-1}(m_t)$ to the $m_t$ that is obtained applying \ref{eq:lawm} forward and backward when $\beta=0$.
+\textbf{Existence.} Firstly, notice that if a threshold $\overline{m}$ exists, it cannot be $\overline{m}\leq 1/2$ because of Proposition \ref{proposition:threshold1}, and it cannot be $\overline{m}>f^{-1}(1/(2-\overline{\beta}))$ because of Assumption \ref{assumption:inf}.
+We define $\mathcal{D}(m_t)=V^C(1/2)-\psi-V^N(1/2)$, which is a continuous function in $[1/2,f^{-1}(1/(2-\overline{\beta})]$ because $V^C$ and $V^N$ are. Moreover, $\mathcal{D}(1/2)<0$ and $\mathcal{D}(f^{-1}(1/(2-\overline{\beta}))>0$  because $V^C(1/2)-\psi<V^N(1/2)$ and $V^C(f^{-1}(1/(2-\overline{\beta}))-\psi<V^N(f^{-1}(1/(2-\overline{\beta}))$. We can now invoke the intermediate value theorem to prove that there exists at least one value of $m_t$ such that $\mathcal{D}(m_t)=0$ in $[1/2,f^{-1}(1/(2-\overline{\beta})]$. This also imply that there exists at least one value of $m_t$ such that $V^C(m_t)-\psi=V^N(m_t)$.\\
+\textbf{Uniqueness.} We prove uniqueness by contradiction. Suppose that exist two thresholds $m_L$ and $m_H$ with $m_H>m_L$ such that $V^C(m_L)-\psi=V^N(m_L)$ and $V^C(m_H)-\psi=V^N(m_H)$. Note that it holds $V^C(m)-\psi\geq V^N(m)$ for $m\geq m_H$ and $V^C(m')-\psi\leq V^N(m')$ for $m_L\leq m'\leq m_H$ because of the continuity of the two functions and because of Assumption \ref{assumption:inf}. Now, suppose it holds $m_L^+\leq m_H$, which implies
+\begin{multline*}
+\log(1+m_L)+\delta V^C(m_L^+)-\psi\delta>\log(1+m_L)+\delta V^C(m_L^+)-\psi\\=V^C(m_L)-\psi=V^N(m_L)=\log(1+m_L)+\delta V^N(m_L^+).
+\end{multline*}
+
+This leads to a contradiction because it cannot be that $m_L^+\leq m_H$ and $V^C(m_L^+)-\psi>V^N(m_L^+)$ hold at the same time.
+
+Now, suppose instead that $m_L^+> m_H$ hold. Then:
+\[
+\log(1+m_L)+\delta V^C(m_L^+)-\psi=V^C(m_L)-\psi=V^N(m_L)=\log(1+m_L)+\delta (V^C(m_L^+)-\psi),
+\]
+which simplified gives
+\[
+\psi=\delta\psi,
+\]
+which again is a contradiction for $\psi>0$ and $\delta<1$.\\
+\textbf{Dynamics.} That the censorship apparatus will be established if and only if $m_t\geq\overline{m}$ follows trivially from the proof of existence and uniqueness. Instead, the dynamics of Proposition \ref{proposition:dynex} hold
+\end{proof}

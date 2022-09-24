@@ -1,0 +1,254 @@
+
+\section{Quantitative Results}\label{section:identification}
+
+\subsubsection*{Identification Strategy}
+
+In this section, we estimate the parameters of the model of knowledge diffusion under the optimizing Church's behavior described in Section~\ref{section:theory}, using the data and stylized facts described in Section~\ref{section:data}. We follow a three-step estimation strategy. The first step is to set one parameter following the literature. The second step is to estimate six parameters using a minimum distance estimation procedure, under the assumption that censorship kicks in mid $16^{th}$ century as in the data. The last step is to set one last parameter to match the timing of the introduction of censorship.
+
+
+\begin{table}[htb]
+      \centering % used for centering table
+\begin{tabular}{ccccc}
+\toprule
+$t$         &   years       & rate of censorship $\beta $  & share of censored authors & $\mu_t$ \\
+\midrule
+1           & 1400-1469     & 0                            & 0                        & 1.000\\
+2           & 1470-1539     & 0                            & $m_2\overline{\beta}$    &  0.878\\
+3           & 1540-1609     & $\overline{\beta}$           & $m_3\overline{\beta}$    & 0.787\\
+4           & 1610-1679     & $\overline{\beta}$           & $m_4\overline{\beta}$    & 0.828\\
+5           & 1680-1749     & $\overline{\beta}$           & $m_5\overline{\beta}$    & 0.851\\
+\bottomrule
+\end{tabular}
+\caption{Model Periods}\label{tab:periods}
+\end{table}
+
+Before going into the estimation details, we specify the relationship between model periods and their empirical counterpart, see Table~\ref{tab:periods}.
+We consider five model periods that correspond to 1400-1469, 1470-1539, 1540-1609, 1610-1679, and 1680-1749. We made this choice following four criteria. First, we want each period to correspond to an equal number of years. Second, we want to stop in 1750 as the Church might have lost the capacity to censor after this date.\footnote{\citeN{putnam1906} claims that censorship exerted the largest influence between 1550 to 1750.} Third, we want a year close to 1544 (first edition of the Index) to be the threshold between two consecutive model periods. In this way, we can claim that censorship started in the second of these two periods. Finally, we don't want each period to be too short because the number of authors per period would be small, causing the moments' standard errors to be large. A robustness analysis with ten periods instead of five is proposed in Appendix~\ref{O-app:robust}.
+
+
+
+
+Table~\ref{tab:periods} shows in parallel the censorship rate and the share of censored authors, to stress that censorship in period 3 affects books written in period 2.
+The process for $\mu$ is taken from the annual GDP per capita series offered by \citeN{malanima2011long} and \citeN{bolt2020maddison}. $\mu_t$ is obtained by averaging GDP per capita over the 70 calendar years corresponding to each model period $t$. Values are normalized to have $\mu_1=1$.
+
+\textbf{Preset Parameter.} We set the discount factor $\delta$ to 0.06, which corresponds to a quarterly discount factor of $0.99$: $0.06\approx0.99^{280}$. This parameter's role is minimal: conditionally on censorship starting on $t=3$, it does not affect dynamics.
+
+\textbf{Minimum Distance Estimation.} We estimate the vector of six parameters
+$$\vartheta=[k^C_1,k^R_1,\theta,\overline{\beta},\nu,p]$$
+ using a minimum distance estimation procedure. The parameters are identified by minimizing the distance between 14 empirical and theoretical moments, implying thus 8 (=14-6) over\-identifying restrictions.  The first  moments are based on the distribution of the quality of all authors, $q_{it}$, obtained by drawing with probability $m_t$ from the distribution of $q^R_t$ (i.e. a Fréchet($(k_t^R)^\theta,1/\theta$)) and with probability $(1-m_t)$  from the distribution of $q^C_t$.  Five moments are the median\footnote{We target the median instead of the mean because it is less sensitive to outliers.} of the quality of all authors $Q_2(q_t)$, and five other moments are their  $75^{th}$ percentile $Q_3(q_t)$. The last four moments are the share of censored authors $m_t \overline{\beta}$ for $t=2,3,4,5$.
+
+The above estimation problem belongs to the family of the Simulated Method of Moments \cite{mcfadden1989method}, a structural estimation technique to be applied when the theoretical moments obtain from simulating the model. Remark that we refrain from targeting separately moments based on censored vs. non-censored authors. These moments will rather be used to evaluate the quality of our estimation.
+
+Our six parameters are expected to influence all moments (except $\nu$ which does not affect $m_t\overline{\beta}$). But we can still think that some moments are more important than others for identifying specific parameters. Parameters $k^C_1,k^R_1$ are  identified by moment $m_2 \overline{\beta}$ (which depends on $m_1 \overline{\beta}$ through Equation~(\ref{eq:lawm}))  and by the median of the distribution of $q_{i1}$. Parameter $\nu$ is identified by the growth rate of overall quality. Parameter $p$ is  identified by the average share of censored authors $m_t \overline{\beta}$ over time (see Equation~(\ref{eq:sharer2})).  Parameter $\overline{\beta}$ influences the speed at which $m_t$ converges (Equation~(\ref{eq:lawm})), and is thus identified by the dynamics of the share of censored authors. Parameter $\theta$ governs the shape of the Fr\'echet distribution of knowledge quality and is identified by the $75^{th}$ percentile of the quality distribution.
+
+
+
+
+\textbf{Parameter set a posteriori.}  We set parameter $\psi$ such that censorship starts in $t=3$ as in the data. Parameter $\psi$ has no impact on knowledge dynamics conditional on censorship starting in a defined year. See Appendix~\ref{O-app:dpsi} for more details on the calibration of $\psi$.
+
+
+
+
+
+\subsubsection*{Estimation Results}
+
+We list the identified parameters and their standard errors in Table~\ref{table:param}. The estimation delivers $k^R_1>k^C_1$: this implies that the quality of censored authors is higher than non-censored authors, which is consistent with data even if the relative quality by sector is not among the targeted moments. The productivity of books $\theta$ equals 0.34: this is slightly lower than the value (0.5) used by \citeN{lucas2009}. Our estimate is lower because the dispersion in log publications is lower than the one in earnings observed in modern U.S. data, which is the target of \citeN{lucas2009}.
+ The relative price of revolutionary books $p$ equals $0.51$. This insures that the initial share of revolutionary authors is not too large, even if they have a much higher quality than compliant scholars.\footnote{For example, if $p$ was equal to 1, the share of revolutionary authors would converge to 1 very fast: as a result, the share of censored authors would converge to $\overline{\beta}$ and stay constant, unlike in the data.} Parameter $\nu$ insures that knowledge quality would have kept growing if censorship was never introduced. The rate of censorship $\overline{\beta}$ that the Church imposes equals 19\%.
+
+%%%%TABLE PARAMETERS%%%%%
+%UPDATED 29 AUG 2022=========================================================================================================================
+\input{tempp}
+
+
+
+%UPDATED 29 AUG 2022=========================================================================================================================
+\begin{figure}[p]	
+\hspace{0mm}
+\parbox{.49\textwidth}{
+		\centering
+		{Overall scholars quality:\\ \textcolor{red}{median $Q_2(q_t)$}, \textcolor{blue}{$75^{th}$ percentile $Q_3(q_t)$}}
+
+\scalebox{0.55}{\input{q.tex}}
+}\hspace{-6mm}
+\parbox{.49\textwidth}{
+		\centering
+{Share of censored scholars $\overline{\beta}m_t$\\
+\textcolor{white}{a}}
+
+\scalebox{0.55}{\input{b.tex}}
+}
+
+\vspace{10mm}
+\hspace{0mm}
+\parbox{.49\textwidth}{
+		\centering
+{Censored scholars quality:\\ \textcolor{red}{median $Q_2(q_t^R)$}, \textcolor{blue}{$75^{th}$ percentile $Q_3(q_t^R)$}}
+
+\scalebox{0.55}{\input{qr.tex} }
+}\hspace{-4mm}
+\parbox{.49\textwidth}{
+		\centering
+{Non-censored scholars
+quality:\\ \textcolor{red}{median $Q_2(q_t^{NC})$}, \textcolor{blue}{$75^{th} $ percentile $Q_3(q_t^{NC})$}}
+
+\scalebox{0.55}{\input{qnc.tex}}
+}
+	\caption{Model fit (upper panels), over-identification checks (lower panels).\\ Data (solid) and simulations (dashed).}
+	\label{fig:fit}
+\end{figure}
+
+%Note that our parameter estimates would be biased if the convergence forces, which imply larger growth rates for lower levels of knowledge, were not correctly taken into account by the model. In Appendix~\ref{O-app:robust-convergence} we show that the model matches well the publication dynamics of Great Britain, which lagged behind Italy in the fifteenth century.
+%\section{The Decline of Italy and Convergence} \label{app:robust-convergence}
+%In this paper we use a structural model to assess quantitatively the role of censorship in the decline in total publications per scholar in Italy. The credibility of our quantification depends on whether the convergence forces, which imply larger growth rates for lower levels of knowledge, are correctly taken into account by the model. If this was not the case, our parameter estimates would be biased.
+%For example, if the model convergence forces were stronger than the actual ones, the estimated effect of censorship would be too large because of the need to keep the level of publications in Italy low
+
+The model fit is reported in Figure~\ref{fig:fit}, upper panels. The simulated variables rarely lie outside the $95\%$ confidence interval of the data moments. %An exception is the $75^{th}$ percentile of the overall knowledge quality. This reflects that the underlying empirical distribution does not follow exactly a Fr\'echet distribution like in the model.
+
+%As a test of the theory, we compare our results to empirical observations that were not used to identify the parameters. Looking at the quality of censored $q_t^R$ and non-censored authors $q_t^{NC}$ (Figure~\ref{fig:fit}, lower panels) is particularly interesting as it allows us to test whether printers choose their sector according to its (relative) quality.\footnote{The distribution of quality of censored and revolutionary authors is the same because censorship is random. The distribution of quality of non-censored authors  $q_t^{NC}$ is obtained by drawing from the distribution of $q^R_t$ with probability $p^{nc}$ and from the distribution of $q^C_t$ with probability $1-p^{nc}$, where $p^{nc}$ is the share of \textit{printed} books that are revolutionary.}  This mechanism is summarized by Equation (\ref{eq:sharer2}): the share of revolutionary authors can assume one and only one variable given the ratio of the quality in the two sectors. This ratio can be proxied by the ratio of censored to non-censored authors' quality, which we can measure in the data. Since the model fit well the dynamics of censored and non-censored authors, we can assert that Equation~(\ref{eq:sharer2}) is likely to hold in the data too. The model also predicts that the share of revolutionary ideas was increasing before $t=3$. This is consistent with the fact that the share of censored books was larger in the period 1470-1539 than 1400-1469. Moreover, the average difference in quality between censored and non-censored authors decreases from 3.60 in 1470-1539 to 1.46 in 1680-1749.
+
+As a test of the theory, we compare our results to empirical observations that were not used to identify the parameters. Looking at the quality of censored $q_t^R$ and non-censored authors $q_t^{NC}$ (Figure~\ref{fig:fit}, lower panels) is particularly interesting.\footnote{The distribution of quality of censored and revolutionary authors is the same because censorship is random. The distribution of quality of non-censored authors  $q_t^{NC}$ is obtained by drawing from the distribution of $q^R_t$ with probability $p^{nc}$ and from the distribution of $q^C_t$ with probability $1-p^{nc}$, where $p^{nc}$ is the share of \textit{printed} books that are revolutionary.} This is because from the model's theoretical restrictions it follows that the observed share of censored authors and overall quality imply specific distributions of $q_t^R$ and $q_t^{NC}$ for a given parametrization.\footnote{Equation (\ref{eq:sharer2}) implies that the share of revolutionary authors can assume one and only one value given the ratio of quality in the two sectors $k^R_t$ and $k^C_t$. Since authors’ quality  in sector $j$ is strictly increasing in $k^j_t$, a given level of overall quality and share of censored authors can only be generated by two specific values of $k^R_t$ and $k^C_t$ for a specific parametrization. Finally, note that $k^R_t$ and $k^C_t$ are the model state variables: their value implies a specific quality of censored and non-censored authors.} Without targeting these moments in particular, the model matches them well, which gives credence to the model's mechanisms. The model also predicts that the share of revolutionary ideas was increasing before $t=3$. This is consistent with the fact that the share of censored books was larger in the period 1470-1539 than 1400-1469. Moreover, the average difference in quality between censored and non-censored authors decreases from 2.91 in 1470-1539 to 1.72 in 1680-1749.
+
+As a second out of sample test of our theory, we compare the dynamics of publications in Great Britain with model simulations. Data for Great Britain are in Appendix~\ref{O-app:british}. We simulate the dynamics of publications by decreasing the initial conditions in the state of knowledge ($k^R_1,k^C_1$) used for Italy by $45\%$ to match the median number of log publications in Great Britain in $t=2$.\footnote{We consider $t=2$ and not $t=1$ because we have less than 20 published scholars for $t=1$.} The remaining parameters are set equal to those used for Italy, except for $\overline{\beta}$, which is set to 0 (no censorship). We also recompute the process for $\mu_t$ using GDP per capita. The results are shown in Figure~\ref{fig:Sq_uk}.
+
+
+%UPDATED 29 AUG 2022=========================================================================================================================
+\begin{figure}[htb]	
+	\centering
+	\hspace*{-1cm}
+	
+	% include second image
+	\scalebox{0.36}{\input{sq_uk.tex} }
+	
+	\caption{Median scholars quality $Q_2(q_t)$. Blue: Great Britain. Red: Italy.  \\ Data (solid) and simulations (dashed). }
+	\label{fig:Sq_uk}
+\end{figure}
+
+Simulations of median log publications in Great Britain are relatively close to their data counterpart, despite we did not used them in the estimation procedure. The model shows the ability to match well the British data when the initial conditions are set to a level lower than the Italian case. This result supports the claim that the model predicts correctly the catching up and overtaking of Great Britain, through a mix of convergence forces acting in the dynamics of $m_t$, differences in the  exogenous process of $\mu_t$, and the presence of censorship in Italy.
+
+
+\subsubsection*{The Role of Censorship in Knowledge Formation}
+
+What is the role of the Catholic Church in the demise in knowledge production in early modern Italy? How much of this effect is driven by selection into the revolutionary/compliant sectors? In this section we answer these questions by comparing model simulations with and without censorship. This is done by setting the rate of censorship $\overline{\beta}$ to $0$ in the no-censorship scenario. Figure~\ref{fig:exp} illustrates the outcomes of the experiments.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Const. exp.  1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%UPDATED 29 AUG 2022=========================================================================================================================
+\begin{figure}[htb]	
+	\centering
+	\hspace*{-1cm}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		% include first image
+		\caption{Share of revolutionary scholars ($m_t$)\\\textcolor{white}{a}}
+		\label{sf:ra}
+		\scalebox{0.55}{\input{bc.tex} }
+	\end{subfigure}\hspace{-5mm}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		% include second image
+		\caption{\textcolor{blue}{Overall}, \textcolor{red}{revolutionary}\\ \textcolor{orange}{compliant} scholars quality}
+		\label{sf:dq}
+		\scalebox{0.55}{\input{sq.tex} }
+	\end{subfigure}
+
+	\caption{Baseline simulations (solid), simulations without censorship (dashed)}
+	\label{fig:exp}
+\end{figure}
+
+
+
+Without censorship, the share or revolutionary authors $m_t$ would have kept increasing. It would have reached 56\% in $t=5$, instead of decreasing to 23\% in $t=5$. This fact demonstrates the effectiveness of censorship, which can change the dynamics of revolutionary ideas drastically. Moreover, censorship has the unintended effect of reducing the overall quality of scholars, which is 35\% lower under the baseline than in the $\overline{\beta}=0$ scenario.
+
+\citeN{becker2021} analyze the effect of censorship on knowledge growth by establishing a empirical correlation between
+ the number of famous people born in, or migrating into, a city and the number of indexed books printed in that city. Here we look at another, complementary, dimension by considering the actual publications of the scholars. Our structural approach also allows to quantify the effects, and to propose an interpretation of these effects, through the lens of our theory. Of course, in doing so, we impose more restrictions on the data than the reduced form approach of  \citeN{becker2021}  does.
+
+The loss in  the overall quality is  driven both by a reduction in the stock of knowledge \textit{within each sector} and by self-selection \textit{across sectors}.   This result comes from the following decomposition:
+\begin{multline}\label{eq:deco}
+\underbrace{q_5-\hat{q}_5}_{\text{=$-$1.42 (100\%)}}=\underbrace{\hat{m}_5 [{q}^R_5-\hat{q}^R_5]+(1-\hat{m}_5)[q^C_5-\hat{q}^C_5]}_{\text{=$-$1.02 (71\%); $(a)$}}+
+\underbrace{[m_5-\hat{m_5}]\hat{q}^R_5+[(1-m_5)-(1-\hat{m}_5)]\hat{q}^C_5}_{\text{=$-$1.27 (89\%); $(b)$}}\\
++\underbrace{(m_5-\hat{m}_5) [(q^R_5-q^C_5)-(\hat{q}^R_5-\hat{q}^C_5)]}_{\text{=0.87 ($-$60\%); $(c)$}}.
+\end{multline}
+Variables $q_5, q^C_5, q^R_5$ indicate the average quality of all authors, compliant authors and revolutionary authors under the baseline scenario. The variables with a hat relate to the experiment where $\overline{\beta}=0$. Equation~(\ref{eq:deco}) shows that the self-selection effect exists only if there is a quality gap between the two sectors. Indeed, if $\hat{q}^R_5=\hat{q}^C_5$, the second line is equal to zero, and the fact that printers shift their activity towards the compliant sector does not matter, as the compliant sector delivers the same quality as the revolutionary one.
+
+The effect of censorship due to changes in quality within sectors (the direct effect) is captured by $(a)$ in Equation~(\ref{eq:deco}) and accounts for $71\%$ of the overall drop. The self-selection effect $(b)$ accounts for $89\%$ of the overall drop. This shows that censorship is important as it pushes printers to select compliant knowledge, which has a lower quality. Finally, $(c)$ captures the interaction between effects $(a)$ and $(b)$ and accounts for $-61\%$ of the total effect.
+
+
+To sum up, the effect of censorship on knowledge accumulation is not entirely due to the decline in quality within sectors. The drop in the revolutionary sector is partially compensated by the increased quality within the compliant sector. Half of the effect of censorship on knowledge growth is due to its ability to make compliant ideas relatively more available. Not only are compliant ideas lower quality than revolutionary ones, but they would have displayed no growth in quality if there was no censorship.
+
+Extensive robustness analysis of these results is provided in Appendix~\ref{O-app:robust}. We consider alternative ways to model censorship (imperfect enforcement of censorship, self censorship, time varying censorship), alternative samples (Only Italian born, Only Southern/Northern Italian, no corresponding members of academies, universities only), alternative ways to measure scientific output (all publications, length of Wikipedia pages), and alternative model periods (ten periods model).
+ We conclude from the robustness analysis that censorship reduced  the average log publications per scholar by a percentage between 22\% and 49\% (35\% in the benchmark).
+
+
+\subsubsection*{The Role of Macroeconomic Shocks in Knowledge Formation}
+
+In this section we evaluate the role played by macroeconomic factors besides censorship itself in shaping the observed decline in publications. The Italian economy declined substantially over the period under study, as reflected in the drop in GDP per capita reported in the literature. This literature on Italy's relative decline and failure to lead the transition to modern growth highlights adverse macroeconomic processes, such as the shifting  trade routes in favor of Atlantic harbors (\citeNP{braudel1979civilisation}, \citeNP{acemoglu2005rise}), that would almost certainly show up in the key measure of productivity we use.
+
+To contrast the effect of censorship on knowledge growth with the  impact of adverse macroeconomic shocks hitting the Italian economy over the same period, we run a counterfactual simulation under the assumption that the process for $\mu_t$ was constant over time. Hence, instead of dropping by 20\%, the number of books read (bought) by households stays constant in this counterfactual. This helps knowledge to grow as authors acquire ideas from more books. The results are shown in Table~\ref{table:exp2}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Const. exp.  2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%Table with moments to be fit%%
+%UPDATED 29 AUG 2022=========================================================================================================================
+\input{rel_qual.tex}
+
+Shutting down the source of adverse macroeconomic shocks translates into moderately higher average quality as early as in period 2. The gains peak at 14\% in period 4, and equal 9\% in period 5 (there was indeed a small recovery in $\mu_t$ from period 4 to 5). Those effects are relatively important in the first three periods, but appear small compared to the gains obtained under no censorship in periods 4 and 5.
+Overall, the effect of censorship on knowledge production is between three to four times the effect of adverse macroeconomic conditions.
+
+\subsubsection*{The Role of Demographic Shocks in Knowledge Formation}
+
+In the above estimation we modelled the process for $\mu_t$ as an income process, following the path of GDP per capita. Higher income makes it possible to buy more books. An alternative interpretation of $\mu_t$ is in terms of time available to read books. The total number of books one can read during one's life should be proportional to the length of life. In that case, $\mu$ is affected by epidemiologic processes, such as the plagues of the seventeenth century, considered important to understand the decline of Italy (\citeNP{alfani2013calamities}, \citeNP{alfani13}). To consider this hypothesis, we compute the mean age at death of our scholars by period. We assume that the time available for reading is proportional to the mean age at death minus eighteen (assuming that one does not read scholarly books before the age of eighteen). Table~\ref{tab:mu} shows the values for the mean age at death and compares the new process for $\mu_t$ to the baseline one. Mean age at death and GDP per capita have a similar U-shaped pattern. However, the shock appears weaker when one considers life expectancy than when one considers GDP per capita.
+
+\begin{table}[htb]
+      \centering % used for centering table
+\begin{tabular}{cccccc}
+\toprule
+$t$         &   years   & mean age at death   & $\mu_t$ (GDP per capita) & $\mu_t$ (mean age at death -18) \\
+\midrule
+1           & 1400-1469  & 68.26     & 1.000   &  1.000\\
+2           & 1470-1539  & 64.03     &  0.878  &  0.938\\
+3           & 1540-1609  & 65.17     & 0.787   &  0.954\\
+4           & 1610-1679  & 64.83     & 0.828  &   0.949\\
+5           & 1680-1749  & 69.86     & 0.851   &  1.023\\
+\bottomrule
+\end{tabular}
+\caption{Different processes for $\mu_t$}\label{tab:mu}
+\end{table}
+
+Taking as baseline a simulation where $\mu_t$ takes the values in the last column, we find that  the gains of keeping life expectancy constant peak at 5\% in period 4 and are negligible in period 5. We  conclude  that the effect of censorship on knowledge production is considerably stronger than the effect of adverse longevity conditions.
+
+The above simulation only considers the effects of longevity on the demand side of the market for books. Longevity can also affect the supply side, by reducing the time available to authors to write books. This aspect is absent from the model, but we can get an idea of its size by using the data. In Appendix~\ref{O-app:robust-longevity}, we quantify this channel  in two steps. First, we calculate the marginal effect of living one additional year on the mean, median, and 75th percentile of the log-publications of European scholars. We find a highly significant effect according to which one more year of life increases the log median publication by 0.019.
+Second, we adjust the baseline distributional moments by adding the marginal effects above times the deviation of aggregate longevity from its value in Period~1.
+That is, we calculate what the scholars' publications would look like if Italy did not experience the drop in longevity. We conclude that the drop in longevity experienced by Italy over the period 1470-1680 led scholars to  publish less, reducing the median log publications by 2\% at most. Hence, the supply side effect of the drop in longevity is there, is highly significant, but quite small.
+
+
+Finally, we investigate whether the loss of population generated by wars and plagues highlighted by \citeN{alfani2013calamities} might have produced a demographic shock affecting the dynamics of knowledge production. We focus on urban population as it is more directly related to knowledge formation than the total population.  We first use the new data set of \citeN{buringh2021population} on European cities. We obtain the numbers presented in Table~\ref{tab:pop}. According to that source, the urban population in Italy did not fall during the period considered but stalled during the seventeenth century. This reflects that demographic shocks might have been strong for some specific places, but not that strong at the macroeconomic level. We next compare Buríngh's numbers to those proposed by \citeN{alfani2019plague} for 32 cities from their  database which includes only the cities for which complete information about city population every fifty years from 1500 to 1800 was available. Using this data, we observe a drop in urban population between 1600 and 1650. This drop of 7.7\% is close to the drop in longevity we imputed in the exercise above but is less long lasting, so one cannot expect stronger effects using urban population instead of longevity. Moreover, population recovered and even overtook its previous level by 1750.
+
+
+To conclude on the role of demographic shocks, it is likely that they affected knowledge production during the seventeenth century, by reducing longevity and/or the size of the urban population. However, they cannot explain why the quality of authors remained so low in our last period (1680-1750), while both longevity and population had recovered. Instead, censorship removed books from libraries and depressed quality \textit{every year} over most of the period (with diminishing enforcement in the last decades), being therefore able to explain the dramatic cumulative effect on quality we observe in the data.
+
+
+
+\begin{table}[htb]
+      \centering % used for centering table
+\begin{tabular}{ccc}
+\toprule
+year  &   urban population  & urban population for selected\\
+& \cite{buringh2021population} & cities \cite{alfani2019plague}\\
+\midrule
+1400	&	1560	&	                        \\
+1500	&	2358	&	  1076                  \\
+1550	&	2798	&	  1196                  \\
+1600	&	3420	&	  1486                  \\
+1650	&	3446	&	  1372                  \\
+1700	&	3631	&	  1414                   \\
+1750	&	4175     &   1604                   \\
+\bottomrule
+\end{tabular}
+\caption{Urban population in Italy (thousands of inhabitants)}\label{tab:pop}
+\end{table}
+
+

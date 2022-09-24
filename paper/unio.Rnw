@@ -1,0 +1,2 @@
+&   -24 \hspace{-0.1cm}\% &  -116 \hspace{-0.1cm}\% 
+             &   16 \hspace{-0.1cm}\% & 23 \hspace{-0.1cm}\%\\

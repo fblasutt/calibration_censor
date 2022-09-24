@@ -437,3 +437,7 @@ momentss<-list("Embeta"=Embeta,"Eqr"=Eqr,
 
 
 list.save(momentss, 'data.Rdata')  
+
+#For reply to Editor, point 4: significance in difference of quality censored/not censored
+quantile(Bqr[1,]-BNC[1,],c(0.025,0.975))
+quantile(Bqr[5,]-BNC[5,],c(0.025,0.975))
